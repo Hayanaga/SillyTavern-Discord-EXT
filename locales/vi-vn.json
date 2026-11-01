@@ -427,7 +427,7 @@
     "is typing…": "đang nhập…",
     "name color": "màu tên",
     "pick a color": "chọn một màu",
-    "{0} files could not be downloaded. Most of Discord's files need SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "Không tải được {0} tệp. Hầu hết tệp của Discord cần proxy CORS của SillyTavern: đặt enableCorsProxy: true trong config.yaml rồi khởi động lại SillyTavern.",
+    "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "Không thể tải xuống {0} tệp. Hầu hết tệp của Discord cần plugin máy chủ Discord Decor hoặc proxy CORS của SillyTavern: đặt enableCorsProxy: true trong config.yaml và khởi động lại SillyTavern.",
     "{0} of {1} ticked, {2} saved, all about {3}": "Đã đánh dấu {0}/{1}, đã lưu {2}, tổng khoảng {3}",
     "{0} saved files are unticked.": "{0} tệp đã lưu không được đánh dấu."
 }

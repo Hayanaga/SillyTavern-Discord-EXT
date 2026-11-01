@@ -427,7 +427,7 @@
     "is typing…": "กำลังพิมพ์…",
     "name color": "สีชื่อ",
     "pick a color": "เลือกสี",
-    "{0} files could not be downloaded. Most of Discord's files need SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "ดาวน์โหลดไม่ได้ {0} ไฟล์ ไฟล์ส่วนใหญ่ของ Discord ต้องใช้พร็อกซี CORS ของ SillyTavern: ตั้ง enableCorsProxy: true ใน config.yaml แล้วรีสตาร์ต SillyTavern",
+    "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "ดาวน์โหลดไฟล์ไม่สำเร็จ {0} ไฟล์ ไฟล์ส่วนใหญ่ของ Discord ต้องใช้ปลั๊กอินเซิร์ฟเวอร์ Discord Decor หรือพร็อกซี CORS ของ SillyTavern: ตั้งค่า enableCorsProxy: true ใน config.yaml แล้วรีสตาร์ท SillyTavern",
     "{0} of {1} ticked, {2} saved, all about {3}": "ติ๊ก {0} จาก {1}, บันทึก {2}, ทั้งหมดประมาณ {3}",
     "{0} saved files are unticked.": "มีไฟล์ที่บันทึกไว้ {0} ไฟล์ที่ไม่ได้ติ๊ก"
 }

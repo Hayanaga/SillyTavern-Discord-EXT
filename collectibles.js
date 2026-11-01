@@ -6,7 +6,7 @@
 // The built-in set is assets/collectibles/catalog.json; files people add are uploaded to
 // SillyTavern's user files and listed in the settings with what they are.
 
-import { openOffline } from './collectibles-offline.js';
+import { openOffline, saveStarterSet } from './collectibles-offline.js';
 import { GatedObserver, listen } from './life.js';
 import { t } from './ui.js';
 
@@ -810,6 +810,8 @@ export async function initCollectibles({ getSettings, saveSettings }) {
     save = saveSettings;
     await loadCatalog();
     refreshAll();
+    // once the lists are drawn, so the people on screen have their items
+    setTimeout(() => document.body.classList.contains('discord-theme') && saveStarterSet(), 5000);
     listen(document, 'pointerover', play);
     listen(document, 'pointerout', play);
     new GatedObserver((mutations) => {

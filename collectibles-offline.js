@@ -4,8 +4,8 @@
 // each Discord address to its copy.
 //
 // Discord's file server lets pages on other sites read only some of its files (decorations).
-// The rest come through SillyTavern's own CORS proxy, which is off unless config.yaml has
-// enableCorsProxy: true.
+// The rest come through the Discord Decor server plugin when it's installed, otherwise through
+// SillyTavern's own CORS proxy, which is off unless config.yaml has enableCorsProxy: true.
 
 import { KINDS, catalogOf, collectibleStore, filesOf, redrawAll, saveCollectibles } from './collectibles.js';
 import { t } from './ui.js';
@@ -14,6 +14,16 @@ const DIALOG_ID = 'dsc-offline';
 const TITLES = Object.fromEntries([['decoration', 'Avatar Decorations'], ['nameplate', 'Nameplates'], ['effect', 'Profile Effects'], ['frame', 'Profile Frames']]);
 /** Rough sizes of a file of each kind, for the breakdown before anything is saved */
 const TYPICAL = { decoration: 760_000, nameplate: 50_000, effect: 2_000_000, frame: 100_000 };
+const PLUGIN = '/api/plugins/discord-decor';
+/** How many items of each kind the starter set holds, besides the ones in use */
+const STARTER_ITEMS = 6;
+
+/** Whether the Discord Decor server plugin is installed. */
+let pluginCheck = null;
+function hasPlugin() {
+    pluginCheck ??= fetch(`${PLUGIN}/status`).then(response => response.ok, () => false);
+    return pluginCheck;
+}
 
 /** A short name for a saved copy: the file's address hashed, with its type. */
 function nameFor(url, type) {
@@ -25,8 +35,15 @@ function nameFor(url, type) {
     return `discord-cdn-${(hash >>> 0).toString(36)}-${url.length.toString(36)}.${extension}`;
 }
 
-/** Fetches a file of Discord's: straight, or through SillyTavern's proxy. */
+/** Fetches a file of Discord's: through the plugin, straight, or through SillyTavern's proxy. */
 async function grab(url) {
+    if (await hasPlugin()) {
+        const { getRequestHeaders } = SillyTavern.getContext();
+        const response = await fetch(`${PLUGIN}/fetch`, { method: 'POST', headers: getRequestHeaders(), body: JSON.stringify({ url }) }).catch(() => null);
+        if (response?.ok) {
+            return await response.blob();
+        }
+    }
     for (const address of [url, `/proxy/${url}`]) {
         try {
             const response = await fetch(address);
@@ -67,6 +84,32 @@ async function forget(path) {
 
 function megabytes(bytes) {
     return bytes >= 1e9 ? `${(bytes / 1e9).toFixed(1)} GB` : `${Math.max(1, Math.round(bytes / 1e6))} MB`;
+}
+
+/** Downloads the starter set once, when the plugin is there: what's in use and the first few of
+ * each kind. Nothing starts by itself while only saved copies are allowed. */
+export async function saveStarterSet() {
+    const store = collectibleStore();
+    if (store.starterDone || store.offline || !await hasPlugin()) {
+        return;
+    }
+    const inUse = new Set(Object.values(store.assign).flatMap(own => Object.values(own)));
+    const items = KINDS.flatMap(kind => catalogOf(kind).filter((item, i) => i < STARTER_ITEMS || inUse.has(item.id)));
+    const queue = [...new Set(items.flatMap(filesOf))].filter(url => !store.saved[url]);
+    const work = async () => {
+        while (queue.length) {
+            const url = queue.shift();
+            const blob = await grab(url);
+            const path = blob && await keep(url, blob);
+            if (path) {
+                store.saved[url] = path;
+            }
+        }
+    };
+    await Promise.all([work(), work(), work()]);
+    store.starterDone = true;
+    saveCollectibles();
+    redrawAll();
 }
 
 export function closeOffline() {
@@ -294,7 +337,7 @@ export function openOffline() {
         redrawAll();
         drawBody();
         if (failed) {
-            drawStatus(t('{0} files could not be downloaded. Most of Discord\'s files need SillyTavern\'s CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.').replace('{0}', String(failed)));
+            drawStatus(t('{0} files could not be downloaded. Most of Discord\'s files need the Discord Decor server plugin, or SillyTavern\'s CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.').replace('{0}', String(failed)));
         }
     }
 

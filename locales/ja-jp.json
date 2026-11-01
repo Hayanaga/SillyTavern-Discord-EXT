@@ -427,7 +427,7 @@
     "is typing…": "が入力中…",
     "name color": "名前の色",
     "pick a color": "色を選択",
-    "{0} files could not be downloaded. Most of Discord's files need SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "{0} 個のファイルをダウンロードできませんでした。Discordのファイルの多くは SillyTavern の CORS プロキシが必要です：config.yaml で enableCorsProxy: true にして SillyTavern を再起動してください。",
+    "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "{0} 個のファイルをダウンロードできませんでした。Discord のファイルの多くには、サーバープラグイン Discord Decor または SillyTavern の CORS プロキシが必要です。config.yaml で enableCorsProxy: true を設定し、SillyTavern を再起動してください。",
     "{0} of {1} ticked, {2} saved, all about {3}": "{1} 件中 {0} 件をチェック、{2} 件保存済み、全部で約 {3}",
     "{0} saved files are unticked.": "保存済みファイル {0} 個のチェックが外れています。"
 }

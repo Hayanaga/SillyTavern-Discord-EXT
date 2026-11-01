@@ -427,7 +427,7 @@
     "is typing…": "er að skrifa…",
     "name color": "litur nafns",
     "pick a color": "veldu lit",
-    "{0} files could not be downloaded. Most of Discord's files need SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "Ekki tókst að sækja {0} skrár. Flestar skrár Discord þurfa CORS-proxy SillyTavern: settu enableCorsProxy: true í config.yaml og endurræstu SillyTavern.",
+    "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "Ekki tókst að sækja {0} skrár. Flestar skrár Discord þurfa netþjónsviðbótina Discord Decor eða CORS-milliþjón SillyTavern: stilltu enableCorsProxy: true í config.yaml og endurræstu SillyTavern.",
     "{0} of {1} ticked, {2} saved, all about {3}": "{0} af {1} merkt, {2} vistuð, alls um {3}",
     "{0} saved files are unticked.": "{0} vistaðar skrár eru ómerktar."
 }

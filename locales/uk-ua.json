@@ -427,7 +427,7 @@
     "is typing…": "пише…",
     "name color": "колір імені",
     "pick a color": "виберіть колір",
-    "{0} files could not be downloaded. Most of Discord's files need SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "Не вдалося завантажити файлів: {0}. Більшості файлів Discord потрібен CORS-проксі SillyTavern: вкажіть enableCorsProxy: true у config.yaml і перезапустіть SillyTavern.",
+    "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "Не вдалося завантажити файлів: {0}. Для більшості файлів Discord потрібен серверний плагін Discord Decor або CORS-проксі SillyTavern: вкажіть enableCorsProxy: true у config.yaml і перезапустіть SillyTavern.",
     "{0} of {1} ticked, {2} saved, all about {3}": "Відмічено {0} з {1}, збережено {2}, усього близько {3}",
     "{0} saved files are unticked.": "Збережених файлів без позначки: {0}."
 }
