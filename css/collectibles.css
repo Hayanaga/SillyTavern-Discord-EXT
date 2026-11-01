@@ -34,6 +34,17 @@ body.discord-theme #chat .mes .avatar:has(> .dsc-deco) > img {
     border-radius: 50%;
 }
 
+/* "#chat .mes .avatar img" would otherwise fill the picture with it and clip it to a circle */
+body.discord-theme #chat .mes .avatar > .dsc-deco.dsc-deco {
+    left: -10%;
+    top: -10%;
+    width: 120%;
+    height: 120%;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 0;
+}
+
 /* ---------- nameplates ---------- */
 
 body.discord-theme :is(.dsc-dm, .dsc-member):has(> .dsc-plate) {
