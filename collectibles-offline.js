@@ -86,11 +86,13 @@ function megabytes(bytes) {
     return bytes >= 1e9 ? `${(bytes / 1e9).toFixed(1)} GB` : `${Math.max(1, Math.round(bytes / 1e6))} MB`;
 }
 
-/** Downloads the starter set once, when the plugin is there: what's in use and the first few of
- * each kind. Nothing starts by itself while only saved copies are allowed. */
+/** Downloads the starter set: what's in use and the first few of each kind. Without the plugin it
+ * tries once and keeps what the browser may read; the plugin, when added later, fetches the rest.
+ * Nothing starts by itself while only saved copies are allowed. */
 export async function saveStarterSet() {
     const store = collectibleStore();
-    if (store.starterDone || store.offline || !await hasPlugin()) {
+    const plugin = await hasPlugin();
+    if (store.starterDone || store.offline || (!plugin && store.starterTried)) {
         return;
     }
     const inUse = new Set(Object.values(store.assign).flatMap(own => Object.values(own)));
@@ -107,7 +109,8 @@ export async function saveStarterSet() {
         }
     };
     await Promise.all([work(), work(), work()]);
-    store.starterDone = true;
+    store.starterTried = true;
+    store.starterDone = plugin;
     saveCollectibles();
     redrawAll();
 }
