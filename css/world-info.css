@@ -1,0 +1,926 @@
+/* World Info as a Discord settings page. SillyTavern's markup is kept; this lays it out:
+   - the active lorebooks and the activation settings stacked, full width
+   - the lorebook picker and the entry toolbar as wrapping rows of compact controls
+   - each entry as one card whose header is a single grid row, with the column titles above
+     on the same grid, so every title sits over its field
+   - where the list is narrow (a phone, a small window) the row folds into two lines:
+     title and actions, then position, depth, order and trigger % with their labels
+   - the open entry as plain sections: labels over fields, wrapping grids, no box in a box */
+
+body.discord-theme #WorldInfo {
+    --wi-gap: 8px;
+    --wi-pad: 12px;
+    --wi-field: 32px;
+    --wi-cols: 20px 28px minmax(0, 1fr) 64px 112px 64px 64px 72px 32px 32px 32px;
+    --wi-areas: "chev kill title status pos depth order prob move dup del";
+}
+
+body.discord-theme #WorldInfo #wi-holder {
+    margin: 16px 0 0;
+}
+
+/* ---------- labels: Discord's small uppercase section labels ---------- */
+
+body.discord-theme #WorldInfo :is(#wiTopBlock .range-block-title, #wiTopBlock .range-block-title small),
+body.discord-theme #WorldInfo .world_entry_edit :is(.world_entry_form_control > small, .world_entry_form_control > label > small, .flexFlowColumn > .flex-container > small, .flex4 > .flex-container > small, .flex-container.justifySpaceBetween > small) {
+    color: var(--dsc-header-2);
+    font: 700 12px/16px var(--dsc-font);
+    letter-spacing: 0.02em;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+body.discord-theme #WorldInfo #wiTopBlock .range-block-title {
+    justify-content: flex-start;
+    margin: 0 0 8px;
+}
+
+/* ---------- compact fields ---------- */
+
+body.discord-theme #WorldInfo :is(.text_pole, select):not(textarea, .neo-range-input, [multiple]) {
+    height: var(--wi-field);
+    min-height: var(--wi-field);
+    margin: 0;
+    padding: 0 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: var(--wi-field);
+}
+
+body.discord-theme #WorldInfo select:not([multiple]) {
+    padding-right: 28px;
+    background-position: right 6px center;
+    text-overflow: ellipsis;
+}
+
+/* (pages.css sets every settings textarea's padding and size through an id, hence !important) */
+body.discord-theme #WorldInfo textarea.text_pole {
+    margin: 0;
+    padding: 6px 8px !important;
+    box-sizing: border-box;
+    font-size: 14px !important;
+    line-height: 20px !important;
+}
+
+/* number fields: the value only, no spinner eating the room */
+body.discord-theme #WorldInfo input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    text-align: center;
+}
+
+body.discord-theme #WorldInfo input[type="number"]::-webkit-inner-spin-button,
+body.discord-theme #WorldInfo input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* placeholders that would be cut (Use global setting, No cooldown…) stay readable */
+body.discord-theme #WorldInfo .text_pole::placeholder {
+    font-size: 13px;
+    text-overflow: ellipsis;
+}
+
+/* select2: the multi-select boxes grow with their chips and never cut their placeholder */
+body.discord-theme #WorldInfo .select2-container {
+    width: 100% !important;
+    max-width: 100%;
+}
+
+body.discord-theme #WorldInfo .select2-container .select2-selection--multiple {
+    display: flex;
+    align-items: center;
+    min-height: var(--wi-field);
+    height: auto;
+    padding: 3px 28px 3px 6px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 3px;
+    background: var(--dsc-field);
+}
+
+body.discord-theme #WorldInfo .select2-container .select2-selection--multiple .select2-selection__rendered {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+body.discord-theme #WorldInfo .select2-container .select2-selection--multiple .select2-search--inline {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* with nothing chosen yet, the placeholder gets the whole box (select2 sizes it in px) */
+body.discord-theme #WorldInfo .select2-container .select2-selection--multiple .select2-selection__rendered:empty + .select2-search--inline .select2-search__field {
+    width: 100% !important;
+}
+
+body.discord-theme #WorldInfo .select2-container .select2-selection--multiple .select2-search__field {
+    max-width: 100%;
+}
+
+body.discord-theme #WorldInfo .select2-container .select2-search__field {
+    height: 24px !important;
+    margin: 0;
+    padding: 0 4px !important;
+    font-size: 14px !important;
+    line-height: 24px !important;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+body.discord-theme #WorldInfo .select2-container .select2-search__field::placeholder {
+    font-size: 14px;
+    color: var(--dsc-muted);
+}
+
+body.discord-theme #WorldInfo .select2-selection__choice {
+    position: relative;
+    margin: 2px 4px 2px 0;
+    padding: 0 6px 0 20px;
+    border: none;
+    border-radius: 4px;
+    background: var(--dsc-secondary-button);
+    color: var(--dsc-header);
+    font-size: 13px;
+    line-height: 22px;
+}
+
+body.discord-theme #WorldInfo .select2-selection__choice__remove {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 18px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    background: none;
+    color: var(--dsc-icon);
+    font-size: 14px;
+    line-height: 22px;
+}
+
+body.discord-theme #WorldInfo .select2-selection__choice__remove:hover {
+    background: var(--dsc-red);
+    color: #ffffff;
+}
+
+body.discord-theme #WorldInfo .select2-selection__choice__display {
+    padding: 0;
+}
+
+body.discord-theme #WorldInfo .select2-container .select2-selection--single {
+    height: var(--wi-field);
+    border: none;
+    border-radius: 3px;
+    background: var(--dsc-field);
+}
+
+body.discord-theme #WorldInfo .select2-container .select2-selection--single .select2-selection__rendered {
+    color: var(--dsc-text);
+    font-size: 14px;
+    line-height: var(--wi-field);
+}
+
+body.discord-theme #WorldInfo .select2-container .select2-selection--single .select2-selection__arrow {
+    height: var(--wi-field);
+}
+
+/* icon buttons: Discord's square grey buttons, one size everywhere */
+body.discord-theme #WorldInfo .menu_button:is(.fa-solid, .fa-regular) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    min-height: 32px;
+    margin: 0;
+    padding: 0;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+body.discord-theme #WorldInfo .menu_button.menu_button_icon {
+    height: 32px;
+    min-height: 32px;
+    margin: 0;
+    padding: 0 12px;
+    gap: 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* ---------- top: active lorebooks, then the activation settings ---------- */
+
+body.discord-theme #WorldInfo #wiTopBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+body.discord-theme #WorldInfo #wiTopBlock > .range-block {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body.discord-theme #WorldInfo #wiTopBlock .inline-drawer {
+    margin: 0;
+}
+
+body.discord-theme #WorldInfo #wiTopBlock .standoutHeader.inline-drawer-header {
+    min-height: 48px;
+    margin: 0;
+    padding: 12px 0;
+    color: var(--dsc-header);
+    font: 500 16px/20px var(--dsc-font);
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+body.discord-theme #WorldInfo #wiTopBlock .standoutHeader b {
+    font-weight: 500;
+}
+
+body.discord-theme #WorldInfo #wiActivationSettings {
+    flex-direction: column;
+    gap: 0;
+}
+
+/* ---------- the lorebook picker and the entry toolbar ---------- */
+
+body.discord-theme #WorldInfo #world_popup > hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid var(--dsc-divider);
+}
+
+body.discord-theme #WorldInfo #world_popup > .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--wi-gap);
+    margin: 0 0 var(--wi-gap);
+}
+
+body.discord-theme #WorldInfo #world_popup > .flex-container > small {
+    color: var(--dsc-muted);
+    font-size: 14px;
+}
+
+body.discord-theme #WorldInfo #world_popup #world_editor_select ~ .select2-container {
+    flex: 1 1 180px;
+    width: auto !important;
+    min-width: 140px;
+}
+
+body.discord-theme #WorldInfo #world_info_search {
+    flex: 1 1 140px;
+    min-width: 120px;
+    text-align: left;
+}
+
+body.discord-theme #WorldInfo #world_info_sort_order {
+    flex: 0 1 140px;
+    min-width: 110px;
+}
+
+/* pagination: the page range, arrows and page size as one compact group */
+body.discord-theme #WorldInfo #world_info_pagination {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+body.discord-theme #WorldInfo #world_info_pagination .paginationjs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+}
+
+body.discord-theme #WorldInfo #world_info_pagination :is(.paginationjs-nav, .paginationjs-pages, .paginationjs-size-changer) {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    float: none;
+}
+
+body.discord-theme #WorldInfo #world_info_pagination .paginationjs-nav {
+    padding: 0 4px;
+    color: var(--dsc-muted);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+body.discord-theme #WorldInfo #world_info_pagination .paginationjs-pages ul {
+    display: flex;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+}
+
+body.discord-theme #WorldInfo #world_info_pagination .paginationjs-pages li {
+    margin: 0;
+    border: none;
+    list-style: none;
+}
+
+body.discord-theme #WorldInfo #world_info_pagination .paginationjs-pages li > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 32px;
+    border-radius: 4px;
+    color: var(--dsc-icon);
+    font-size: 14px;
+}
+
+body.discord-theme #WorldInfo #world_info_pagination .paginationjs-pages li:not(.disabled) > a:hover {
+    background: var(--dsc-hover);
+    color: var(--dsc-icon-hover);
+}
+
+body.discord-theme #WorldInfo #world_info_pagination .paginationjs-pages li.disabled > a {
+    opacity: 0.4;
+}
+
+body.discord-theme #WorldInfo #world_info_pagination .paginationjs-size-changer select {
+    width: auto;
+    min-width: 0;
+}
+
+/* ---------- the entry list ---------- */
+
+body.discord-theme #WorldInfo #world_popup_entries_list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--wi-gap);
+    margin-top: 8px;
+    overflow: visible;
+    container: dsc-wi / inline-size;
+}
+
+body.discord-theme #WorldInfo #world_popup_entries_list:has(.drag-handle) {
+    --wi-cols: 16px 20px 28px minmax(0, 1fr) 64px 112px 64px 64px 72px 32px 32px 32px;
+    --wi-areas: "drag chev kill title status pos depth order prob move dup del";
+}
+
+/* column titles, on the entries' own grid */
+body.discord-theme #WorldInfo #WIEntryHeaderTitlesPC {
+    display: grid !important;
+    grid-template-columns: var(--wi-cols);
+    grid-template-areas: var(--wi-areas);
+    column-gap: var(--wi-gap);
+    padding: 0 var(--wi-pad) !important;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body.discord-theme #WorldInfo #WIEntryHeaderTitlesPC > small {
+    width: auto !important;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--dsc-header-2);
+    font: 700 11px/16px var(--dsc-font);
+    letter-spacing: 0.02em;
+    text-align: center;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+body.discord-theme #WorldInfo #WIEntryHeaderTitlesPC > small:nth-child(1) { grid-area: title; text-align: left; padding-left: 8px; }
+body.discord-theme #WorldInfo #WIEntryHeaderTitlesPC > small:nth-child(2) { grid-area: status; }
+body.discord-theme #WorldInfo #WIEntryHeaderTitlesPC > small:nth-child(3) { grid-area: pos; }
+body.discord-theme #WorldInfo #WIEntryHeaderTitlesPC > small:nth-child(4) { grid-area: depth; }
+body.discord-theme #WorldInfo #WIEntryHeaderTitlesPC > small:nth-child(5) { grid-area: order; }
+body.discord-theme #WorldInfo #WIEntryHeaderTitlesPC > small:nth-child(6) { grid-area: prob; }
+
+/* each entry: one card (SillyTavern's bordered form and the page's drawer card become one) */
+body.discord-theme #WorldInfo .world_entry {
+    margin: 0;
+}
+
+body.discord-theme #WorldInfo form.wi-card-entry {
+    margin: 0;
+    padding: 0;
+    /* a hairline keeps the card apart where the page and the panel share a colour (Onyx, Light) */
+    border: 1px solid var(--dsc-border-muted);
+    border-radius: 8px;
+    background: var(--dsc-panel);
+}
+
+body.discord-theme #WorldInfo .world_entry > form > .inline-drawer {
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: none;
+}
+
+/* the header row */
+body.discord-theme #WorldInfo .world_entry > form > .inline-drawer > .inline-drawer-header {
+    display: grid;
+    grid-template-columns: var(--wi-cols);
+    grid-template-areas: var(--wi-areas);
+    align-items: center;
+    column-gap: var(--wi-gap);
+    row-gap: var(--wi-gap);
+    min-height: 0;
+    margin: 0;
+    padding: 8px var(--wi-pad);
+    border: none;
+    background: none;
+    font-weight: 400;
+}
+
+body.discord-theme #WorldInfo .world_entry .inline-drawer-header :is(.world_entry_thin_controls, .world_entry_thin_controls > .flex-container, .WIEntryTitleAndStatus, .WIEnteryHeaderControls) {
+    display: contents;
+}
+
+body.discord-theme #WorldInfo .world_entry .inline-drawer-header .drag-handle {
+    grid-area: drag;
+    color: var(--dsc-icon);
+    cursor: grab;
+}
+
+body.discord-theme #WorldInfo .world_entry .inline-drawer-header .inline-drawer-toggle {
+    grid-area: chev;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    color: var(--dsc-icon);
+    font-size: 18px;
+    cursor: pointer;
+}
+
+body.discord-theme #WorldInfo .world_entry .inline-drawer-header .inline-drawer-toggle:hover {
+    color: var(--dsc-icon-hover);
+}
+
+body.discord-theme #WorldInfo .world_entry .killSwitch {
+    grid-area: kill;
+    font-size: 22px;
+    color: var(--dsc-icon);
+    cursor: pointer;
+}
+
+body.discord-theme #WorldInfo .world_entry .killSwitch.fa-toggle-on {
+    color: var(--dsc-green);
+}
+
+body.discord-theme #WorldInfo .world_entry .WIEntryTitleAndStatus > .flex-container {
+    grid-area: title;
+    display: flex;
+    min-width: 0;
+}
+
+/* the title: one line, the whole name shown on hover */
+body.discord-theme #WorldInfo .world_entry textarea[name="comment"] {
+    width: 100%;
+    height: var(--wi-field);
+    min-height: var(--wi-field);
+    max-height: var(--wi-field);
+    padding: 6px 8px !important;
+    overflow: hidden;
+    color: var(--dsc-header);
+    font-weight: 500;
+    resize: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+body.discord-theme #WorldInfo .world_entry select[name="entryStateSelector"] {
+    grid-area: status;
+    width: 100%;
+    padding: 0 18px 0 6px;
+    background-position: right 4px center;
+    background-size: 14px 14px;
+    text-align: center;
+}
+
+body.discord-theme #WorldInfo .world_entry [name="PositionBlock"] { grid-area: pos; }
+body.discord-theme #WorldInfo .world_entry .world_entry_form_control:has(> [name="depth"]) { grid-area: depth; }
+body.discord-theme #WorldInfo .world_entry .world_entry_form_control:has(> [name="order"]) { grid-area: order; }
+body.discord-theme #WorldInfo .world_entry .probabilityContainer { grid-area: prob; }
+body.discord-theme #WorldInfo .world_entry .move_entry_button { grid-area: move; }
+body.discord-theme #WorldInfo .world_entry .duplicate_entry_button { grid-area: dup; }
+body.discord-theme #WorldInfo .world_entry .delete_entry_button { grid-area: del; }
+
+body.discord-theme #WorldInfo .world_entry .WIEnteryHeaderControls .world_entry_form_control {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+}
+
+body.discord-theme #WorldInfo .world_entry .WIEnteryHeaderControls :is(select, input) {
+    width: 100%;
+    max-width: none;
+}
+
+body.discord-theme #WorldInfo .world_entry .WIEntryHeaderTitleMobile {
+    display: none !important;
+}
+
+/* the row's own buttons: quiet until hovered */
+body.discord-theme #WorldInfo .world_entry .inline-drawer-header > .menu_button {
+    background: transparent;
+    color: var(--dsc-icon);
+}
+
+body.discord-theme #WorldInfo .world_entry .inline-drawer-header > .menu_button:hover {
+    background: var(--dsc-hover);
+    color: var(--dsc-icon-hover);
+}
+
+body.discord-theme #WorldInfo .world_entry .inline-drawer-header > .delete_entry_button:hover {
+    background: var(--dsc-red);
+    color: #ffffff;
+}
+
+/* a turned-off entry: dimmed, still readable */
+body.discord-theme #WorldInfo .world_entry .disabledWIEntry,
+body.discord-theme #WorldInfo .world_entry form:has(.killSwitch.fa-toggle-off) .inline-drawer-header {
+    opacity: 0.55;
+}
+
+body.discord-theme #WorldInfo .world_entry .disabledWIEntry:not(input):hover {
+    opacity: 1;
+}
+
+/* ---------- an open entry ---------- */
+
+body.discord-theme #WorldInfo .world_entry .inline-drawer-outlet {
+    display: block;
+    width: auto;
+    margin: 0 var(--wi-pad);
+    padding: 12px 0 var(--wi-pad);
+    border-top: 1px solid var(--dsc-divider);
+    background: none;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit > .flex-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+}
+
+/* keywords, logic, optional filter */
+body.discord-theme #WorldInfo .world_entry_edit [name="keywordsAndLogicBlock"] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 112px minmax(0, 1fr);
+    align-items: start;
+    gap: var(--wi-gap);
+    margin: 0;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit .world_entry_form_control {
+    gap: 6px;
+    min-width: 0;
+    margin: 0;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit .world_entry_form_control > small.textAlignCenter {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 16px;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit .switch_input_type_icon {
+    top: 22px;
+    right: 6px;
+    margin: 0;
+    height: 32px;
+    display: flex;
+    align-items: center;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit select[name="entryLogicType"] {
+    width: 100%;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit :is(.keyprimarytextpole, .keysecondarytextpole) {
+    min-height: var(--wi-field);
+    padding-right: 30px;
+    resize: vertical;
+}
+
+/* per-entry overrides: as many per line as fit */
+body.discord-theme #WorldInfo .world_entry_edit [name="perEntryOverridesBlock"] {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+    gap: var(--wi-gap);
+    margin: 0;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit [name="perEntryOverridesBlock"] :is(input, select) {
+    width: 100%;
+    text-align: left;
+}
+
+/* content: its label line, then the four switches, then the text */
+body.discord-theme #WorldInfo .world_entry_edit [name="contentAndCharFilterBlock"] {
+    display: block;
+    width: 100%;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit [name="contentAndCharFilterBlock"] > .world_entry_form_control > label {
+    display: block;
+    margin: 0;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit [name="contentAndCharFilterBlock"] label > small {
+    display: block;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit [name="contentAndCharFilterBlock"] label > small > .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    color: var(--dsc-muted);
+    font: 400 13px/16px var(--dsc-font);
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit .mdhotkey_location {
+    color: var(--dsc-header-2);
+    font: 700 12px/16px var(--dsc-font);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit .editor_maximize {
+    margin-left: 6px;
+    font-size: 13px;
+}
+
+/* the switches go under the label line, two to a row */
+body.discord-theme #WorldInfo .world_entry_edit [name="contentAndCharFilterBlock"] label > small > .flex-container > .flex-container:last-child {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    flex: 1 1 100%;
+    gap: 8px 16px;
+    order: 3;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit [name="contentAndCharFilterBlock"] label > small > .flex-container > .flex-container:last-child > .flexFlowColumn {
+    display: contents;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit label.checkbox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    margin: 0;
+    color: var(--dsc-text);
+    font: 400 14px/18px var(--dsc-font);
+    text-transform: none;
+    letter-spacing: 0;
+    cursor: pointer;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit label.checkbox > span {
+    min-width: 0;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit textarea[name="content"] {
+    width: 100%;
+    min-height: 160px;
+    margin-top: 8px;
+    resize: vertical;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit .commentContainer:empty {
+    display: none;
+}
+
+/* inclusion group, weight, sticky, cooldown, delay; then the two filters */
+body.discord-theme #WorldInfo .world_entry_edit > .flex-container.flexGap10 {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr));
+    align-items: end;
+    gap: var(--wi-gap);
+}
+
+body.discord-theme #WorldInfo .world_entry_edit > .flex-container.flexGap10:has([name="characterFilter"]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body.discord-theme #WorldInfo .world_entry_edit > .flex-container.flexGap10 > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit > .flex-container.flexGap10 .justifySpaceBetween {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 24px;
+    margin: 0;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit > .flex-container.flexGap10 .justifySpaceBetween > small {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Prioritize and Exclude: a small switch beside the label, not a settings row */
+body.discord-theme #WorldInfo .world_entry_edit label.checkbox_label {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 6px;
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit label.checkbox_label > input[type="checkbox"] {
+    order: 0;
+    margin: 0;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit label.checkbox_label > span,
+body.discord-theme #WorldInfo .world_entry_edit label.checkbox_label > span small {
+    color: var(--dsc-text);
+    font: 400 13px/16px var(--dsc-font);
+    text-transform: none;
+    letter-spacing: 0;
+    white-space: nowrap;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit label[for="__invisible"] {
+    display: none;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit .range-block-range {
+    width: 100%;
+    margin: 0;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit .range-block-range > :is(input, select) {
+    width: 100%;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit [name="WIEntryBottomControls"]:not(:has(label:not([style*="none"]))) {
+    display: none;
+}
+
+/* Additional Matching Sources: a divided section, not a card in the card */
+body.discord-theme #WorldInfo .world_entry_edit > .inline-drawer {
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-top: 1px solid var(--dsc-divider);
+    border-radius: 0;
+    background: none;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit > .inline-drawer > .inline-drawer-header {
+    min-height: 40px;
+    padding: 12px 0 0;
+    font: 600 14px/20px var(--dsc-font);
+}
+
+body.discord-theme #WorldInfo .world_entry_edit > .inline-drawer > .inline-drawer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px 16px;
+    padding: 12px 0 0;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit > .inline-drawer > .inline-drawer-content[style*="none"] {
+    display: none;
+}
+
+body.discord-theme #WorldInfo .world_entry_edit > .inline-drawer > .inline-drawer-content > small {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ---------- a narrow list: each row folds into two lines ---------- */
+
+@container dsc-wi (max-width: 620px) {
+    body.discord-theme #WorldInfo #WIEntryHeaderTitlesPC {
+        display: none !important;
+    }
+
+    body.discord-theme #WorldInfo .world_entry > form > .inline-drawer > .inline-drawer-header {
+        grid-template-columns: 20px 28px minmax(0, 1fr) 44px 32px 32px 32px;
+        grid-template-areas:
+            "chev kill title status move dup del"
+            ". . ctl ctl ctl ctl ctl";
+        column-gap: 6px;
+        padding: 8px 10px;
+    }
+
+    body.discord-theme #WorldInfo #world_popup_entries_list:has(.drag-handle) .world_entry > form > .inline-drawer > .inline-drawer-header {
+        grid-template-columns: 16px 20px 28px minmax(0, 1fr) 44px 32px 32px 32px;
+        grid-template-areas:
+            "drag chev kill title status move dup del"
+            ". . . ctl ctl ctl ctl ctl";
+    }
+
+    /* (.flex-container outweighs the display: contents rule above) */
+    body.discord-theme #WorldInfo .world_entry .inline-drawer-header .WIEnteryHeaderControls.flex-container {
+        grid-area: ctl;
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    body.discord-theme #WorldInfo .world_entry .inline-drawer-header .WIEnteryHeaderControls > * {
+        grid-area: auto;
+    }
+
+    body.discord-theme #WorldInfo .world_entry .WIEnteryHeaderControls .world_entry_form_control {
+        gap: 2px;
+    }
+
+    body.discord-theme #WorldInfo .world_entry .WIEntryHeaderTitleMobile {
+        display: block !important;
+        overflow: hidden;
+        color: var(--dsc-header-2);
+        font: 700 11px/14px var(--dsc-font);
+        letter-spacing: 0.02em;
+        text-overflow: ellipsis;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    body.discord-theme #WorldInfo .world_entry .inline-drawer-outlet {
+        margin: 0 10px;
+    }
+
+    body.discord-theme #WorldInfo .world_entry_edit [name="keywordsAndLogicBlock"] {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    body.discord-theme #WorldInfo .world_entry_edit [name="perEntryOverridesBlock"] {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    body.discord-theme #WorldInfo .world_entry_edit > .flex-container.flexGap10 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    body.discord-theme #WorldInfo .world_entry_edit > .flex-container.flexGap10 > div:first-child,
+    body.discord-theme #WorldInfo .world_entry_edit > .flex-container.flexGap10:has([name="characterFilter"]) > div {
+        grid-column: 1 / -1;
+    }
+
+    body.discord-theme #WorldInfo .world_entry_edit [name="contentAndCharFilterBlock"] label > small > .flex-container > .flex-container:last-child {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* the clear-all × of the active lorebooks: centred in its box */
+body.discord-theme #WorldInfo .select2-selection--multiple .select2-selection__clear {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    margin: 0;
+    transform: translateY(-50%);
+}
+
+/* a phone: Create and the picker on one line, the lorebook's buttons together on the next */
+@media screen and (max-width: 1000px) {
+    body.discord-theme #WorldInfo #world_popup #world_editor_select ~ .select2-container {
+        flex-basis: 55%;
+    }
+}

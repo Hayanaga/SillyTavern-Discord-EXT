@@ -411,9 +411,98 @@ function renderMembers(aside, group) {
     if (offline.length) {
         parts.push(heading('Offline', offline.length), ...offline.map(x => memberRow(x, false)));
     }
-    aside.replaceChildren(...parts);
+    aside.replaceChildren(...parts, memberDeck(members));
     paintPresence(aside);
     monogramizeAll(aside, '.dsc-avatar img', img => img.parentElement?.dataset.name ?? '');
+}
+
+/* ---------- character pictures: one card in a DM, a deck in a server ---------- */
+
+/** The most cards a server's deck shows */
+const DECK_MAX = 5;
+
+/** A character's full picture as a rounded card; it goes if the character has no picture. */
+function pictureCard(character, className, gone = () => {}) {
+    const card = document.createElement('div');
+    card.className = className;
+    const img = document.createElement('img');
+    img.alt = '';
+    img.decoding = 'async';
+    img.loading = 'lazy';
+    img.src = fullPictureUrl('avatar', character.avatar);
+    card.append(img);
+    isPlaceholder(SillyTavern.getContext().getThumbnailUrl('avatar', character.avatar)).then((placeholder) => {
+        if (placeholder) {
+            card.remove();
+            gone();
+        }
+    });
+    return card;
+}
+
+/** Members in the order they last spoke in this chat, the latest first; the silent ones after. */
+function bySpeaker(members) {
+    const { chat } = SillyTavern.getContext();
+    const order = [];
+    for (let i = chat.length - 1; i >= 0 && order.length < members.length; i--) {
+        const message = chat[i];
+        if (message.is_user || message.is_system) {
+            continue;
+        }
+        const member = members.find(x => x.avatar === message.original_avatar) ?? members.find(x => x.name === message.name);
+        if (member && !order.includes(member)) {
+            order.push(member);
+        }
+    }
+    return [...order, ...members.filter(x => !order.includes(x))];
+}
+
+/** The server's members as a cascade of picture cards, whoever spoke last on top. */
+function memberDeck(members) {
+    const deck = document.createElement('div');
+    deck.className = 'dsc-deck';
+    for (const member of members) {
+        const card = pictureCard(member, 'dsc-deck-card', () => stackDeck(deck, members));
+        card.dataset.avatar = member.avatar;
+        card.setAttribute('role', 'button');
+        card.tabIndex = -1;
+        card.title = member.name;
+        const name = document.createElement('span');
+        name.className = 'dsc-deck-name';
+        name.textContent = member.name;
+        card.append(name);
+        card.addEventListener('click', () => showProfile(member.avatar));
+        deck.append(card);
+    }
+    stackDeck(deck, members);
+    return deck;
+}
+
+/** Puts the deck's cards in speaking order: --dsc-deck-i is a card's place, 0 on top. */
+function stackDeck(deck, members) {
+    const cards = [...deck.querySelectorAll('.dsc-deck-card')].map(card => /** @type {HTMLElement} */ (card).dataset.avatar);
+    const order = bySpeaker(members).filter(x => cards.includes(x.avatar));
+    const shown = Math.min(order.length, DECK_MAX);
+    deck.style.setProperty('--dsc-deck-n', String(shown));
+    for (const card of deck.querySelectorAll('.dsc-deck-card')) {
+        const place = order.findIndex(x => x.avatar === /** @type {HTMLElement} */ (card).dataset.avatar);
+        card.style.setProperty('--dsc-deck-i', String(place));
+        card.classList.toggle('dsc-deck-top', place === 0);
+        card.classList.toggle('dsc-deck-hidden', place >= DECK_MAX);
+        card.tabIndex = place === 0 ? 0 : -1;
+    }
+}
+
+/** A message came or went: the deck reorders (the list itself stays as it is). */
+function restackDeck() {
+    const deck = document.querySelector(`#${ASIDE_ID} .dsc-deck`);
+    const group = currentGroup();
+    if (!deck || !group) {
+        return;
+    }
+    const { characters } = SillyTavern.getContext();
+    const members = (group.members ?? []).map(avatar => characters.find(x => x.avatar === avatar)).filter(Boolean);
+    stackDeck(/** @type {HTMLElement} */ (deck), members);
 }
 
 function renderProfile(aside, character) {
@@ -500,7 +589,7 @@ function renderProfile(aside, character) {
 
     const close = iconButton('dsc-prof-close', t('Close'), 'close', 20);
     close.addEventListener('click', closeProfileSheet);
-    aside.replaceChildren(close, banner, avatar, card, extra, full);
+    aside.replaceChildren(close, banner, avatar, card, extra, pictureCard(character, 'dsc-prof-picture'), full);
     paintPresence(aside);
     monogramizeAll(aside, '.dsc-prof-avatar img', () => character.name);
 }
@@ -631,6 +720,10 @@ function initProfileClicks() {
             openPopout(hit, { avatar: character.avatar }, 'right');
         }
     }, true);
+    const { eventTypes } = SillyTavern.getContext();
+    for (const type of [eventTypes.CHARACTER_MESSAGE_RENDERED, eventTypes.MESSAGE_DELETED, eventTypes.MESSAGE_SWIPED]) {
+        onEvent(type, restackDeck);
+    }
     onEvent(SillyTavern.getContext().eventTypes.CHAT_CHANGED, () => {
         profileOverride = '';
         closeProfileSheet();
