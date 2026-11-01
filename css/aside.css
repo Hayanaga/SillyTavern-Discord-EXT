@@ -853,3 +853,61 @@ body.discord-theme .dsc-deck-card:focus-visible {
         transition: none;
     }
 }
+
+/* ---------- resizing the sidebars (resize.js) ---------- */
+
+body.discord-theme .dsc-resize {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    cursor: col-resize;
+    touch-action: none;
+}
+
+body.discord-theme .dsc-resize::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 3px;
+    width: 2px;
+    background: var(--dsc-blurple);
+    opacity: 0;
+    transition: opacity var(--dsc-fast) var(--dsc-ease);
+}
+
+body.discord-theme .dsc-resize:hover::after,
+body.discord-theme.dsc-resizing .dsc-resize:active::after {
+    opacity: 1;
+}
+
+body.discord-theme #dsc-resize-side {
+    display: block;
+    left: calc(var(--dsc-rail-w) + var(--dsc-side-w) - 4px);
+    z-index: 42;
+}
+
+body.discord-theme:is(.dsc-aside-on:not(.dsc-friends-mode, .dsc-no-chat), .dsc-search-open:not(.dsc-no-chat, .dsc-friends)) #dsc-resize-aside {
+    display: block;
+    top: var(--dsc-head-h);
+    right: calc(var(--dsc-aside-w) - 4px);
+    z-index: 33;
+}
+
+/* while dragging, nothing else takes the pointer or gets selected */
+body.discord-theme.dsc-resizing {
+    cursor: col-resize;
+    user-select: none;
+}
+
+body.discord-theme.dsc-resizing :is(iframe, #chat) {
+    pointer-events: none;
+}
+
+@media screen and (max-width: 1100px) {
+    body.discord-theme .dsc-resize {
+        display: none !important;
+    }
+}

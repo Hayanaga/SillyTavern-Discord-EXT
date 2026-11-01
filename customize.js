@@ -61,9 +61,9 @@ const SECTIONS = [
         id: 'spacing', title: 'Spacing', fields: [
             { flag: 'density', label: 'Density', type: 'select', options: [['compact', 'Compact'], ['default', 'Default'], ['roomy', 'Roomy']], base: 'default' },
             { token: '--dsc-rail-w', label: 'Server rail width', type: 'range', min: 56, max: 100, step: 2, unit: 'px', base: 76 },
-            { token: '--dsc-side-w', label: 'Sidebar width', type: 'range', min: 200, max: 360, step: 4, unit: 'px', base: 240 },
-            { token: '--dsc-members-w', label: 'Member list width', type: 'range', min: 200, max: 360, step: 4, unit: 'px', base: 264 },
-            { token: '--dsc-profile-w', label: 'Profile panel width', type: 'range', min: 260, max: 440, step: 4, unit: 'px', base: 340 },
+            { token: '--dsc-side-w', label: 'Sidebar width', type: 'range', min: 200, max: 480, step: 4, unit: 'px', base: 240 },
+            { token: '--dsc-members-w', label: 'Member list width', type: 'range', min: 200, max: 480, step: 4, unit: 'px', base: 264 },
+            { token: '--dsc-profile-w', label: 'Profile panel width', type: 'range', min: 260, max: 600, step: 4, unit: 'px', base: 340 },
         ],
     },
     {
@@ -662,6 +662,29 @@ function renderPage() {
 
 /** The page element, placed where a settings section shows. */
 /** Leaves the docked preview, when the page closes. */
+/** A customized variable's value, '' if it has none. */
+export function getToken(token) {
+    return custom().tokens[token] ?? '';
+}
+
+/** Sets a variable from outside the page (the sidebar handles); '' puts the theme's own back.
+ * `keep` false only shows it, for a drag in progress. */
+export function setToken(token, value, keep = true) {
+    const c = custom();
+    if (value) {
+        c.tokens[token] = String(value);
+    } else {
+        delete c.tokens[token];
+    }
+    applyCustom();
+    if (keep) {
+        save();
+        if (document.getElementById(PAGE_ID)?.isConnected) {
+            renderPage();
+        }
+    }
+}
+
 export function undock() {
     document.body.classList.remove('dsc-cz-docked');
 }

@@ -6,6 +6,7 @@ import { initAttachments } from './attachments.js';
 import { initCompose, openEmojiFromShortcut } from './compose.js';
 import { initConnections } from './connections.js';
 import { initCustomize } from './customize.js';
+import { initResize } from './resize.js';
 import { registerExtensionSwitch } from './lib/theme-extensions.js';
 import { registerTheme, reloadPage } from './lib/theme-exclusive.js';
 import { watchExtensionDrawers } from './lib/extension-drawers.js';
@@ -604,6 +605,7 @@ async function start() {
     initSidebar({ showFriends, openSwitcher, openSettings, showChat, showDiscover: openDiscover, getLayout: () => getSettings().serverLayout, setLayout: (layout) => { getSettings().serverLayout = layout; saveSettings(); } });
     initHeader({ showAside, toggleAside, openSwitcher, back });
     initCustomize({ settings: getSettings, save: saveSettings });
+    initResize();
     initPages({ settings: getSettings, save: saveSettings, play, enableDesktop: enableDesktopNotifications });
     initSettings({ setTheme, isDark: () => isDark(), drawersChanged: () => trackDrawers.update?.() });
     initSwitcher({ picked: () => document.body.classList.remove('dsc-friends') });
