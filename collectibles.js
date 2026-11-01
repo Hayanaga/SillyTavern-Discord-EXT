@@ -376,6 +376,10 @@ function frame(profile) {
     const item = key ? itemFor(key, 'frame') : null;
     if (profile.id !== 'dsc-popout') {
         swap(profile, '.dsc-frame', item, it => frameLayers(it, true));
+        const art = item?.frame;
+        const total = art ? art.width + 2 * art.side : 1;
+        profile.style.setProperty('--dsc-frame-top', art ? `${(100 * art.top) / total}%` : '0px');
+        profile.style.setProperty('--dsc-frame-side', art ? `${(100 * art.side) / total}%` : '0px');
         return;
     }
     if ((popFrames[0]?.getAttribute('data-item') ?? '') === (item?.id ?? '') && popFrames[0]?.isConnected) {

@@ -5,7 +5,8 @@
 
 /* ---------- avatar decorations ---------- */
 
-body.discord-theme .dsc-deco {
+/* doubled: ".dsc-avatar > img" would otherwise hold it to the picture's size */
+body.discord-theme .dsc-deco.dsc-deco {
     position: absolute;
     left: -10%;
     top: -10%;
@@ -15,7 +16,7 @@ body.discord-theme .dsc-deco {
     object-fit: contain;
     pointer-events: none;
     z-index: 1;
-    border-radius: 0;
+    border-radius: 0 !important;
 }
 
 /* the status dot stays on top of the decoration */
@@ -155,6 +156,12 @@ body.discord-theme #dsc-aside > .dsc-frame {
     top: 0;
     height: calc(100dvh - var(--dsc-head-h));
     margin-bottom: calc(var(--dsc-head-h) - 100dvh);
+}
+
+/* the art is drawn around a card, so the banner starts where the card's edge is in the art
+   (set by collectibles.js, as a share of the panel's width) */
+body.discord-theme #dsc-aside > .dsc-prof-banner {
+    margin: var(--dsc-frame-top, 0) var(--dsc-frame-side, 0) 0;
 }
 
 /* the popout scrolls, so its frame sits in the page (placed by collectibles.js): front layers
