@@ -324,7 +324,7 @@
         font-size: 0 !important;
     }
 
-    body.discord-theme #send_but::before {
+    body.discord-theme :is(*, #dsc-any) #send_but::before {
         content: '';
         width: 18px;
         height: 18px;

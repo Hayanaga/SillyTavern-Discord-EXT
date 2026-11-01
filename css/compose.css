@@ -91,7 +91,7 @@ body.discord-theme #options_button {
     filter: none;
 }
 
-body.discord-theme #options_button::before {
+body.discord-theme :is(*, #dsc-any) #options_button::before {
     content: '';
     width: 24px;
     height: 24px;
