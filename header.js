@@ -4,6 +4,7 @@
 import { channelLabel, getCurrentPlace, getDirectMessages, getGroup, isPinned, onDataChange, openCharacter, togglePin } from './data.js';
 import { formatListTime } from './messages.js';
 import { isPlaceholder, monogramizeAll } from './monograms.js';
+import { openLook } from './collectibles.js';
 import { paintPresence, statusOf } from './presence.js';
 import { initPins, togglePins } from './pins.js';
 import { initSearch } from './search.js';
@@ -586,10 +587,11 @@ function renderProfile(aside, character) {
     full.className = 'dsc-prof-full';
     full.textContent = t('View Full Profile');
     full.addEventListener('click', () => viewProfile(character.avatar));
+    const look = lookButton(`c:${character.avatar}`, character.name, fullPictureUrl('avatar', character.avatar));
 
     const close = iconButton('dsc-prof-close', t('Close'), 'close', 20);
     close.addEventListener('click', closeProfileSheet);
-    aside.replaceChildren(close, banner, avatar, card, extra, pictureCard(character, 'dsc-prof-picture'), full);
+    aside.replaceChildren(close, banner, avatar, card, extra, pictureCard(character, 'dsc-prof-picture'), look, full);
     paintPresence(aside);
     monogramizeAll(aside, '.dsc-prof-avatar img', () => character.name);
 }
@@ -808,8 +810,22 @@ function renderPersona(popout, picture = '') {
         closePopout();
         openDrawer('persona-management-button');
     });
-    popout.replaceChildren(banner, avatar, card, edit);
+    const look = avatarId ? lookButton(`p:${avatarId}`, name1, fullPictureUrl('persona', avatarId)) : null;
+    popout.replaceChildren(banner, avatar, card, ...(look ? [look] : []), edit);
     monogramizeAll(popout, '.dsc-prof-avatar img', () => name1);
+}
+
+/** Change Look: the avatar decoration, nameplate and profile effect picker (collectibles.js). */
+function lookButton(key, name, picture) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'dsc-prof-look';
+    button.append(icon('edit', 16), document.createTextNode(t('Change Look')));
+    button.addEventListener('click', () => {
+        closePopout();
+        openLook(key, name, picture);
+    });
+    return button;
 }
 
 /** The "Message @name" box at the bottom of a character's card: sends in their DM. */

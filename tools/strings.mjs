@@ -43,8 +43,8 @@ for (const m of shared.matchAll(/\btr\(\s*'((?:[^'\\]|\\.)+)'\s*\)/g)) found.add
 // text the styles draw, handed over as --dsc-t-* variables (index.js CSS_TEXT)
 const index = fs.readFileSync(path.join(ROOT, 'index.js'), 'utf8');
 for (const m of index.matchAll(/\['[a-z-]+', '((?:[^'\\]|\\.)+)'\]/g)) found.add(unq(m[1]));
-// not words: ids, css, code, short codes
-const keep = [...found].filter(s => /[A-Za-z]{2}/.test(s) && !/^[a-z0-9_-]+$/.test(s) && !/^--|^#|^\.|=>|\$\{|\n|;|function |\{|\}/.test(s) && !/^[a-z]+[A-Z][A-Za-z]*$/.test(s) && !/^dsc-|^[a-z]+_[a-z_]+$/.test(s)).sort();
+// not words: ids, css, code, short codes ({0}-style blanks are words' places, and stay)
+const keep = [...found].filter(s => /[A-Za-z]{2}/.test(s) && !/^[a-z0-9_-]+$/.test(s) && !/^--|^#|^\.|=>|\$\{|\n|;|function |\{(?!\d\})|(?<!\{\d)\}/.test(s) && !/^[a-z]+[A-Z][A-Za-z]*$/.test(s) && !/^dsc-|^[a-z]+_[a-z_]+$/.test(s)).sort();
 return keep;
 }
 
