@@ -515,6 +515,9 @@ function restackDeck() {
     stackDeck(/** @type {HTMLElement} */ (deck), members);
 }
 
+/** @type {ResizeObserver|null} */
+let profileFit = null;
+
 function renderProfile(aside, character) {
     const { groups, timestampToMoment } = SillyTavern.getContext();
     const banner = document.createElement('div');
@@ -594,8 +597,17 @@ function renderProfile(aside, character) {
     // what's under the picture scrolls, when the window is too short for it
     const body = document.createElement('div');
     body.className = 'dsc-prof-body';
-    body.append(card, extra, pictureCard(character, 'dsc-prof-picture'), look, full);
+    const picture = pictureCard(character, 'dsc-prof-picture');
+    body.append(card, extra, picture, look, full);
     aside.replaceChildren(close, banner, avatar, body);
+    // a short window drops About Me and Member Since before anything has to scroll
+    profileFit?.disconnect();
+    profileFit = new ResizeObserver(() => {
+        body.classList.remove('dsc-prof-tight');
+        body.classList.toggle('dsc-prof-tight', body.scrollHeight > body.clientHeight + 1);
+    });
+    profileFit.observe(body);
+    profileFit.observe(picture);
     paintPresence(aside);
     monogramizeAll(aside, '.dsc-prof-avatar img', () => character.name);
 }

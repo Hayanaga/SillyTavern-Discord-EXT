@@ -42,7 +42,24 @@ body.discord-theme .dsc-prof-body {
     scrollbar-width: thin;
 }
 
-body.discord-theme .dsc-prof-tight > .dsc-prof-card:first-child > .dsc-prof-section {
+/* in the pane, only the picture gives up height, down to a strip... */
+body.discord-theme .dsc-prof-body > :not(.dsc-prof-picture) {
+    flex-shrink: 0;
+}
+
+body.discord-theme .dsc-prof-body > .dsc-prof-picture {
+    flex: 0 1 auto;
+    min-height: 140px;
+}
+
+body.discord-theme .dsc-prof-body > .dsc-prof-picture img {
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+/* ...then, still too short, About Me and Member Since make room (header.js) */
+body.discord-theme .dsc-prof-body.dsc-prof-tight .dsc-prof-section {
     display: none;
 }
 

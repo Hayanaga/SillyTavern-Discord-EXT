@@ -371,29 +371,6 @@ function placePop(popout) {
     popFrames.forEach(box => Object.assign(box.style, place));
 }
 
-let paneWatch = null;
-
-/** With a frame on, a pane too short for everything goes without About Me and Member Since. */
-function fitPane(profile, framed) {
-    paneWatch?.disconnect();
-    const body = profile.querySelector(':scope > .dsc-prof-body');
-    if (!body) {
-        return;
-    }
-    body.classList.remove('dsc-prof-tight');
-    if (!framed) {
-        return;
-    }
-    const fit = () => {
-        body.classList.remove('dsc-prof-tight');
-        body.classList.toggle('dsc-prof-tight', body.scrollHeight > body.clientHeight + 1);
-    };
-    paneWatch = new ResizeObserver(fit);
-    paneWatch.observe(body);
-    // the picture has no height until it loads
-    [...body.children].forEach(child => paneWatch.observe(child));
-}
-
 function frame(profile) {
     const key = keyOfProfile(profile);
     const item = key ? itemFor(key, 'frame') : null;
@@ -403,7 +380,6 @@ function frame(profile) {
         const total = art ? art.width + 2 * art.side : 1;
         profile.style.setProperty('--dsc-frame-top', art ? `${(100 * art.top) / total}%` : '0px');
         profile.style.setProperty('--dsc-frame-side', art ? `${(100 * art.side) / total}%` : '0px');
-        fitPane(profile, !!art);
         return;
     }
     if ((popFrames[0]?.getAttribute('data-item') ?? '') === (item?.id ?? '') && popFrames[0]?.isConnected) {
