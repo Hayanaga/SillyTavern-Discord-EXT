@@ -21,6 +21,34 @@ body.discord-theme #top-settings-holder .drawer-content :is(.scrollableInner, .i
     background: transparent;
 }
 
+/* An extension's own top-bar drawer (opened from the wand menu) has no settings page behind it:
+   it floats over the chat as a panel of its own, with room around it to click away */
+body.discord-theme:not(.dsc-settings-open, .dsc-settings-list) #top-settings-holder > .drawer:not(#rightNavHolder) > .drawer-content {
+    top: 56px !important;
+    left: calc((100vw - min(740px, 100vw - 48px)) / 2) !important;
+    width: min(740px, calc(100vw - 48px)) !important;
+    height: calc(100dvh - 112px) !important;
+    padding: 16px !important;
+    border: 1px solid var(--dsc-divider) !important;
+    border-radius: 8px !important;
+    background: var(--dsc-surface) !important;
+    box-shadow: var(--dsc-shadow-medium, 0 4px 8px 0 rgba(0, 0, 0, 0.16)) !important;
+    scrollbar-gutter: auto;
+}
+
+@media screen and (max-width: 1000px) {
+    body.discord-theme:not(.dsc-settings-open, .dsc-settings-list) #top-settings-holder {
+        z-index: 3009;
+    }
+
+    body.discord-theme:not(.dsc-settings-open, .dsc-settings-list) #top-settings-holder > .drawer:not(#rightNavHolder) > .drawer-content {
+        top: calc(56px + var(--dsc-safe-top)) !important;
+        left: 8px !important;
+        width: calc(100vw - 16px) !important;
+        height: calc(100dvh - 128px - var(--dsc-safe-top)) !important;
+    }
+}
+
 /* ---------- SillyTavern's own header in User Settings ---------- */
 
 /* its title and search box: the page title and the sidebar's search take their place */
