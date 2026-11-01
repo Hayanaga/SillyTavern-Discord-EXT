@@ -42,6 +42,10 @@ body.discord-theme .dsc-prof-body {
     scrollbar-width: thin;
 }
 
+body.discord-theme .dsc-prof-tight > .dsc-prof-card:first-child > .dsc-prof-section {
+    display: none;
+}
+
 body.discord-theme .dsc-prof-banner {
     flex: none;
     height: 120px;
