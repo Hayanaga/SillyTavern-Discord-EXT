@@ -350,16 +350,17 @@ body.discord-theme .dsc-cz-clear[hidden] {
         visibility: hidden;
     }
 
+    /* it floats over the chat here, so it keeps its own background (polish.css clears pages') */
     body.discord-theme.dsc-cz-docked.dsc-settings-page.dsc-settings-open #dsc-customize.dsc-page-active {
+        background: var(--dsc-paint-side) !important;
         top: var(--dsc-title-h, 32px);
         left: auto;
         right: 0;
         width: 400px;
         height: calc(100dvh - var(--dsc-title-h, 32px));
         padding: 12px 16px 60px;
-        background: var(--dsc-paint-side);
-        border-left: 1px solid var(--dsc-divider);
-        box-shadow: var(--dsc-shadow-high, 0 8px 16px rgba(0, 0, 0, 0.24));
+        border-left: 1px solid var(--dsc-divider) !important;
+        box-shadow: var(--dsc-shadow-high, 0 8px 16px rgba(0, 0, 0, 0.24)) !important;
     }
 
     body.discord-theme.dsc-cz-docked .dsc-cz-preview {

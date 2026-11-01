@@ -8,7 +8,8 @@
 
 import { setUnreadBadge } from './disguise.js';
 import { imagesLabel } from './lib/image-links.js';
-import { openMenu, t } from './ui.js';
+import { fullPictureUrl, openMenu, t } from './ui.js';
+import { keyOfPicture, openLook } from './collectibles.js';
 import { listen, onEvent } from './life.js';
 
 const STATUSES = [
@@ -67,6 +68,11 @@ function openStatusMenu(anchor) {
         run: () => setMyStatus(item.id),
     }));
     items.push('separator', { label: 'Edit Profile', icon: 'edit', run: () => openSettings('persona-management-button') });
+    // your decoration, nameplate, effect and frame, as on a character's profile
+    const key = keyOfPicture(anchor.querySelector('.dsc-avatar img')?.getAttribute('src') ?? '');
+    if (key.startsWith('p:')) {
+        items.push({ label: 'Change Look', icon: 'edit', run: () => openLook(key, name1, fullPictureUrl('persona', key.slice(2))) });
+    }
     if (personas.length) {
         items.push('separator', ...personas.slice(0, 8).map(name => ({ label: `${t('Switch to')} ${name}`, icon: 'user', run: () => switchAccount(name) })));
     }
