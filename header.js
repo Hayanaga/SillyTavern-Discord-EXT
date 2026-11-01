@@ -282,24 +282,33 @@ export function refreshHeader() {
 
 /* ---------- profile panel and member list ---------- */
 
-/** The average color of a picture, for the profile banner, as Discord picks one. */
-const bannerColors = new Map();
+/** The profile banner: one of SillyTavern's backgrounds, the same one for a name every time. */
+let backgroundList = null;
 
-async function bannerColor(src) {
-    if (!bannerColors.has(src)) {
-        bannerColors.set(src, (async () => {
-            const img = new Image();
-            img.src = src;
-            await img.decode();
-            const canvas = document.createElement('canvas');
-            canvas.width = canvas.height = 1;
-            const context = canvas.getContext('2d', { willReadFrequently: true });
-            context.drawImage(img, 0, 0, 1, 1);
-            const [r, g, b] = context.getImageData(0, 0, 1, 1).data;
-            return `rgb(${r}, ${g}, ${b})`;
-        })().catch(() => ''));
-    }
-    return bannerColors.get(src);
+function backgrounds() {
+    backgroundList ??= fetch('/api/backgrounds/all', { method: 'POST', headers: SillyTavern.getContext().getRequestHeaders(), body: '{}' })
+        .then(response => response.ok ? response.json() : { images: [] })
+        .then(data => (data.images ?? []).map(image => typeof image === 'string' ? image : image.filename)
+            // not the plain black, white and see-through ones
+            .filter(file => file && !file.startsWith('_')))
+        .catch(() => []);
+    return backgroundList;
+}
+
+function paintBanner(banner, name) {
+    banner.style.background = DEFAULT_BANNERS[getColorIndex(name)];
+    backgrounds().then((files) => {
+        if (!files.length) {
+            return;
+        }
+        let hash = 0;
+        for (const char of String(name)) {
+            hash = (Math.imul(hash, 31) + char.codePointAt(0)) >>> 0;
+        }
+        // the picture itself: a thumbnail would be blurry this wide
+        const url = `backgrounds/${encodeURIComponent(files[hash % files.length])}`;
+        banner.style.background = `${DEFAULT_BANNERS[getColorIndex(name)]} url("${url.replaceAll('"', '%22')}") center / cover no-repeat`;
+    });
 }
 
 const DEFAULT_BANNERS = ['#5865f2', '#757e8a', '#3ba55c', '#faa61a', '#ed4245', '#eb459f'];
@@ -507,11 +516,10 @@ function restackDeck() {
 }
 
 function renderProfile(aside, character) {
-    const { getThumbnailUrl, groups, timestampToMoment } = SillyTavern.getContext();
-    const src = getThumbnailUrl('avatar', character.avatar);
+    const { groups, timestampToMoment } = SillyTavern.getContext();
     const banner = document.createElement('div');
     banner.className = 'dsc-prof-banner';
-    banner.style.background = DEFAULT_BANNERS[getColorIndex(character.name)];
+    paintBanner(banner, character.name);
     const avatar = document.createElement('span');
     avatar.className = 'dsc-avatar dsc-prof-avatar';
     avatar.dataset.name = character.name;
@@ -523,15 +531,6 @@ function renderProfile(aside, character) {
     status.className = 'dsc-status';
     status.dataset.dscPresence = character.avatar;
     avatar.append(img, status);
-    isPlaceholder(src).then((placeholder) => {
-        if (!placeholder) {
-            bannerColor(src).then((color) => {
-                if (color) {
-                    banner.style.background = color;
-                }
-            });
-        }
-    });
 
     const card = document.createElement('div');
     card.className = 'dsc-prof-card';
@@ -775,7 +774,7 @@ function renderPersona(popout, picture = '') {
     const src = picture || (avatarId ? getThumbnailUrl('persona', avatarId) : '');
     const banner = document.createElement('div');
     banner.className = 'dsc-prof-banner';
-    banner.style.background = DEFAULT_BANNERS[getColorIndex(name1)];
+    paintBanner(banner, name1);
     const avatar = document.createElement('span');
     avatar.className = 'dsc-avatar dsc-prof-avatar';
     avatar.dataset.name = name1;
@@ -784,7 +783,6 @@ function renderPersona(popout, picture = '') {
     if (src) {
         img.decoding = 'async';
         img.src = avatarId ? fullPictureUrl('persona', avatarId) : src;
-        isPlaceholder(src).then(placeholder => !placeholder && bannerColor(src).then(color => color && (banner.style.background = color)));
     }
     avatar.append(img);
     const card = document.createElement('div');
