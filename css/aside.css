@@ -424,9 +424,7 @@ body.discord-theme #chat .mes[is_user="true"] :is(.avatar, .name_text) {
     cursor: pointer;
 }
 
-/* a row, whatever the panel around it does with its own children */
 body.discord-theme #dsc-aside .dsc-member {
-    flex-direction: row;
     cursor: pointer;
 }
 

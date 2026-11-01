@@ -589,7 +589,7 @@ body.discord-theme .dsc-look-offline {
 
 /* ---------- Offline Copies ---------- */
 
-body.discord-theme .dsc-offline {
+body.discord-theme .dsc-look-layer > .dsc-offline {
     display: flex;
     flex-direction: column;
     width: min(640px, 100%);
@@ -707,7 +707,7 @@ body.discord-theme .dsc-offline-status {
         padding: 0;
     }
 
-    body.discord-theme .dsc-offline {
+    body.discord-theme .dsc-look-layer > .dsc-offline {
         height: 100%;
         max-height: none;
         border-radius: 0;
