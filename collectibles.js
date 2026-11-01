@@ -812,6 +812,13 @@ export async function initCollectibles({ getSettings, saveSettings }) {
     refreshAll();
     // once the lists are drawn, so the people on screen have their items
     setTimeout(() => document.body.classList.contains('discord-theme') && saveStarterSet(), 5000);
+    // Discord refused a picture or video: the Discord Decor plugin can get it from elsewhere
+    listen(document, 'error', (event) => {
+        const element = /** @type {HTMLImageElement} */ (event.target);
+        if (element.src?.startsWith(CDN) && !store().offline) {
+            element.src = `/api/plugins/discord-decor/file?url=${encodeURIComponent(element.src)}`;
+        }
+    }, true);
     listen(document, 'pointerover', play);
     listen(document, 'pointerout', play);
     new GatedObserver((mutations) => {
