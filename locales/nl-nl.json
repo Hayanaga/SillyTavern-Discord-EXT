@@ -26,6 +26,7 @@
     "All Friends": "Alle vrienden",
     "Animations": "Animaties",
     "Any font installed on this computer, by name, e.g. Inter or system-ui.": "Elk lettertype dat op deze computer is geïnstalleerd, op naam, bijv. Inter of system-ui.",
+    "App Icon": "App-pictogram",
     "App Settings": "App-instellingen",
     "Appearance": "Uiterlijk",
     "Apps": "Apps",
@@ -333,7 +334,9 @@
     "Shape": "Vorm",
     "Shop": "Winkel",
     "Shop row": "Winkel-rij",
+    "Show Less": "Minder tonen",
     "Show Member List": "Ledenlijst tonen",
+    "Show More": "Meer tonen",
     "Show User Profile": "Gebruikersprofiel tonen",
     "Show all samplers": "Alle samplers tonen",
     "Show characters as online": "Personages als online tonen",
@@ -429,6 +432,5 @@
     "pick a color": "kies een kleur",
     "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "{0} bestanden konden niet worden gedownload. De meeste bestanden van Discord hebben de serverplug-in Discord Decor of de CORS-proxy van SillyTavern nodig: stel enableCorsProxy: true in config.yaml in en start SillyTavern opnieuw.",
     "{0} of {1} ticked, {2} saved, all about {3}": "{0} van {1} aangevinkt, {2} opgeslagen, alles ongeveer {3}",
-    "{0} saved files are unticked.": "{0} opgeslagen bestanden zijn niet aangevinkt.",
-    "App Icon": "App-pictogram"
+    "{0} saved files are unticked.": "{0} opgeslagen bestanden zijn niet aangevinkt."
 }

@@ -26,6 +26,7 @@
     "All Friends": "Allir vinir",
     "Animations": "Hreyfimyndir",
     "Any font installed on this computer, by name, e.g. Inter or system-ui.": "Hvaða leturgerð sem er uppsett á þessari tölvu, eftir nafni, t.d. Inter eða system-ui.",
+    "App Icon": "Forritstákn",
     "App Settings": "Forritsstillingar",
     "Appearance": "Útlit",
     "Apps": "Forrit",
@@ -333,7 +334,9 @@
     "Shape": "Lögun",
     "Shop": "Verslun",
     "Shop row": "Verslunarröð",
+    "Show Less": "Sýna minna",
     "Show Member List": "Sýna meðlimalista",
+    "Show More": "Sýna meira",
     "Show User Profile": "Sýna notandaprófíl",
     "Show all samplers": "Sýna alla úrtakara",
     "Show characters as online": "Sýna persónur sem tengdar",
@@ -429,6 +432,5 @@
     "pick a color": "veldu lit",
     "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "Ekki tókst að sækja {0} skrár. Flestar skrár Discord þurfa netþjónsviðbótina Discord Decor eða CORS-milliþjón SillyTavern: stilltu enableCorsProxy: true í config.yaml og endurræstu SillyTavern.",
     "{0} of {1} ticked, {2} saved, all about {3}": "{0} af {1} merkt, {2} vistuð, alls um {3}",
-    "{0} saved files are unticked.": "{0} vistaðar skrár eru ómerktar.",
-    "App Icon": "Forritstákn"
+    "{0} saved files are unticked.": "{0} vistaðar skrár eru ómerktar."
 }

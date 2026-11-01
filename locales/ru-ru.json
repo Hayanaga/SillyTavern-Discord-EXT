@@ -26,6 +26,7 @@
     "All Friends": "Все друзья",
     "Animations": "Анимации",
     "Any font installed on this computer, by name, e.g. Inter or system-ui.": "Любой шрифт, установленный на этом компьютере, по названию, например Inter или system-ui.",
+    "App Icon": "Значок приложения",
     "App Settings": "Настройки приложения",
     "Appearance": "Внешний вид",
     "Apps": "Приложения",
@@ -333,7 +334,9 @@
     "Shape": "Форма",
     "Shop": "Магазин",
     "Shop row": "Строка магазина",
+    "Show Less": "Показать меньше",
     "Show Member List": "Показать список участников",
+    "Show More": "Показать больше",
     "Show User Profile": "Показать профиль пользователя",
     "Show all samplers": "Показать все сэмплеры",
     "Show characters as online": "Показывать персонажей в сети",
@@ -429,6 +432,5 @@
     "pick a color": "выберите цвет",
     "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "Не удалось скачать файлов: {0}. Для большинства файлов Discord нужен серверный плагин Discord Decor или CORS-прокси SillyTavern: укажите enableCorsProxy: true в config.yaml и перезапустите SillyTavern.",
     "{0} of {1} ticked, {2} saved, all about {3}": "Отмечено {0} из {1}, сохранено {2}, всего около {3}",
-    "{0} saved files are unticked.": "Сохранённых файлов без отметки: {0}.",
-    "App Icon": "Значок приложения"
+    "{0} saved files are unticked.": "Сохранённых файлов без отметки: {0}."
 }

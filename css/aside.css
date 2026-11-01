@@ -102,6 +102,49 @@ body.discord-theme .dsc-prof-card {
     background: var(--dsc-floating);
 }
 
+/* the side panel's card folds About Me, Member Since and Mutual Servers away (header.js) */
+body.discord-theme .dsc-prof-foldable > .dsc-prof-card:first-child {
+    position: relative;
+}
+
+body.discord-theme .dsc-prof-foldable:not(.dsc-prof-open) :is(.dsc-prof-section, .dsc-prof-links) {
+    display: none;
+}
+
+body.discord-theme .dsc-prof-foldable > .dsc-prof-card:first-child > :is(.dsc-prof-name, .dsc-prof-user) {
+    padding-right: 28px;
+}
+
+body.discord-theme .dsc-prof-more {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: none;
+    color: var(--dsc-icon);
+    cursor: pointer;
+}
+
+body.discord-theme .dsc-prof-more:hover {
+    background: var(--dsc-hover);
+    color: var(--dsc-header);
+}
+
+body.discord-theme .dsc-prof-more .dsc-ico {
+    transition: transform 0.15s ease;
+}
+
+body.discord-theme .dsc-prof-more[aria-expanded="true"] .dsc-ico {
+    transform: rotate(180deg);
+}
+
 body.discord-theme.dsc-light .dsc-prof-card {
     background: #ffffff;
 }

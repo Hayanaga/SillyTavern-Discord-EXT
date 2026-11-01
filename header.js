@@ -512,6 +512,8 @@ function restackDeck() {
 
 /** @type {ResizeObserver|null} */
 let profileFit = null;
+/** whether About Me, Member Since and Mutual Servers are shown in the side panel */
+let profileOpen = false;
 
 function renderProfile(aside, character) {
     const { groups, timestampToMoment } = SillyTavern.getContext();
@@ -594,6 +596,21 @@ function renderProfile(aside, character) {
     body.className = 'dsc-prof-body';
     const picture = pictureCard(character, 'dsc-prof-picture');
     body.append(card, extra, picture, look, full);
+    // the side panel starts folded to the name, picture and buttons; the name card unfolds the rest
+    if (aside.id === ASIDE_ID) {
+        const more = iconButton('dsc-prof-more', t(profileOpen ? 'Show Less' : 'Show More'), 'chevron', 16);
+        more.setAttribute('aria-expanded', String(profileOpen));
+        more.addEventListener('click', () => {
+            profileOpen = !profileOpen;
+            body.classList.toggle('dsc-prof-open', profileOpen);
+            more.setAttribute('aria-expanded', String(profileOpen));
+            more.dataset.dscTip = t(profileOpen ? 'Show Less' : 'Show More');
+            more.setAttribute('aria-label', more.dataset.dscTip);
+        });
+        card.prepend(more);
+        body.classList.add('dsc-prof-foldable');
+        body.classList.toggle('dsc-prof-open', profileOpen);
+    }
     aside.replaceChildren(close, banner, avatar, body);
     // a short window drops About Me and Member Since before anything has to scroll
     profileFit?.disconnect();

@@ -26,6 +26,7 @@
     "All Friends": "เพื่อนทั้งหมด",
     "Animations": "แอนิเมชัน",
     "Any font installed on this computer, by name, e.g. Inter or system-ui.": "ฟอนต์ใดก็ได้ที่ติดตั้งในคอมพิวเตอร์นี้ โดยระบุชื่อ เช่น Inter หรือ system-ui",
+    "App Icon": "ไอคอนแอป",
     "App Settings": "การตั้งค่าแอป",
     "Appearance": "รูปลักษณ์",
     "Apps": "แอป",
@@ -333,7 +334,9 @@
     "Shape": "รูปทรง",
     "Shop": "ร้านค้า",
     "Shop row": "แถวร้านค้า",
+    "Show Less": "แสดงน้อยลง",
     "Show Member List": "แสดงรายชื่อสมาชิก",
+    "Show More": "แสดงเพิ่มเติม",
     "Show User Profile": "แสดงโปรไฟล์ผู้ใช้",
     "Show all samplers": "แสดงตัวสุ่มตัวอย่างทั้งหมด",
     "Show characters as online": "แสดงตัวละครเป็นออนไลน์",
@@ -429,6 +432,5 @@
     "pick a color": "เลือกสี",
     "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "ดาวน์โหลดไฟล์ไม่สำเร็จ {0} ไฟล์ ไฟล์ส่วนใหญ่ของ Discord ต้องใช้ปลั๊กอินเซิร์ฟเวอร์ Discord Decor หรือพร็อกซี CORS ของ SillyTavern: ตั้งค่า enableCorsProxy: true ใน config.yaml แล้วรีสตาร์ท SillyTavern",
     "{0} of {1} ticked, {2} saved, all about {3}": "ติ๊ก {0} จาก {1}, บันทึก {2}, ทั้งหมดประมาณ {3}",
-    "{0} saved files are unticked.": "มีไฟล์ที่บันทึกไว้ {0} ไฟล์ที่ไม่ได้ติ๊ก",
-    "App Icon": "ไอคอนแอป"
+    "{0} saved files are unticked.": "มีไฟล์ที่บันทึกไว้ {0} ไฟล์ที่ไม่ได้ติ๊ก"
 }

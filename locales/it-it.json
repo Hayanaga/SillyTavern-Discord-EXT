@@ -26,6 +26,7 @@
     "All Friends": "Tutti gli amici",
     "Animations": "Animazioni",
     "Any font installed on this computer, by name, e.g. Inter or system-ui.": "Qualsiasi font installato su questo computer, per nome, ad es. Inter o system-ui.",
+    "App Icon": "Icona dell'app",
     "App Settings": "Impostazioni app",
     "Appearance": "Aspetto",
     "Apps": "App",
@@ -333,7 +334,9 @@
     "Shape": "Forma",
     "Shop": "Negozio",
     "Shop row": "Riga Negozio",
+    "Show Less": "Mostra meno",
     "Show Member List": "Mostra elenco membri",
+    "Show More": "Mostra di più",
     "Show User Profile": "Mostra profilo utente",
     "Show all samplers": "Mostra tutti i sampler",
     "Show characters as online": "Mostra i personaggi online",
@@ -429,6 +432,5 @@
     "pick a color": "scegli un colore",
     "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "Impossibile scaricare {0} file. La maggior parte dei file di Discord richiede il plugin server Discord Decor o il proxy CORS di SillyTavern: imposta enableCorsProxy: true in config.yaml e riavvia SillyTavern.",
     "{0} of {1} ticked, {2} saved, all about {3}": "{0} di {1} spuntati, {2} salvati, in tutto circa {3}",
-    "{0} saved files are unticked.": "{0} file salvati non sono spuntati.",
-    "App Icon": "Icona dell'app"
+    "{0} saved files are unticked.": "{0} file salvati non sono spuntati."
 }

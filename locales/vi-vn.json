@@ -26,6 +26,7 @@
     "All Friends": "Tất cả bạn bè",
     "Animations": "Hoạt ảnh",
     "Any font installed on this computer, by name, e.g. Inter or system-ui.": "Bất kỳ phông chữ nào đã cài trên máy tính này, theo tên, ví dụ Inter hoặc system-ui.",
+    "App Icon": "Biểu tượng ứng dụng",
     "App Settings": "Cài Đặt Ứng Dụng",
     "Appearance": "Giao diện",
     "Apps": "Ứng dụng",
@@ -333,7 +334,9 @@
     "Shape": "Hình dạng",
     "Shop": "Cửa hàng",
     "Shop row": "Hàng Cửa hàng",
+    "Show Less": "Ẩn bớt",
     "Show Member List": "Hiện danh sách thành viên",
+    "Show More": "Hiện thêm",
     "Show User Profile": "Hiện hồ sơ người dùng",
     "Show all samplers": "Hiện tất cả sampler",
     "Show characters as online": "Hiện nhân vật là trực tuyến",
@@ -429,6 +432,5 @@
     "pick a color": "chọn một màu",
     "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "Không thể tải xuống {0} tệp. Hầu hết tệp của Discord cần plugin máy chủ Discord Decor hoặc proxy CORS của SillyTavern: đặt enableCorsProxy: true trong config.yaml và khởi động lại SillyTavern.",
     "{0} of {1} ticked, {2} saved, all about {3}": "Đã đánh dấu {0}/{1}, đã lưu {2}, tổng khoảng {3}",
-    "{0} saved files are unticked.": "{0} tệp đã lưu không được đánh dấu.",
-    "App Icon": "Biểu tượng ứng dụng"
+    "{0} saved files are unticked.": "{0} tệp đã lưu không được đánh dấu."
 }
