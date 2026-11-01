@@ -13,6 +13,8 @@ const PLACEHOLDER_ATTRS = ['placeholder', 'connected_text', 'no_connection_text'
 let original = null;
 let active = false;
 let unread = 0;
+/** the App Icon picked, in place of the usual tab icon */
+let appIcon = '';
 
 /** Discord's tab icon with a red unread badge */
 function badgedIcon() {
@@ -21,8 +23,16 @@ function badgedIcon() {
 
 function setIcons(href) {
     for (const link of getIconLinks()) {
-        link.setAttribute('href', href);
-        link.setAttribute('type', 'image/svg+xml');
+        link.setAttribute('href', appIcon || href);
+        link.setAttribute('type', appIcon ? 'image/webp' : 'image/svg+xml');
+    }
+}
+
+/** Puts an App Icon on the tab ('' for the usual icon). */
+export function setAppIcon(href) {
+    appIcon = href;
+    if (active) {
+        setIcons(unread ? badgedIcon() : ICON);
     }
 }
 

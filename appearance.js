@@ -1,6 +1,7 @@
 // Discord's theme picker at the top of the Appearance page: round swatches for Light, Ash,
 // Dark, Onyx and Sync, then the Nitro "Color" themes as gradient swatches.
 
+import { APP_ICONS, appIconSource, currentAppIcon, pickAppIcon } from './appicons.js';
 import { gradientOf, NITRO_THEMES } from './nitro.js';
 import { icon, t } from './ui.js';
 
@@ -133,8 +134,14 @@ export function renderAppearance() {
     const { appearance, nitroTheme } = actions.current();
     const themeRow = root.querySelector('.dsc-swatches-base');
     const colorRow = root.querySelector('.dsc-swatches-color');
+    const iconRow = root.querySelector('.dsc-swatches-icon');
     themeRow.replaceChildren(...BASES.map(base => swatch('', t(base.name), base.swatch, !nitroTheme && appearance === base.id, () => actions.setBase(base.id))));
     colorRow.replaceChildren(...NITRO_THEMES.map(theme => swatch('dsc-swatch-gradient', t(theme.name), gradientOf(theme), nitroTheme === theme.id, () => actions.setNitro(theme.id))));
+    const pickIcon = id => pickAppIcon(id).finally(renderAppearance);
+    iconRow.replaceChildren(
+        swatch('dsc-swatch-icon', t('Default'), 'var(--dsc-blurple)', !currentAppIcon(), () => pickIcon('')),
+        ...APP_ICONS.map(item => swatch('dsc-swatch-icon', item.name, `center / cover no-repeat url("${appIconSource(item)}")`, currentAppIcon() === item.id, () => pickIcon(item.id))),
+    );
 }
 
 function build() {
@@ -157,12 +164,17 @@ function build() {
     colorText.textContent = t('Make Discord yours with a color theme.');
     const colorRow = document.createElement('div');
     colorRow.className = 'dsc-swatches dsc-swatches-color';
+    const iconTitle = document.createElement('h4');
+    iconTitle.className = 'dsc-ap-title';
+    iconTitle.append(document.createTextNode(t('App Icon')), icon('nitro', 16));
+    const iconRow = document.createElement('div');
+    iconRow.className = 'dsc-swatches dsc-swatches-icon';
     const displayTitle = document.createElement('h4');
     displayTitle.className = 'dsc-ap-title';
     displayTitle.textContent = t('Message Display');
     const display = document.createElement('div');
     display.className = 'dsc-ap-display';
-    root.append(themeTitle, themeRow, colorTitle, colorText, colorRow, displayTitle, display);
+    root.append(themeTitle, themeRow, colorTitle, colorText, colorRow, iconTitle, iconRow, displayTitle, display);
     host.prepend(root);
     renderDisplay(root);
 }

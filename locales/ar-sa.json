@@ -429,5 +429,6 @@
     "pick a color": "اختر لونًا",
     "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "تعذّر تنزيل {0} من الملفات. تحتاج معظم ملفات Discord إلى إضافة الخادم Discord Decor أو وكيل CORS في SillyTavern: اضبط enableCorsProxy: true في config.yaml وأعد تشغيل SillyTavern.",
     "{0} of {1} ticked, {2} saved, all about {3}": "{0} من {1} محدد، {2} محفوظ، الكل حوالي {3}",
-    "{0} saved files are unticked.": "{0} ملفات محفوظة غير محددة."
+    "{0} saved files are unticked.": "{0} ملفات محفوظة غير محددة.",
+    "App Icon": "أيقونة التطبيق"
 }

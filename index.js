@@ -33,6 +33,7 @@ import { initMonograms } from './monograms.js';
 import { initSettings, openSettings, refreshSettings, SETTINGS_DRAWERS } from './settings.js';
 import { initSharp } from './sharp.js';
 import { initCollectibles } from './collectibles.js';
+import { bootAppIcon, initAppIcons } from './appicons.js';
 import { formatKeys, initShortcuts, SHORTCUTS } from './shortcuts.js';
 import { initSidebar, markCurrent, openCharacterPanel, refreshPersona, stepConversation, stepServer } from './sidebar.js';
 import { initSwitcher, openSwitcher } from './switcher.js';
@@ -655,6 +656,7 @@ async function start() {
     initMonograms();
     initSharp();
     initCollectibles({ getSettings, saveSettings });
+    initAppIcons({ getSettings, saveSettings });
     initShortcuts({
         enabled: () => !!getSettings().enabled,
         switcher: () => openSwitcher(''),
@@ -709,6 +711,7 @@ function bootLook() {
         return;
     }
     document.body.classList.add('dsc-booting');
+    bootAppIcon();
     // never leave the cover up if something fails on the way
     setTimeout(endBoot, 20000);
     applyThemeClasses({ ...defaultSettings, ...settings }, true);

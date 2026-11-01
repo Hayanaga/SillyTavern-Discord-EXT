@@ -819,7 +819,7 @@ export async function initCollectibles({ getSettings, saveSettings }) {
     // Discord refused a picture or video: the Discord Decor plugin can get it from elsewhere
     listen(document, 'error', (event) => {
         const element = /** @type {HTMLImageElement} */ (event.target);
-        if (element.src?.startsWith(CDN) && !store().offline) {
+        if ((element.src?.startsWith(CDN) || element.src?.startsWith('https://discord.com/assets/')) && !store().offline) {
             element.src = `/api/plugins/discord-decor/file?url=${encodeURIComponent(element.src)}`;
         }
     }, true);

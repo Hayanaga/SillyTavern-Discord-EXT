@@ -112,6 +112,16 @@ export async function saveStarterSet() {
     redrawAll();
 }
 
+/** Keeps one file of Discord's on this server. Says whether it could. */
+export async function saveFile(url) {
+    const blob = await grab(url);
+    const path = blob && await keep(url, blob);
+    if (path) {
+        collectibleStore().saved[url] = path;
+    }
+    return !!path;
+}
+
 export function closeOffline() {
     document.getElementById(DIALOG_ID)?.remove();
 }
