@@ -3,8 +3,9 @@
 
 import { channelLabel, getCurrentPlace, getDirectMessages, getGroup, isPinned, onDataChange, openCharacter, togglePin } from './data.js';
 import { formatListTime } from './messages.js';
-import { isPlaceholder, monogramizeAll } from './monograms.js';
+import { monogramizeAll } from './monograms.js';
 import { openLook } from './collectibles.js';
+import { fillFigure } from './figure.js';
 import { paintPresence, statusOf } from './presence.js';
 import { initPins, togglePins } from './pins.js';
 import { initSearch } from './search.js';
@@ -439,14 +440,8 @@ function pictureCard(character, className, gone = () => {}) {
     img.alt = '';
     img.decoding = 'async';
     img.loading = 'lazy';
-    img.src = fullPictureUrl('avatar', character.avatar);
     card.append(img);
-    isPlaceholder(SillyTavern.getContext().getThumbnailUrl('avatar', character.avatar)).then((placeholder) => {
-        if (placeholder) {
-            card.remove();
-            gone();
-        }
-    });
+    fillFigure(card, character, gone);
     return card;
 }
 

@@ -58,6 +58,12 @@ body.discord-theme .dsc-prof-body > .dsc-prof-picture img {
     object-position: top;
 }
 
+/* a sprite or a cutout: the whole figure, standing on the card's bottom edge */
+body.discord-theme .dsc-figure-cut img {
+    object-fit: contain;
+    object-position: bottom center;
+}
+
 /* ...then, still too short, About Me and Member Since make room (header.js) */
 body.discord-theme .dsc-prof-body.dsc-prof-tight .dsc-prof-section {
     display: none;
