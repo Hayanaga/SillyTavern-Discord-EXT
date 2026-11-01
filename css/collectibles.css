@@ -157,6 +157,11 @@ body.discord-theme #dsc-aside > .dsc-frame {
     inset: 0;
 }
 
+/* its back layers: over the panel's background, under everything on it */
+body.discord-theme #dsc-aside > .dsc-frame-under {
+    z-index: -1;
+}
+
 /* the art is drawn around a card, so the banner starts where the card's edge is in the art
    (set by collectibles.js, as a share of the panel's width) */
 body.discord-theme #dsc-aside > .dsc-prof-banner {

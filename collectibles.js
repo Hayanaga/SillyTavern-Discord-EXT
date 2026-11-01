@@ -340,7 +340,7 @@ function frameLayers(item, inside, only = '') {
         box.style.left = box.style.right = `${(-100 * f.side) / f.width}%`;
     }
     for (const layer of f.layers) {
-        if ((inside && layer.order === 'back') || (only && layer.order !== only)) {
+        if ((inside && !only && layer.order === 'back') || (only && layer.order !== only)) {
             continue;
         }
         const part = layer.type === 'staple' ? media(layer.url, false, 'dsc-frame-staple') : document.createElement('div');
@@ -375,7 +375,14 @@ function frame(profile) {
     const key = keyOfProfile(profile);
     const item = key ? itemFor(key, 'frame') : null;
     if (profile.id !== 'dsc-popout') {
-        swap(profile, '.dsc-frame', item, it => frameLayers(it, true));
+        swap(profile, '.dsc-frame:not(.dsc-frame-under)', item, it => frameLayers(it, true));
+        // back layers go under the panel's content, as they go under the card in Discord
+        const under = item?.frame?.layers.some(layer => layer.order === 'back') ? item : null;
+        swap(profile, '.dsc-frame-under', under, (it) => {
+            const box = frameLayers(it, true, 'back');
+            box.classList.add('dsc-frame-under');
+            return box;
+        }, 'prepend');
         const art = item?.frame;
         const total = art ? art.width + 2 * art.side : 1;
         profile.style.setProperty('--dsc-frame-top', art ? `${(100 * art.top) / total}%` : '0px');
