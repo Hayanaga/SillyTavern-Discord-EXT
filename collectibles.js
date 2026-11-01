@@ -380,6 +380,7 @@ function frame(profile) {
         const total = art ? art.width + 2 * art.side : 1;
         profile.style.setProperty('--dsc-frame-top', art ? `${(100 * art.top) / total}%` : '0px');
         profile.style.setProperty('--dsc-frame-side', art ? `${(100 * art.side) / total}%` : '0px');
+        profile.style.setProperty('--dsc-frame-bottom', art ? `${(100 * art.bottom) / total}%` : '0px');
         return;
     }
     if ((popFrames[0]?.getAttribute('data-item') ?? '') === (item?.id ?? '') && popFrames[0]?.isConnected) {

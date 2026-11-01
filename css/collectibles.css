@@ -163,6 +163,20 @@ body.discord-theme #dsc-aside > .dsc-prof-banner {
     margin: var(--dsc-frame-top, 0) var(--dsc-frame-side, 0) 0;
 }
 
+/* ...and everything under it stays inside the art's sides and bottom edge */
+body.discord-theme #dsc-aside > .dsc-prof-avatar {
+    margin-left: calc(16px + var(--dsc-frame-side, 0px));
+}
+
+body.discord-theme #dsc-aside > .dsc-prof-body {
+    margin: 0 var(--dsc-frame-side, 0) var(--dsc-frame-bottom, 0);
+}
+
+body.discord-theme #dsc-aside > .dsc-prof-back {
+    top: calc(8px + var(--dsc-frame-top, 0px));
+    left: calc(8px + var(--dsc-frame-side, 0px));
+}
+
 /* the popout scrolls, so its frame sits in the page (placed by collectibles.js): front layers
    over it, back layers under it */
 body.discord-theme .dsc-frame-pop {
