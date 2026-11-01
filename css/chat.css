@@ -504,6 +504,7 @@ body.discord-theme #chat .mes .mes_text blockquote {
     padding: 0 8px 0 12px;
     border-left: 4px solid var(--dsc-divider);
     border-radius: 4px 0 0 4px;
+    background: none;
     color: var(--dsc-text);
 }
 

@@ -2,6 +2,7 @@
 // screen) become direct messages, and its groups become servers whose chats are channels.
 // Also opens a chat from any of those places.
 
+import { isChatSaving } from '../../../../script.js';
 import { imagesLabel } from './lib/image-links.js';
 import { t } from './ui.js';
 import { onEvent } from './life.js';
@@ -220,6 +221,16 @@ async function selectGroup(groupId) {
     await changed;
 }
 
+/** Resolves once SillyTavern has finished saving, since it refuses to switch chats until then. */
+async function whenSaved() {
+    for (let i = 0; isChatSaving && i < 200; i++) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+    }
+}
+
+/** Counts chat openings, so that only the latest click goes ahead after a wait */
+let opening = 0;
+
 /** Opens a chat: a character's (a direct message) or a group's (a channel). */
 export async function openPlace(place) {
     const context = SillyTavern.getContext();
@@ -230,7 +241,12 @@ export async function openPlace(place) {
         onOpened();
         return;
     }
+    const ticket = ++opening;
     try {
+        await whenSaved();
+        if (ticket !== opening) {
+            return;
+        }
         if (place.group) {
             if (!getGroup(place.group)) {
                 return;
@@ -246,6 +262,18 @@ export async function openPlace(place) {
             }
             if (String(context.characterId) !== String(characterId) || context.groupId) {
                 await context.selectCharacterById(characterId);
+                // a save that began just then makes SillyTavern refuse once more
+                if (String(SillyTavern.getContext().characterId) !== String(characterId)) {
+                    await whenSaved();
+                    if (ticket !== opening) {
+                        return;
+                    }
+                    await context.selectCharacterById(characterId);
+                }
+            }
+            // another click may have moved on: a file opened under the wrong character breaks that character's chat
+            if (String(SillyTavern.getContext().characterId) !== String(characterId)) {
+                return;
             }
             if (place.fileId && SillyTavern.getContext().getCurrentChatId() !== place.fileId) {
                 await context.openCharacterChat(place.fileId);
