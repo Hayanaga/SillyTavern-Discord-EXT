@@ -232,3 +232,8 @@ body.discord-theme #chat .typing_indicator .svg_dots {
     width: 22px;
     fill: var(--dsc-text);
 }
+
+/* Chat Top Bar sits in the chat column, so it stops where the side panel starts, as the chat does */
+body.discord-theme #sheld > #extensionTopBar {
+    margin-right: var(--dsc-aside-w);
+}
