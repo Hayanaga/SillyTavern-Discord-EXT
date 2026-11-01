@@ -197,8 +197,8 @@ const calm = matchMedia('(prefers-reduced-motion: reduce)');
 
 /** Round pictures that get a decoration: the theme's own and the ones in the chat */
 const AVATARS = '.dsc-avatar, #chat .mes .avatar';
-/** Rows that get a nameplate: direct messages and members */
-const ROWS = '.dsc-dm, .dsc-member';
+/** Rows that get a nameplate: direct messages, members and your panel */
+const ROWS = '.dsc-dm, .dsc-member, #dsc-user';
 /** Profile cards that get an effect and a frame: the panel and the popout */
 const PROFILES = '#dsc-aside:not(.dsc-members), #dsc-popout';
 
@@ -262,7 +262,7 @@ function plate(row) {
 
 /** Plays what's under the pointer: decorations and nameplates show their first frame otherwise. */
 function play(event) {
-    const zone = /** @type {Element} */ (event.target).closest?.('.dsc-dm, .dsc-member, #chat .mes, .dsc-avatar');
+    const zone = /** @type {Element} */ (event.target).closest?.('.dsc-dm, .dsc-member, #dsc-user, #chat .mes, .dsc-avatar');
     if (!zone || zone.contains(/** @type {Node} */ (event.relatedTarget)) || calm.matches) {
         return;
     }

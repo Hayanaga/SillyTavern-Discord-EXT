@@ -53,6 +53,16 @@ body.discord-theme :is(.dsc-dm, .dsc-member):has(> .dsc-plate) {
     overflow: hidden;
 }
 
+/* your panel's decoration may stick out of it, so only the plate itself is clipped */
+body.discord-theme #dsc-user:has(> .dsc-plate) {
+    isolation: isolate;
+}
+
+/* the buttons sit on the art, where it's usually busiest */
+body.discord-theme #dsc-user:has(> .dsc-plate) .dsc-user-tool {
+    filter: drop-shadow(0 0 2px var(--dsc-panel));
+}
+
 /* the palette's wash, as Discord draws it, with the art over it on the right */
 body.discord-theme .dsc-plate {
     position: absolute;
