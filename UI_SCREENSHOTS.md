@@ -186,6 +186,8 @@ Keep the art on your own SillyTavern server: every kind, the ones in use, or ite
 
 ![offline copies](.github/screenshots/clip-offline-copies.webp)
 
+![offline saved](.github/screenshots/offline-saved.webp)
+
 ## Nitro color themes
 
 All 24 of Discord's gradient themes. A few of them here.
