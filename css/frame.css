@@ -129,6 +129,7 @@ body.discord-theme .dsc-status {
     position: absolute;
     right: -3px;
     bottom: -3px;
+    box-sizing: content-box;
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -602,7 +603,7 @@ body.discord-theme :is(.dsc-nav-row, .dsc-dm, .dsc-channel):hover {
 body.discord-theme :is(.dsc-nav-row, .dsc-dm, .dsc-channel).dsc-selected {
     background: var(--dsc-selected);
     color: var(--dsc-header);
-    --dsc-ring: var(--dsc-selected);
+    --dsc-ring: color-mix(in srgb, var(--dsc-side), rgb(var(--dsc-mod)) calc(var(--dsc-selected-a) * 100%));
 }
 
 body.discord-theme :is(.dsc-nav-row, .dsc-dm, .dsc-channel):focus-visible {
