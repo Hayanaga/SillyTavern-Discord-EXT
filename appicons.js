@@ -37,10 +37,12 @@ export const APP_ICONS = [
 let settingsOf = () => /** @type {any} */ ({});
 let save = () => {};
 
-/** Where a picture loads from: its copy on this server, else Discord unless that's turned off. */
+/** Where a picture loads from: its copy on this server, else through the Discord Decor plugin
+ * (Discord's file, or the plugin's own copy when Discord refuses). A page can't load Discord's
+ * file itself: browsers block it as another site's untyped file. */
 export function appIconSource(icon) {
-    const { saved, offline } = collectibleStore();
-    return saved[icon.url] ?? (offline ? '' : icon.url);
+    const { saved } = collectibleStore();
+    return saved[icon.url] ?? `/api/plugins/discord-decor/file?url=${encodeURIComponent(icon.url)}`;
 }
 
 export function currentAppIcon() {
@@ -50,7 +52,19 @@ export function currentAppIcon() {
 /** Shows the picked logo everywhere it goes, or the usual one. */
 export function applyAppIcon() {
     const icon = APP_ICONS.find(x => x.id === currentAppIcon());
-    const source = icon ? appIconSource(icon) : '';
+    const wanted = icon ? appIconSource(icon) : '';
+    if (!wanted) {
+        showAppIcon('');
+        return;
+    }
+    // only a picture that loads replaces the logo (it can't without the Decor plugin)
+    const probe = new Image();
+    probe.addEventListener('load', () => currentAppIcon() === icon.id && showAppIcon(wanted), { once: true });
+    probe.addEventListener('error', () => currentAppIcon() === icon.id && showAppIcon(''), { once: true });
+    probe.src = wanted;
+}
+
+function showAppIcon(source) {
     setAppIcon(source);
     const home = document.querySelector('.dsc-home button');
     home?.querySelector('.dsc-app-icon')?.remove();

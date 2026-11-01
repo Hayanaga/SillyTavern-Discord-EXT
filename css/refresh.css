@@ -173,7 +173,7 @@ body.discord-theme #dsc-user {
     border-radius: 8px;
     background: var(--dsc-paint-panel);
     z-index: 41;
-    box-shadow: 0 -8px 8px var(--dsc-rail);
+    box-shadow: 0 -3px 4px var(--dsc-rail);
 }
 
 body.discord-theme .dsc-user-tool {

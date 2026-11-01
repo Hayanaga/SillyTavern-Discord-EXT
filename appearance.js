@@ -2,7 +2,7 @@
 // Dark, Onyx and Sync, then the Nitro "Color" themes as gradient swatches.
 
 import { APP_ICONS, appIconSource, currentAppIcon, pickAppIcon } from './appicons.js';
-import { gradientOf, NITRO_THEMES } from './nitro.js';
+import { NITRO_THEMES } from './nitro.js';
 import { icon, t } from './ui.js';
 
 const ID = 'dsc-appearance';
@@ -125,6 +125,43 @@ function swatch(className, label, background, selected, run) {
     return button;
 }
 
+/**
+ * A theme's gradient fitted to a round swatch: on a square, a slanted gradient runs corner to
+ * corner, so a circle would show only its middle and cut its first and last colours off. Here
+ * every colour sits inside the circle.
+ */
+function circleGradientOf(theme) {
+    const rad = (theme.angle * Math.PI) / 180;
+    const span = Math.abs(Math.sin(rad)) + Math.abs(Math.cos(rad));
+    const fit = at => (50 + (at - 50) / span).toFixed(2);
+    return `linear-gradient(${theme.angle}deg, ${theme.stops.map(([color, at]) => `${color} ${fit(at)}%`).join(', ')})`;
+}
+
+/** An app icon's swatch: its picture, or its name when the picture can't load (no Decor plugin). */
+function iconSwatch(button, item) {
+    const img = document.createElement('img');
+    img.className = 'dsc-swatch-img';
+    img.alt = '';
+    img.decoding = 'async';
+    img.addEventListener('error', () => {
+        const name = document.createElement('span');
+        name.className = 'dsc-swatch-name';
+        name.textContent = item.name;
+        img.replaceWith(name);
+    }, { once: true });
+    img.src = appIconSource(item);
+    button.prepend(img);
+    return button;
+}
+
+/** The Default app icon's swatch shows the usual logo. */
+function defaultIcon(button) {
+    const logo = document.createElement('span');
+    logo.className = 'dsc-swatch-logo';
+    button.prepend(logo);
+    return button;
+}
+
 /** Draws the picker for the current choice. */
 export function renderAppearance() {
     const root = document.getElementById(ID);
@@ -136,11 +173,11 @@ export function renderAppearance() {
     const colorRow = root.querySelector('.dsc-swatches-color');
     const iconRow = root.querySelector('.dsc-swatches-icon');
     themeRow.replaceChildren(...BASES.map(base => swatch('', t(base.name), base.swatch, !nitroTheme && appearance === base.id, () => actions.setBase(base.id))));
-    colorRow.replaceChildren(...NITRO_THEMES.map(theme => swatch('dsc-swatch-gradient', t(theme.name), gradientOf(theme), nitroTheme === theme.id, () => actions.setNitro(theme.id))));
+    colorRow.replaceChildren(...NITRO_THEMES.map(theme => swatch('dsc-swatch-gradient', t(theme.name), circleGradientOf(theme), nitroTheme === theme.id, () => actions.setNitro(theme.id))));
     const pickIcon = id => pickAppIcon(id).finally(renderAppearance);
     iconRow.replaceChildren(
-        swatch('dsc-swatch-icon', t('Default'), 'var(--dsc-blurple)', !currentAppIcon(), () => pickIcon('')),
-        ...APP_ICONS.map(item => swatch('dsc-swatch-icon', item.name, `center / cover no-repeat url("${appIconSource(item)}")`, currentAppIcon() === item.id, () => pickIcon(item.id))),
+        defaultIcon(swatch('dsc-swatch-icon', t('Default'), 'var(--dsc-blurple)', !currentAppIcon(), () => pickIcon(''))),
+        ...APP_ICONS.map(item => iconSwatch(swatch('dsc-swatch-icon', item.name, 'var(--dsc-floating)', currentAppIcon() === item.id, () => pickIcon(item.id)), item)),
     );
 }
 

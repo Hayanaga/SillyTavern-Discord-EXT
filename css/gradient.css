@@ -183,6 +183,38 @@ body.discord-theme .dsc-swatch-icon {
     border-radius: 22%;
 }
 
+body.discord-theme .dsc-swatch-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+body.discord-theme .dsc-swatch-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 4px;
+    color: var(--dsc-text);
+    font-size: 10px;
+    line-height: 1.1;
+    text-align: center;
+    pointer-events: none;
+}
+
+body.discord-theme .dsc-swatch-logo {
+    position: absolute;
+    inset: 22%;
+    background: #ffffff;
+    -webkit-mask: var(--dsc-i-clyde) center / contain no-repeat;
+    mask: var(--dsc-i-clyde) center / contain no-repeat;
+    pointer-events: none;
+}
+
 body.discord-theme .dsc-home .dsc-has-app-icon > .dsc-ico {
     display: none;
 }

@@ -166,8 +166,10 @@ body.discord-theme #chat .mes_wtracker .wtracker-controls > div {
     color: var(--dsc-muted);
 }
 
-/* Floating panels: the theme's own window look, below the theme's menus */
-body.discord-theme #movingDivs > .draggable {
+/* Floating panels: the theme's own window look, below the theme's menus. Quick Replies' pop-out
+   sits straight in the page, not with the others, so it gets the same look and layer. */
+body.discord-theme #movingDivs > .draggable,
+body.discord-theme > .draggable {
     background: var(--dsc-floating);
     border: 1px solid rgba(var(--dsc-mod), 0.2);
     border-radius: 8px;
@@ -175,6 +177,39 @@ body.discord-theme #movingDivs > .draggable {
     color: var(--dsc-text);
     /* room for the panel's move and close buttons above its content */
     padding-top: 34px;
+}
+
+/* over the sidebars and your panel, as SillyTavern's own floating panels are */
+body.discord-theme > .draggable {
+    z-index: 4000;
+}
+
+/* Quick Replies' pop-out has its own header with the move and close buttons, and its first
+   width (half of what's beside SillyTavern's chat) is a sliver beside the theme's wide chat */
+body.discord-theme #qr--popout {
+    z-index: 4000;
+    min-width: 260px;
+    padding-top: 0;
+}
+
+body.discord-theme #qr--popout > .qr--header {
+    height: 34px;
+}
+
+body.discord-theme #qr--popout > .qr--header > .qr--controls {
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 8px;
+    color: var(--dsc-icon);
+}
+
+body.discord-theme #qr--popout > .qr--body {
+    padding: 0 8px 8px;
+}
+
+body.discord-theme #qr--popout .qr--button {
+    white-space: nowrap;
 }
 
 /* Typing Indicator: Discord's thin line at the foot of the chat, bold-looking dots first */
