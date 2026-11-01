@@ -95,6 +95,10 @@ body.discord-theme .dsc-prof-section p {
     line-height: 18px;
     white-space: pre-line;
     overflow-wrap: anywhere;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 body.discord-theme .dsc-prof-links {
@@ -298,13 +302,6 @@ body.discord-theme #dsc-popout .dsc-prof-banner {
 
 body.discord-theme #dsc-popout .dsc-prof-card {
     margin: 12px 12px 0;
-}
-
-body.discord-theme #dsc-popout .dsc-prof-section p {
-    display: -webkit-box;
-    -webkit-line-clamp: 6;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
 }
 
 body.discord-theme #dsc-popout .dsc-prof-links {
