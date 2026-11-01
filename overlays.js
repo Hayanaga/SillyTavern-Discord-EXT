@@ -4,8 +4,12 @@
 // - "You're viewing older messages" with Jump to Present when scrolled far up;
 // - a long press on a phone opens the same menus a right-click does.
 
+import { collectibleStore, saveCollectibles } from './collectibles.js';
+import { hasPlugin } from './collectibles-offline.js';
 import { t } from './ui.js';
 import { GatedObserver, listen } from './life.js';
+
+const PLUGIN_HELP = 'https://github.com/pervertir/SillyTavern-Discord-Decor#install';
 
 let openConnections = () => {};
 
@@ -25,6 +29,35 @@ function createNotice() {
     action.addEventListener('click', () => openConnections());
     notice.append(text, action);
     document.getElementById('dsc-head')?.after(notice);
+}
+
+/** Tells people the Discord Decor server plugin is missing: extensions can't install it themselves. */
+async function createPluginBanner() {
+    // the collectibles' settings may not be set up yet at this point, so they're read directly
+    const dismissed = SillyTavern.getContext().extensionSettings.discordTheme?.collectibles?.pluginBannerOff;
+    if (dismissed || await hasPlugin() || document.getElementById('dsc-plugin-banner') || !document.body.classList.contains('discord-theme')) {
+        return;
+    }
+    const banner = document.createElement('div');
+    banner.id = 'dsc-plugin-banner';
+    banner.setAttribute('role', 'status');
+    const text = document.createElement('span');
+    text.textContent = t('Keep all profile art offline with the Discord Decor server plugin.');
+    const help = document.createElement('a');
+    help.href = PLUGIN_HELP;
+    help.target = '_blank';
+    help.rel = 'noopener';
+    help.textContent = t('How to Install');
+    const dismiss = document.createElement('button');
+    dismiss.type = 'button';
+    dismiss.textContent = t('Dismiss');
+    dismiss.addEventListener('click', () => {
+        collectibleStore().pluginBannerOff = true;
+        saveCollectibles();
+        banner.remove();
+    });
+    banner.append(text, help, dismiss);
+    document.getElementById('dsc-head')?.after(banner);
 }
 
 /** Follows SillyTavern's own no-connection mark on the message box. */
@@ -103,6 +136,7 @@ function longPress() {
 export function initOverlays(options) {
     openConnections = options.connections;
     createNotice();
+    createPluginBanner();
     watchConnection();
     createJumpBar();
     longPress();

@@ -432,5 +432,8 @@
     "pick a color": "색상 선택",
     "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "파일 {0}개를 다운로드하지 못했습니다. 대부분의 Discord 파일에는 서버 플러그인 Discord Decor 또는 SillyTavern의 CORS 프록시가 필요합니다. config.yaml에서 enableCorsProxy: true로 설정하고 SillyTavern을 다시 시작하세요.",
     "{0} of {1} ticked, {2} saved, all about {3}": "{1}개 중 {0}개 체크, {2}개 저장됨, 전체 약 {3}",
-    "{0} saved files are unticked.": "저장된 파일 {0}개가 체크 해제되어 있습니다."
+    "{0} saved files are unticked.": "저장된 파일 {0}개가 체크 해제되어 있습니다.",
+    "Keep all profile art offline with the Discord Decor server plugin.": "Discord Decor 서버 플러그인으로 모든 프로필 아트를 오프라인으로 보관하세요.",
+    "How to Install": "설치 방법",
+    "Dismiss": "닫기"
 }

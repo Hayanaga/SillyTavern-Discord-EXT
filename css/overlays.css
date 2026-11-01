@@ -42,6 +42,44 @@ body.discord-theme #dsc-notice button:hover {
     color: var(--dsc-red);
 }
 
+body.discord-theme #dsc-plugin-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    flex: none;
+    min-height: 36px;
+    margin-right: var(--dsc-aside-w);
+    padding: 6px 16px;
+    box-sizing: border-box;
+    background: var(--dsc-blurple);
+    color: var(--dsc-on-blurple);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+}
+
+body.discord-theme #dsc-plugin-banner a,
+body.discord-theme #dsc-plugin-banner button {
+    min-height: 24px;
+    padding: 2px 12px;
+    box-sizing: border-box;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+    background: none;
+    color: #ffffff;
+    font: 500 14px/18px var(--dsc-font);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+body.discord-theme #dsc-plugin-banner a:hover,
+body.discord-theme #dsc-plugin-banner button:hover {
+    background: #ffffff;
+    color: var(--dsc-blurple-hover);
+}
+
 /* the warning now lives in the bar; the message box keeps its plain placeholder */
 body.discord-theme #send_form.no-connection {
     opacity: 1;

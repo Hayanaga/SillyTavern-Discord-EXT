@@ -432,5 +432,8 @@
     "pick a color": "выберите цвет",
     "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "Не удалось скачать файлов: {0}. Для большинства файлов Discord нужен серверный плагин Discord Decor или CORS-прокси SillyTavern: укажите enableCorsProxy: true в config.yaml и перезапустите SillyTavern.",
     "{0} of {1} ticked, {2} saved, all about {3}": "Отмечено {0} из {1}, сохранено {2}, всего около {3}",
-    "{0} saved files are unticked.": "Сохранённых файлов без отметки: {0}."
+    "{0} saved files are unticked.": "Сохранённых файлов без отметки: {0}.",
+    "Keep all profile art offline with the Discord Decor server plugin.": "Сохраняйте всё оформление профиля офлайн с серверным плагином Discord Decor.",
+    "How to Install": "Как установить",
+    "Dismiss": "Закрыть"
 }

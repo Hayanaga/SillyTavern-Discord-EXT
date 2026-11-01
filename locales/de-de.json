@@ -432,5 +432,8 @@
     "pick a color": "Farbe wählen",
     "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "{0} Dateien konnten nicht heruntergeladen werden. Die meisten Discord-Dateien benötigen das Server-Plugin Discord Decor oder den CORS-Proxy von SillyTavern: Setze enableCorsProxy: true in config.yaml und starte SillyTavern neu.",
     "{0} of {1} ticked, {2} saved, all about {3}": "{0} von {1} markiert, {2} gespeichert, insgesamt etwa {3}",
-    "{0} saved files are unticked.": "{0} gespeicherte Dateien sind nicht markiert."
+    "{0} saved files are unticked.": "{0} gespeicherte Dateien sind nicht markiert.",
+    "Keep all profile art offline with the Discord Decor server plugin.": "Behalte alle Profilbilder offline mit dem Server-Plugin Discord Decor.",
+    "How to Install": "So installierst du es",
+    "Dismiss": "Schließen"
 }

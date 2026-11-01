@@ -432,5 +432,8 @@
     "pick a color": "選擇顏色",
     "{0} files could not be downloaded. Most of Discord's files need the Discord Decor server plugin, or SillyTavern's CORS proxy: set enableCorsProxy: true in config.yaml and restart SillyTavern.": "有 {0} 個檔案無法下載。Discord 的大多數檔案需要伺服器外掛 Discord Decor 或 SillyTavern 的 CORS 代理：請在 config.yaml 中設定 enableCorsProxy: true 並重新啟動 SillyTavern。",
     "{0} of {1} ticked, {2} saved, all about {3}": "已勾選 {0}/{1}，已儲存 {2}，全部約 {3}",
-    "{0} saved files are unticked.": "有 {0} 個已儲存的檔案未勾選。"
+    "{0} saved files are unticked.": "有 {0} 個已儲存的檔案未勾選。",
+    "Keep all profile art offline with the Discord Decor server plugin.": "使用 Discord Decor 伺服器外掛離線保存所有個人資料圖案。",
+    "How to Install": "安裝方式",
+    "Dismiss": "關閉"
 }

@@ -20,7 +20,7 @@ const STARTER_ITEMS = 6;
 
 /** Whether the Discord Decor server plugin is installed. */
 let pluginCheck = null;
-function hasPlugin() {
+export function hasPlugin() {
     pluginCheck ??= fetch(`${PLUGIN}/status`).then(response => response.ok, () => false);
     return pluginCheck;
 }
