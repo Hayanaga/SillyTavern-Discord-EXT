@@ -371,25 +371,6 @@ function placePop(popout) {
     popFrames.forEach(box => Object.assign(box.style, place));
 }
 
-let frameWatch = null;
-
-/** Keeps a panel's frame as tall as what's in the panel, however long the content grows. */
-function fitFrame(profile) {
-    frameWatch?.disconnect();
-    const box = /** @type {HTMLElement} */ (profile.querySelector(':scope > .dsc-frame'));
-    if (!box) {
-        return;
-    }
-    const content = [...profile.children].filter(child => !child.matches('.dsc-frame, .dsc-effect'));
-    const fit = () => {
-        const bottom = Math.max(profile.clientHeight, ...content.map(child => /** @type {HTMLElement} */ (child).offsetTop + /** @type {HTMLElement} */ (child).offsetHeight));
-        box.style.height = `${bottom}px`;
-    };
-    frameWatch = new ResizeObserver(fit);
-    content.forEach(child => frameWatch.observe(child));
-    frameWatch.observe(profile);
-}
-
 function frame(profile) {
     const key = keyOfProfile(profile);
     const item = key ? itemFor(key, 'frame') : null;
@@ -399,7 +380,6 @@ function frame(profile) {
         const total = art ? art.width + 2 * art.side : 1;
         profile.style.setProperty('--dsc-frame-top', art ? `${(100 * art.top) / total}%` : '0px');
         profile.style.setProperty('--dsc-frame-side', art ? `${(100 * art.side) / total}%` : '0px');
-        fitFrame(profile);
         return;
     }
     if ((popFrames[0]?.getAttribute('data-item') ?? '') === (item?.id ?? '') && popFrames[0]?.isConnected) {

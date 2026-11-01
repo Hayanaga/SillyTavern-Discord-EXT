@@ -94,16 +94,6 @@ body.discord-theme .dsc-effect {
     z-index: 5;
 }
 
-/* the panel scrolls; its effect stays over the top as Discord's does */
-body.discord-theme #dsc-aside > .dsc-effect {
-    position: sticky;
-    flex: none;
-    order: -1;
-    /* its height must stay what the margin takes back, or a short window pulls the panel up */
-    max-height: none;
-    margin-bottom: calc(-100% * 880 / 450);
-}
-
 body.discord-theme .dsc-effect-layer {
     position: absolute;
     inset: 0;
@@ -161,11 +151,10 @@ body.discord-theme .dsc-frame-back {
     z-index: -1;
 }
 
-/* the side panel: within it, over its content, as tall as the content and scrolling with it
-   (height set by collectibles.js) */
+/* the side panel is one pane that stays put (header.js): the frame goes around all of it */
 body.discord-theme #dsc-aside > .dsc-frame {
     position: absolute;
-    inset: 0 0 auto;
+    inset: 0;
 }
 
 /* the art is drawn around a card, so the banner starts where the card's edge is in the art

@@ -591,7 +591,12 @@ function renderProfile(aside, character) {
 
     const close = iconButton('dsc-prof-close', t('Close'), 'close', 20);
     close.addEventListener('click', closeProfileSheet);
-    aside.replaceChildren(close, banner, avatar, card, extra, pictureCard(character, 'dsc-prof-picture'), look, full);
+    // as in Discord, the panel is one pane that stays put (its frame around all of it); only
+    // what's under the picture scrolls, when the window is too short for it
+    const body = document.createElement('div');
+    body.className = 'dsc-prof-body';
+    body.append(card, extra, pictureCard(character, 'dsc-prof-picture'), look, full);
+    aside.replaceChildren(close, banner, avatar, body);
     paintPresence(aside);
     monogramizeAll(aside, '.dsc-prof-avatar img', () => character.name);
 }

@@ -26,6 +26,22 @@ body.discord-theme #dsc-aside:not(.dsc-members) {
     --dsc-ring: var(--dsc-panel);
 }
 
+/* as in Discord, the profile is one pane that doesn't scroll; only what's under the picture
+   does, inside it, when the window is too short for all of it */
+body.discord-theme #dsc-aside:has(> .dsc-prof-body) {
+    overflow: hidden;
+}
+
+body.discord-theme .dsc-prof-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
 body.discord-theme .dsc-prof-banner {
     flex: none;
     height: 120px;
