@@ -226,6 +226,16 @@ function focusSearch() {
     input?.select();
 }
 
+/** Whether Ctrl/⌘+F means this chat's search. Anywhere else, and from the box itself, the browser's own find opens. */
+function searchesChat() {
+    const focused = document.activeElement;
+    if (focused === input || (focused?.matches('input, textarea, [contenteditable="true"]') && focused.id !== 'send_textarea')) {
+        return false;
+    }
+    return !document.querySelector('.dsc-open, .openDrawer, #character_popup[style*="flex"], dialog.popup[open]')
+        && !/\bdsc-settings-(open|list|page)\b/.test(document.body.className);
+}
+
 /**
  * @param {HTMLInputElement} box The header's search box
  */
@@ -246,7 +256,8 @@ export function initSearch(box) {
     });
     listen(document, 'keydown', (event) => {
         if ((event.ctrlKey || event.metaKey) && !event.shiftKey && !event.altKey && event.key.toLowerCase() === 'f'
-            && document.body.classList.contains('discord-theme') && SillyTavern.getContext().chat.length) {
+            && document.body.classList.contains('discord-theme') && SillyTavern.getContext().chat.length
+            && searchesChat()) {
             event.preventDefault();
             focusSearch();
         }
