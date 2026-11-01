@@ -1,0 +1,695 @@
+/* Profile collectibles (collectibles.js): avatar decorations around pictures, nameplates behind
+   names in the DM and member lists, profile effects over profile cards, and the Change Look
+   picker. Decorations are drawn as Discord draws them: a square 1.2 times the picture, centred
+   on it, under the status dot. */
+
+/* ---------- avatar decorations ---------- */
+
+body.discord-theme .dsc-deco {
+    position: absolute;
+    left: -10%;
+    top: -10%;
+    width: 120%;
+    height: 120%;
+    max-width: none;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 1;
+    border-radius: 0;
+}
+
+/* the status dot stays on top of the decoration */
+body.discord-theme .dsc-avatar:has(> .dsc-deco) .dsc-status {
+    z-index: 3;
+}
+
+/* the chat clips its pictures to a circle: the picture keeps its circle, the decoration shows */
+body.discord-theme #chat .mes .avatar:has(> .dsc-deco) {
+    position: relative;
+    overflow: visible;
+}
+
+body.discord-theme #chat .mes .avatar:has(> .dsc-deco) > img {
+    border-radius: 50%;
+}
+
+/* ---------- nameplates ---------- */
+
+body.discord-theme :is(.dsc-dm, .dsc-member):has(> .dsc-plate) {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+/* the palette's wash, as Discord draws it, with the art over it on the right */
+body.discord-theme .dsc-plate {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgb(var(--dsc-plate-tint, 0 0 0) / 0.1), rgb(var(--dsc-plate-tint, 0 0 0) / 0.4));
+}
+
+body.discord-theme .dsc-plate-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right center;
+}
+
+/* offline members' plates fade with them */
+body.discord-theme .dsc-member.dsc-offline > .dsc-plate {
+    opacity: 0.35;
+}
+
+/* ---------- profile effects: layers of animation over the top of the card ---------- */
+
+body.discord-theme :is(#dsc-aside, #dsc-popout):has(> .dsc-effect) {
+    isolation: isolate;
+}
+
+body.discord-theme .dsc-effect {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    aspect-ratio: 450 / 880;
+    max-height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* the panel scrolls; its effect stays over the top as Discord's does */
+body.discord-theme #dsc-aside > .dsc-effect {
+    position: sticky;
+    flex: none;
+    order: -1;
+    margin-bottom: calc(-100% * 880 / 450);
+}
+
+body.discord-theme .dsc-effect-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+/* ---------- profile frames ---------- */
+
+/* the box is the card, widened by the art's side reach (set inline); staples stick out above and
+   below with negative margins, which are a share of the box's width (set inline) */
+body.discord-theme .dsc-frame {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 6;
+}
+
+body.discord-theme .dsc-frame > * {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+body.discord-theme .dsc-frame-staple {
+    height: auto;
+    max-width: none;
+}
+
+body.discord-theme .dsc-frame-staple.dsc-frame-top {
+    top: 0;
+}
+
+body.discord-theme .dsc-frame-staple.dsc-frame-bottom {
+    bottom: 0;
+}
+
+/* rails and borders: the art repeated down the sides */
+body.discord-theme .dsc-frame-rail {
+    top: 0;
+    bottom: 0;
+    background-size: 100% auto;
+    background-repeat: repeat-y;
+    background-position: center top;
+}
+
+body.discord-theme .dsc-frame-rail.dsc-frame-center {
+    background-position: center center;
+}
+
+body.discord-theme .dsc-frame-back {
+    z-index: -1;
+}
+
+/* the side panel: within it, over its content */
+body.discord-theme #dsc-aside > .dsc-frame {
+    position: sticky;
+    flex: none;
+    order: -2;
+    top: 0;
+    height: calc(100dvh - var(--dsc-head-h));
+    margin-bottom: calc(var(--dsc-head-h) - 100dvh);
+}
+
+/* the popout scrolls, so its frame sits in the page (placed by collectibles.js): front layers
+   over it, back layers under it */
+body.discord-theme .dsc-frame-pop {
+    position: fixed;
+    z-index: 3051;
+}
+
+body.discord-theme .dsc-frame-pop-back {
+    z-index: 3049;
+}
+
+body.discord-theme .dsc-frame-pop > .dsc-frame-back {
+    z-index: auto;
+}
+
+/* own pictures for a frame: stretched over the card */
+body.discord-theme .dsc-frame-whole {
+    inset: 0;
+    height: 100%;
+    object-fit: fill;
+}
+
+/* ---------- Change Look on a profile ---------- */
+
+body.discord-theme .dsc-prof-look {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex: none;
+    margin: 12px 16px 0;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background: var(--dsc-secondary-button);
+    color: var(--dsc-header);
+    font: 500 14px/18px var(--dsc-font);
+    cursor: pointer;
+}
+
+body.discord-theme .dsc-prof-look:hover {
+    background: var(--dsc-secondary-button-hover);
+}
+
+body.discord-theme .dsc-prof-look + .dsc-prof-full {
+    margin-top: auto;
+}
+
+body.discord-theme #dsc-popout .dsc-prof-look {
+    margin-bottom: 4px;
+}
+
+/* ---------- the picker ---------- */
+
+body.discord-theme .dsc-look-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 4000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: var(--dsc-backdrop, rgba(0, 0, 0, 0.7));
+}
+
+body.discord-theme .dsc-look {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas: "head head" "preview grid" "foot foot";
+    width: min(880px, 100%);
+    height: min(640px, 100%);
+    border-radius: 12px;
+    background: var(--dsc-surface);
+    color: var(--dsc-text);
+    box-shadow: var(--dsc-elevation-high, 0 8px 24px rgba(0, 0, 0, 0.4));
+    overflow: hidden;
+    font-family: var(--dsc-font);
+}
+
+body.discord-theme .dsc-look-head {
+    grid-area: head;
+    padding: 20px 20px 0;
+}
+
+body.discord-theme .dsc-look-head h2 {
+    margin: 0;
+    color: var(--dsc-header);
+    font: 700 20px/24px var(--dsc-font-display);
+}
+
+body.discord-theme .dsc-look-who {
+    margin-top: 2px;
+    color: var(--dsc-muted);
+    font-size: 14px;
+}
+
+body.discord-theme .dsc-look-tabs {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+    border-bottom: 1px solid var(--dsc-divider);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+body.discord-theme .dsc-look-tab {
+    flex: none;
+    padding: 0 0 10px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--dsc-muted);
+    font: 500 15px/20px var(--dsc-font);
+    cursor: pointer;
+}
+
+body.discord-theme .dsc-look-tab:hover {
+    color: var(--dsc-header-2);
+}
+
+body.discord-theme .dsc-look-tab[aria-selected="true"] {
+    border-bottom-color: var(--dsc-blurple);
+    color: var(--dsc-header);
+}
+
+body.discord-theme .dsc-look-preview {
+    grid-area: preview;
+    padding: 56px 28px 40px;
+    overflow: hidden;
+    border-right: 1px solid var(--dsc-divider);
+}
+
+body.discord-theme .dsc-look-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 28px 12px 16px;
+    border-radius: 8px;
+    isolation: isolate;
+}
+
+/* the card's colour sits under its frame's back layers, as on a real card */
+body.discord-theme .dsc-look-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: var(--dsc-panel);
+}
+
+body.discord-theme .dsc-look-card > .dsc-effect {
+    border-radius: inherit;
+}
+
+body.discord-theme :is(.dsc-look-card, .dsc-look-mini) > .dsc-frame {
+    z-index: auto;
+}
+
+body.discord-theme :is(.dsc-look-card, .dsc-look-mini) > .dsc-frame > .dsc-frame-front {
+    z-index: 6;
+}
+
+body.discord-theme :is(.dsc-look-card, .dsc-look-mini) > .dsc-frame > .dsc-frame-back {
+    z-index: -2;
+}
+
+body.discord-theme .dsc-look-avatar,
+body.discord-theme .dsc-look-sample {
+    position: relative;
+    display: block;
+    width: 96px;
+    height: 96px;
+}
+
+body.discord-theme :is(.dsc-look-avatar, .dsc-look-sample) > img:first-child {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+}
+
+body.discord-theme .dsc-look-row {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--dsc-paint-side);
+}
+
+body.discord-theme .dsc-look-name {
+    color: var(--dsc-header);
+    font: 500 15px/20px var(--dsc-font);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+body.discord-theme .dsc-look-list {
+    grid-area: grid;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+body.discord-theme .dsc-look-find {
+    flex: none;
+    margin: 16px 20px 0;
+    width: auto;
+}
+
+body.discord-theme .dsc-look-grid {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    grid-auto-rows: max-content;
+    align-content: start;
+    gap: 8px;
+    padding: 16px 20px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+body.discord-theme .dsc-look-tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: var(--dsc-panel);
+    color: var(--dsc-header-2);
+    font: 500 14px/18px var(--dsc-font);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+body.discord-theme .dsc-look-tile:hover {
+    background: var(--dsc-hover);
+}
+
+body.discord-theme .dsc-look-tile[aria-selected="true"] {
+    border-color: var(--dsc-blurple);
+}
+
+body.discord-theme .dsc-look-tile .dsc-look-sample {
+    width: 62%;
+    height: 62%;
+}
+
+body.discord-theme .dsc-look-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+body.discord-theme .dsc-look-end {
+    grid-column: 1 / -1;
+    height: 1px;
+}
+
+/* nameplates are wide: their tiles too, with the plate filling the tile */
+body.discord-theme .dsc-look[data-kind="nameplate"] .dsc-look-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+body.discord-theme .dsc-look[data-kind="nameplate"] .dsc-look-tile {
+    aspect-ratio: 448 / 84;
+    padding: 0;
+    isolation: isolate;
+}
+
+body.discord-theme .dsc-look-tile > .dsc-plate {
+    z-index: 0;
+}
+
+/* effects are tall */
+body.discord-theme .dsc-look[data-kind="effect"] .dsc-look-tile {
+    aspect-ratio: 450 / 880;
+    padding: 0;
+}
+
+body.discord-theme .dsc-look[data-kind="effect"] .dsc-look-thumb {
+    object-fit: cover;
+    object-position: top;
+}
+
+/* frames: a small card in its frame */
+body.discord-theme .dsc-look[data-kind="frame"] .dsc-look-tile {
+    aspect-ratio: 3 / 4;
+    padding: 22% 18% 16%;
+    overflow: hidden;
+}
+
+body.discord-theme .dsc-look-mini {
+    position: relative;
+    isolation: isolate;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+body.discord-theme .dsc-look-mini::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 6px;
+    background: var(--dsc-floating);
+}
+
+body.discord-theme .dsc-look-remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--dsc-red);
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1;
+    opacity: 0;
+}
+
+body.discord-theme .dsc-look-tile:is(:hover, :focus-visible) .dsc-look-remove {
+    opacity: 1;
+}
+
+body.discord-theme .dsc-look-foot {
+    grid-area: foot;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px 20px;
+    background: var(--dsc-panel);
+}
+
+body.discord-theme .dsc-look-foot .menu_button {
+    width: auto;
+    padding: 0 16px;
+    white-space: nowrap;
+}
+
+/* Offline Copies sits on the left of the foot, away from the main buttons */
+body.discord-theme .dsc-look-offline {
+    margin-right: auto;
+}
+
+/* ---------- Offline Copies ---------- */
+
+body.discord-theme .dsc-offline {
+    display: flex;
+    flex-direction: column;
+    width: min(640px, 100%);
+    max-height: min(720px, 100%);
+    border-radius: 12px;
+    background: var(--dsc-surface);
+    color: var(--dsc-text);
+    box-shadow: var(--dsc-elevation-high, 0 8px 24px rgba(0, 0, 0, 0.4));
+    overflow: hidden;
+    font-family: var(--dsc-font);
+}
+
+body.discord-theme .dsc-offline-about {
+    margin: 8px 0 12px;
+    color: var(--dsc-muted);
+    font-size: 14px;
+    line-height: 18px;
+}
+
+body.discord-theme .dsc-offline-only {
+    margin-bottom: 16px;
+    color: var(--dsc-header-2);
+    font-size: 14px;
+}
+
+body.discord-theme .dsc-offline-body {
+    flex: 1;
+    min-height: 0;
+    padding: 0 20px 16px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+body.discord-theme .dsc-offline-kind {
+    margin-top: 8px;
+    border-radius: 8px;
+    background: var(--dsc-panel);
+}
+
+body.discord-theme .dsc-offline-kind > summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    cursor: pointer;
+    list-style: none;
+}
+
+body.discord-theme .dsc-offline-kind > summary::-webkit-details-marker {
+    display: none;
+}
+
+body.discord-theme .dsc-offline-name {
+    color: var(--dsc-header);
+    font-weight: 600;
+    font-size: 15px;
+}
+
+body.discord-theme .dsc-offline-count {
+    margin-left: auto;
+    color: var(--dsc-muted);
+    font-size: 12px;
+    text-align: right;
+}
+
+body.discord-theme .dsc-offline-find {
+    margin: 0 12px 8px;
+    width: calc(100% - 24px);
+}
+
+body.discord-theme .dsc-offline-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 2px 12px;
+    max-height: 260px;
+    padding: 0 12px 12px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+body.discord-theme .dsc-offline-row {
+    gap: 8px;
+    min-width: 0;
+    color: var(--dsc-text);
+    font-size: 13px;
+}
+
+body.discord-theme .dsc-offline-row > span:first-of-type {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+body.discord-theme .dsc-offline-saved {
+    flex: none;
+    margin-left: auto;
+    color: var(--dsc-green, #23a55a);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+body.discord-theme .dsc-offline .dsc-look-foot {
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+body.discord-theme .dsc-offline-status {
+    flex: 1 1 100%;
+    color: var(--dsc-muted);
+    font-size: 13px;
+}
+
+@media screen and (max-width: 700px) {
+    body.discord-theme .dsc-look-layer {
+        padding: 0;
+    }
+
+    body.discord-theme .dsc-offline {
+        height: 100%;
+        max-height: none;
+        border-radius: 0;
+    }
+
+    body.discord-theme .dsc-look-foot {
+        flex-wrap: wrap;
+    }
+
+    body.discord-theme .dsc-look {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto minmax(0, 1fr) auto;
+        grid-template-areas: "head" "preview" "grid" "foot";
+        height: 100%;
+        border-radius: 0;
+    }
+
+    body.discord-theme .dsc-look-preview {
+        padding: 12px 16px;
+        border-right: none;
+        border-bottom: 1px solid var(--dsc-divider);
+    }
+
+    body.discord-theme .dsc-look-card {
+        flex-direction: row;
+        padding: 12px;
+    }
+
+    body.discord-theme .dsc-look-avatar {
+        flex: none;
+        width: 64px;
+        height: 64px;
+    }
+
+    body.discord-theme .dsc-look-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        padding: 12px 16px;
+    }
+}
+
+/* motion only for those who want it: pictures stay, videos pause */
+@media (prefers-reduced-motion: reduce) {
+    body.discord-theme :is(.dsc-plate, .dsc-effect, .dsc-frame) {
+        display: none;
+    }
+}

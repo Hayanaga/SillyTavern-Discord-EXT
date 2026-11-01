@@ -40,7 +40,7 @@ export class GatedObserver extends MutationObserver {
 }
 
 /** Elements the theme makes inside SillyTavern's own blocks, which carry only a class. */
-const MADE = '.dsc-samplers-toggle, .dsc-instruct-switch, .dsc-react-button, .dsc-file-download, .dsc-tool-search-phone, .dsc-edited, .dsc-embeds, .dsc-reactions';
+const MADE = '.dsc-samplers-toggle, .dsc-instruct-switch, .dsc-react-button, .dsc-file-download, .dsc-tool-search-phone, .dsc-edited, .dsc-embeds, .dsc-reactions, .dsc-deco, .dsc-plate, .dsc-effect, .dsc-frame';
 
 /** Whether an element belongs to the theme's own settings panel (in the Extensions list). */
 function inPanel(element) {

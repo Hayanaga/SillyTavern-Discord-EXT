@@ -32,6 +32,7 @@ import { initMessageTools } from './msgtools.js';
 import { initMonograms } from './monograms.js';
 import { initSettings, openSettings, refreshSettings, SETTINGS_DRAWERS } from './settings.js';
 import { initSharp } from './sharp.js';
+import { initCollectibles } from './collectibles.js';
 import { formatKeys, initShortcuts, SHORTCUTS } from './shortcuts.js';
 import { initSidebar, markCurrent, openCharacterPanel, refreshPersona, stepConversation, stepServer } from './sidebar.js';
 import { initSwitcher, openSwitcher } from './switcher.js';
@@ -653,6 +654,7 @@ async function start() {
     });
     initMonograms();
     initSharp();
+    initCollectibles({ getSettings, saveSettings });
     initShortcuts({
         enabled: () => !!getSettings().enabled,
         switcher: () => openSwitcher(''),
