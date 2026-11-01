@@ -428,7 +428,10 @@ function renderMembers(aside, group) {
     if (offline.length) {
         parts.push(heading('Offline', offline.length), ...offline.map(x => memberRow(x, false)));
     }
-    aside.replaceChildren(...parts, memberDeck(members));
+    const list = document.createElement('div');
+    list.className = 'dsc-members-list';
+    list.append(...parts);
+    aside.replaceChildren(list, memberDeck(members));
     paintPresence(aside);
     monogramizeAll(aside, '.dsc-avatar img', img => img.parentElement?.dataset.name ?? '');
 }

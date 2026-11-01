@@ -235,7 +235,16 @@ body.discord-theme .dsc-prof-full:hover {
 
 /* Member list */
 body.discord-theme #dsc-aside.dsc-members {
+    display: flex;
+    flex-direction: column;
     padding: 0 8px 20px;
+}
+
+/* a long list scrolls in its own space: the rows keep their size and the deck its place */
+body.discord-theme .dsc-members-list {
+    flex: 0 1 auto;
+    min-height: 180px;
+    overflow-y: auto;
 }
 
 body.discord-theme .dsc-members-heading {
