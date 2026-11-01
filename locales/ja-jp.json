@@ -435,5 +435,7 @@
     "{0} saved files are unticked.": "保存済みファイル {0} 個のチェックが外れています。",
     "Keep all profile art offline with the Discord Decor server plugin.": "Discord Decor サーバープラグインで、すべてのプロフィールアートをオフラインで保存できます。",
     "How to Install": "インストール方法",
-    "Dismiss": "閉じる"
+    "Dismiss": "閉じる",
+    "Match Character": "キャラクターに合わせる",
+    "Pick what suits them, from their name and description": "名前と説明から合うものを選びます"
 }

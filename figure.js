@@ -8,6 +8,7 @@
 //    so cutouts made with the plugin's button count too;
 // 3. their profile picture.
 
+import { chatLook } from './chatlook.js';
 import { GatedObserver } from './life.js';
 import { isPlaceholder } from './monograms.js';
 import { fullPictureUrl } from './ui.js';
@@ -129,8 +130,9 @@ function cutoutOf(character) {
 /** Shows the best picture of the character in the card's image. */
 function paint(card, character) {
     const img = card.querySelector('img');
-    const figure = galleryOf(character) || spriteOf(character) || ready.get(character.avatar) || '';
-    const src = figure || fullPictureUrl('avatar', character.avatar);
+    const chosen = chatLook(`c:${character.avatar}`).picture;
+    const figure = chosen ? '' : galleryOf(character) || spriteOf(character) || ready.get(character.avatar) || '';
+    const src = chosen || figure || fullPictureUrl('avatar', character.avatar);
     card.classList.toggle('dsc-figure-cut', !!figure);
     if (img && img.getAttribute('src') !== src) {
         img.src = src;

@@ -435,5 +435,7 @@
     "{0} saved files are unticked.": "{0} ملفات محفوظة غير محددة.",
     "Keep all profile art offline with the Discord Decor server plugin.": "احتفظ بكل رسومات الملف الشخصي دون اتصال عبر إضافة الخادم Discord Decor.",
     "How to Install": "طريقة التثبيت",
-    "Dismiss": "إغلاق"
+    "Dismiss": "إغلاق",
+    "Match Character": "مطابقة الشخصية",
+    "Pick what suits them, from their name and description": "اختر ما يناسبهم بناءً على الاسم والوصف"
 }

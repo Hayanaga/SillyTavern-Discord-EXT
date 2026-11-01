@@ -6,8 +6,9 @@
 // The built-in set is assets/collectibles/catalog.json; files people add are uploaded to
 // SillyTavern's user files and listed in the settings with what they are.
 
+import { chatLook, hasOpenChat, setChatLook } from './chatlook.js';
 import { openOffline, saveStarterSet } from './collectibles-offline.js';
-import { GatedObserver, listen } from './life.js';
+import { GatedObserver, listen, onEvent } from './life.js';
 import { t } from './ui.js';
 
 export const KINDS = /** @type {const} */ (['decoration', 'nameplate', 'effect', 'frame']);
@@ -127,7 +128,76 @@ function hashOf(text) {
     return hash >>> 0;
 }
 
-/** Someone's item of a kind; the first time, the least used one, which is then kept. */
+function leastUsed(items, used) {
+    const least = Math.min(...items.map(x => used.get(x.id) ?? 0));
+    return items.filter(x => (used.get(x.id) ?? 0) === least);
+}
+
+const NOISE = new Set('the and for with you your from that this her his she him they them their are was were has have had not but who what when where will can all one out into about very just like more some been being over also than then its our'.split(' '));
+/** Words in a character's text that suit items named differently */
+const SUITS = {
+    dragon: 'fire flame ember lava', fire: 'flame ember lava', ocean: 'water wave tide bubble coral fish', sea: 'ocean water wave tide coral fish', octopus: 'ocean water bubble', fish: 'ocean water bubble',
+    forest: 'leaf pine moss bonsai flower', garden: 'flower leaf bloom bonsai', plant: 'leaf flower bloom', tree: 'leaf pine autumn branch', moon: 'lunar star night', night: 'moon star dark',
+    space: 'cosmic galaxy star orbit astral', star: 'cosmic galaxy astral moon', robot: 'cyber neon circuit retro', android: 'cyber neon circuit', cyber: 'neon circuit', magic: 'arcane spell witch mana', witch: 'magic arcane spell moon', mage: 'magic arcane spell mana', wizard: 'magic arcane spell mana',
+    vampire: 'blood bat rose dark', demon: 'devil hell dark', devil: 'demon thorn', angel: 'angelic heaven cloud', knight: 'blade sword', sword: 'blade', ninja: 'blade shadow', book: 'story library', library: 'book story', cat: 'kitty meow', bird: 'feather', baker: 'bread bake', bread: 'bake baker',
+    summer: 'beach sun tropical', winter: 'snow ice frost', snow: 'ice frost winter', flower: 'bloom blossom rose', rose: 'bloom thorn',
+};
+
+function wordsOf(text) {
+    return (String(text ?? '').toLowerCase().match(/\p{L}{3,}/gu) ?? []).map(word => word.replace(/(?<=\p{L}{3})s$/u, '')).filter(word => !NOISE.has(word));
+}
+
+/** A person's name and words, for choosing what suits them. */
+function textOf(key) {
+    const context = SillyTavern.getContext();
+    const file = key.slice(2);
+    if (key.startsWith('c:')) {
+        const character = context.characters.find(x => x.avatar === file);
+        return character && { name: character.name, tags: (character.data?.tags ?? character.tags ?? []).join(' '), about: `${character.description ?? ''} ${character.personality ?? ''}` };
+    }
+    const { personas = {}, persona_descriptions: about = {} } = context.powerUserSettings ?? {};
+    return { name: personas[file] ?? '', tags: '', about: about[file]?.description ?? '' };
+}
+
+/** How much each word points to a person: their name most, then tags, then what's written about them. */
+function weightsOf(key) {
+    const text = textOf(key);
+    const weights = new Map();
+    if (!text) {
+        return weights;
+    }
+    const add = (words, weight, cap = weight) => {
+        for (const word of words) {
+            weights.set(word, Math.min((weights.get(word) ?? 0) + weight, Math.max(cap, weights.get(word) ?? 0)));
+        }
+    };
+    add(wordsOf(text.name), 6);
+    add(wordsOf(text.tags), 4);
+    add(wordsOf(text.about), 1, 3);
+    for (const [word, weight] of [...weights]) {
+        add((SUITS[word] ?? '').split(' ').filter(Boolean), weight / 2);
+    }
+    return weights;
+}
+
+/** The items that suit a person best, or none when nothing does. */
+function suited(key, items) {
+    const weights = weightsOf(key);
+    let best = 0;
+    let found = [];
+    for (const item of items) {
+        const score = wordsOf(item.name).reduce((sum, word) => sum + (weights.get(word) ?? 0), 0);
+        if (score > best) {
+            best = score;
+            found = [item];
+        } else if (score === best && score > 0) {
+            found.push(item);
+        }
+    }
+    return found;
+}
+
+/** Someone's item of a kind; the first time, one that suits them or else the least used, which is then kept. */
 export function itemFor(key, kind) {
     const assign = store().assign;
     const own = assign[key] ??= {};
@@ -143,12 +213,25 @@ export function itemFor(key, kind) {
             }
         }
         const least = Math.min(...used.values());
-        const free = items.filter(x => used.get(x.id) === least);
+        const suits = suited(key, items);
+        const free = suits.length ? leastUsed(suits, used) : items.filter(x => used.get(x.id) === least);
         own[kind] = free[hashOf(key) % free.length].id;
         save();
     }
     const item = itemById(kind, own[kind]);
     return item && available(item) ? item : null;
+}
+
+/** Called when someone's look in the open chat changes, so the profile can redraw */
+let chatLookChanged = () => {};
+
+export function onChatLookChanged(handler) {
+    chatLookChanged = handler;
+}
+
+function refreshChatLook() {
+    refreshAll();
+    chatLookChanged();
 }
 
 export function setItem(key, kind, id) {
@@ -203,8 +286,36 @@ const ROWS = '.dsc-dm, .dsc-member, #dsc-user';
 const PROFILES = '#dsc-aside:not(.dsc-members), #dsc-popout';
 
 function pictureOf(holder) {
-    const img = holder.querySelector(':scope > img, :scope > .dsc-avatar > img');
-    return img?.getAttribute('src') ?? '';
+    const img = /** @type {HTMLImageElement|null} */ (holder.querySelector(':scope > img, :scope > .dsc-avatar > img'));
+    return img?.dataset.dscOriginal ?? img?.getAttribute('src') ?? '';
+}
+
+/** Shows a person's picture for the open chat, if they have one, and remembers their own. */
+function paintChatPicture(holder) {
+    const img = /** @type {HTMLImageElement|null} */ (holder.querySelector(':scope > img, :scope > .dsc-avatar > img'));
+    if (!img || holder.closest('.dsc-dv-icon, .dsc-guild')) {
+        return;
+    }
+    const shown = img.getAttribute('src') ?? '';
+    // something else drew a new picture here, so that's now their own
+    if (img.dataset.dscApplied && shown !== img.dataset.dscApplied) {
+        delete img.dataset.dscOriginal;
+        delete img.dataset.dscApplied;
+    }
+    const own = img.dataset.dscOriginal ?? shown;
+    const key = keyOfPicture(own);
+    const wanted = key ? chatLook(key).picture : '';
+    if (wanted) {
+        img.dataset.dscOriginal = own;
+        img.dataset.dscApplied = wanted;
+        if (shown !== wanted) {
+            img.src = wanted;
+        }
+    } else if (img.dataset.dscOriginal) {
+        delete img.dataset.dscOriginal;
+        delete img.dataset.dscApplied;
+        img.src = own;
+    }
 }
 
 function keyOfProfile(profile) {
@@ -227,6 +338,7 @@ function swap(holder, selector, item, build, where = 'append') {
 }
 
 function decorate(holder) {
+    paintChatPicture(holder);
     const key = holder.closest('.dsc-dv-icon, .dsc-guild') ? '' : keyOfPicture(pictureOf(holder));
     // as in Discord: lists and the chat show the first frame and play while pointed at;
     // profiles play all the time
@@ -518,7 +630,53 @@ async function removeOwn(item) {
 /* ---------- the picker ---------- */
 
 const PICKER_ID = 'dsc-look';
-const TITLES = Object.fromEntries([['decoration', 'Avatar Decoration'], ['nameplate', 'Nameplate'], ['effect', 'Profile Effect'], ['frame', 'Profile Frame']]);
+const TITLES = Object.fromEntries([['decoration', 'Avatar Decoration'], ['nameplate', 'Nameplate'], ['effect', 'Profile Effect'], ['frame', 'Profile Frame'], ['background', 'Background'], ['picture', 'Picture']]);
+/** Kept per chat rather than per person, and only offered while a chat is open */
+const CHAT_KINDS = ['background', 'picture'];
+const PICTURES = 'image/png,image/jpeg,image/gif,image/webp,image/avif';
+
+/** Pictures on offer for a person's chat look: what's been added, then SillyTavern's own. */
+async function chatArtOf(kind, key, name) {
+    const { getRequestHeaders } = SillyTavern.getContext();
+    const added = (store().art?.[kind] ?? []).map(url => ({ id: url, url, thumb: url, name: decodeURIComponent(url.split('/').pop()) }));
+    if (kind === 'background') {
+        const response = await fetch('/api/backgrounds/all', { method: 'POST', headers: getRequestHeaders(), body: '{}' }).catch(() => null);
+        const data = response?.ok ? await response.json() : {};
+        const files = (data.images ?? []).map(image => typeof image === 'string' ? image : image.filename).filter(file => file && !file.startsWith('_'));
+        return [...added, ...files.map(file => ({ id: `backgrounds/${encodeURIComponent(file)}`, url: `backgrounds/${encodeURIComponent(file)}`, thumb: `/thumbnail?type=bg&file=${encodeURIComponent(file)}`, name: file }))];
+    }
+    if (!key.startsWith('c:')) {
+        return added;
+    }
+    const response = await fetch('/api/images/list', { method: 'POST', headers: getRequestHeaders(), body: JSON.stringify({ folder: name, sortField: 'date', sortOrder: 'desc' }) }).catch(() => null);
+    const files = response?.ok ? await response.json() : [];
+    return [...added, ...(Array.isArray(files) ? files : []).map((file) => {
+        const url = `user/images/${encodeURIComponent(name)}/${encodeURIComponent(file)}`;
+        return { id: url, url, thumb: url, name: file };
+    })];
+}
+
+/** Saves a picture someone added for a chat look to SillyTavern's user files. */
+async function addChatArt(kind, file) {
+    const { getRequestHeaders } = SillyTavern.getContext();
+    const data = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result).split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+    const extension = (/\.[a-z0-9]+$/i.exec(file.name)?.[0] ?? '.png').toLowerCase();
+    const response = await fetch('/api/files/upload', { method: 'POST', headers: getRequestHeaders(), body: JSON.stringify({ name: `discord-look-${Date.now()}${extension}`, data }) });
+    if (!response.ok) {
+        return '';
+    }
+    const { path } = await response.json();
+    const url = path.startsWith('/') ? path : `/${path}`;
+    const art = store().art ??= {};
+    (art[kind] ??= []).unshift(url);
+    save();
+    return url;
+}
 
 export function closeLook() {
     document.getElementById(PICKER_ID)?.remove();
@@ -579,6 +737,22 @@ export function openLook(key, name, picture) {
     done.className = 'menu_button dsc-primary';
     done.textContent = t('Done');
     done.addEventListener('click', closeLook);
+    const match = document.createElement('button');
+    match.type = 'button';
+    match.className = 'menu_button';
+    match.textContent = t('Match Character');
+    match.title = t('Pick what suits them, from their name and description');
+    match.addEventListener('click', () => {
+        for (const each of KINDS) {
+            const suits = suited(key, catalog[each].filter(available));
+            if (suits.length) {
+                (store().assign[key] ??= {})[each] = suits[hashOf(key) % suits.length].id;
+            }
+        }
+        save();
+        refreshAll();
+        draw();
+    });
     const offline = document.createElement('button');
     offline.type = 'button';
     offline.className = 'menu_button dsc-look-offline';
@@ -587,12 +761,19 @@ export function openLook(key, name, picture) {
         closeLook();
         openOffline();
     });
-    foot.append(offline, upload, input, done);
+    foot.append(offline, match, upload, input, done);
     upload.addEventListener('click', () => input.click());
     input.addEventListener('change', async () => {
         const file = input.files?.[0];
         input.value = '';
-        if (file) {
+        if (file && CHAT_KINDS.includes(kind)) {
+            const url = await addChatArt(kind, file);
+            if (url) {
+                setChatLook(key, kind, url);
+                refreshChatLook();
+                draw();
+            }
+        } else if (file) {
             const item = await addOwn(kind, file);
             if (item) {
                 setItem(key, kind, item.id);
@@ -620,11 +801,15 @@ export function openLook(key, name, picture) {
         const frameItem = itemById('frame', own.frame);
         const card = document.createElement('div');
         card.className = 'dsc-look-card';
+        const background = chatLook(key).background;
+        if (background) {
+            card.style.background = `url("${background.replaceAll('"', '%22')}") center / cover`;
+        }
         const avatar = document.createElement('span');
         avatar.className = 'dsc-look-avatar';
         const img = document.createElement('img');
         img.alt = '';
-        img.src = picture;
+        img.src = chatLook(key).picture || picture;
         avatar.append(img);
         if (deco) {
             avatar.append(calm.matches ? still(deco, 'dsc-deco') : moving(deco, 'dsc-deco'));
@@ -648,7 +833,42 @@ export function openLook(key, name, picture) {
         preview.replaceChildren(card);
     }
 
+    /** A tile for a background or picture, in the open chat only; no entry is their usual one. */
+    function artTile(entry) {
+        const chosen = (chatLook(key)[kind] ?? '') === (entry?.url ?? '');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'dsc-look-tile';
+        button.setAttribute('role', 'option');
+        button.setAttribute('aria-selected', String(chosen));
+        button.title = entry ? entry.name : t('Default');
+        if (entry) {
+            const img = document.createElement('img');
+            img.className = 'dsc-look-thumb';
+            img.alt = '';
+            img.loading = 'lazy';
+            img.src = entry.thumb;
+            button.append(img);
+        } else {
+            button.classList.add('dsc-look-none');
+            button.textContent = t('Default');
+        }
+        button.addEventListener('click', () => {
+            setChatLook(key, kind, entry?.url ?? '');
+            refreshChatLook();
+            for (const other of grid.querySelectorAll('.dsc-look-tile[aria-selected="true"]')) {
+                other.setAttribute('aria-selected', 'false');
+            }
+            button.setAttribute('aria-selected', 'true');
+            drawPreview();
+        });
+        return button;
+    }
+
     function tile(item) {
+        if (CHAT_KINDS.includes(kind)) {
+            return artTile(item);
+        }
         const chosen = (store().assign[key]?.[kind] ?? '') === (item?.id ?? '');
         const button = document.createElement('button');
         button.type = 'button';
@@ -725,9 +945,15 @@ export function openLook(key, name, picture) {
         }
     }
 
-    function fill() {
+    let filling = 0;
+    async function fill() {
         const words = find.value.trim().toLowerCase();
-        shown = itemsOf(kind).filter(item => !words || item.name.toLowerCase().includes(words));
+        const turn = ++filling;
+        const items = CHAT_KINDS.includes(kind) ? await chatArtOf(kind, key, name) : itemsOf(kind);
+        if (turn !== filling) {
+            return;
+        }
+        shown = items.filter(item => !words || item.name.toLowerCase().includes(words));
         made = 0;
         grid.replaceChildren(...(words ? [] : [tile(null)]), end);
         grid.scrollTop = 0;
@@ -736,7 +962,8 @@ export function openLook(key, name, picture) {
     }
 
     function draw() {
-        tabs.replaceChildren(...KINDS.map((each) => {
+        input.accept = CHAT_KINDS.includes(kind) ? PICTURES : ACCEPT;
+        tabs.replaceChildren(...[...KINDS, ...(hasOpenChat() ? CHAT_KINDS : [])].map((each) => {
             const tab = document.createElement('button');
             tab.type = 'button';
             tab.className = 'dsc-look-tab';
@@ -831,6 +1058,7 @@ export async function initCollectibles({ getSettings, saveSettings }) {
             element.src = `/api/plugins/discord-decor/file?url=${encodeURIComponent(element.src)}`;
         }
     }, true);
+    onEvent(SillyTavern.getContext().eventTypes.CHAT_CHANGED, () => setTimeout(refreshAll, 0));
     listen(document, 'pointerover', play);
     listen(document, 'pointerout', play);
     new GatedObserver((mutations) => {

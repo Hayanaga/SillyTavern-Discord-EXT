@@ -4,7 +4,8 @@
 import { channelLabel, getCurrentPlace, getDirectMessages, getGroup, isPinned, onDataChange, openCharacter, togglePin } from './data.js';
 import { formatListTime } from './messages.js';
 import { monogramizeAll } from './monograms.js';
-import { openLook } from './collectibles.js';
+import { chatLook } from './chatlook.js';
+import { keyOfPicture, onChatLookChanged, openLook } from './collectibles.js';
 import { fillFigure } from './figure.js';
 import { paintPresence, statusOf } from './presence.js';
 import { initPins, togglePins } from './pins.js';
@@ -296,8 +297,13 @@ function backgrounds() {
     return backgroundList;
 }
 
-function paintBanner(banner, name) {
+function paintBanner(banner, name, key = '') {
     banner.style.background = DEFAULT_BANNERS[getColorIndex(name)];
+    const chosen = key ? chatLook(key).background : '';
+    if (chosen) {
+        banner.style.background = `${DEFAULT_BANNERS[getColorIndex(name)]} url("${chosen.replaceAll('"', '%22')}") center / cover`;
+        return;
+    }
     backgrounds().then((files) => {
         if (!files.length) {
             return;
@@ -519,7 +525,7 @@ function renderProfile(aside, character) {
     const { groups, timestampToMoment } = SillyTavern.getContext();
     const banner = document.createElement('div');
     banner.className = 'dsc-prof-banner';
-    paintBanner(banner, character.name);
+    paintBanner(banner, character.name, `c:${character.avatar}`);
     const avatar = document.createElement('span');
     avatar.className = 'dsc-avatar dsc-prof-avatar';
     avatar.dataset.name = character.name;
@@ -798,7 +804,7 @@ function renderPersona(popout, picture = '') {
     const src = picture || (avatarId ? getThumbnailUrl('persona', avatarId) : '');
     const banner = document.createElement('div');
     banner.className = 'dsc-prof-banner';
-    paintBanner(banner, name1);
+    paintBanner(banner, name1, keyOfPicture(src));
     const avatar = document.createElement('span');
     avatar.className = 'dsc-avatar dsc-prof-avatar';
     avatar.dataset.name = name1;
@@ -1187,6 +1193,7 @@ function renderActivity(list, heading) {
  * @param {() => void} options.back
  */
 export function initHeader(options) {
+    onChatLookChanged(refreshHeader);
     actions = { ...actions, ...options };
     createTitlebar();
     createHeader();

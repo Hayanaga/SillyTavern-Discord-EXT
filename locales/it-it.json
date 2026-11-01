@@ -435,5 +435,7 @@
     "{0} saved files are unticked.": "{0} file salvati non sono spuntati.",
     "Keep all profile art offline with the Discord Decor server plugin.": "Conserva offline tutte le grafiche del profilo con il plugin server Discord Decor.",
     "How to Install": "Come installarlo",
-    "Dismiss": "Chiudi"
+    "Dismiss": "Chiudi",
+    "Match Character": "Abbina al personaggio",
+    "Pick what suits them, from their name and description": "Sceglie ciò che gli si addice da nome e descrizione"
 }

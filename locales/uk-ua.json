@@ -435,5 +435,7 @@
     "{0} saved files are unticked.": "Збережених файлів без позначки: {0}.",
     "Keep all profile art offline with the Discord Decor server plugin.": "Зберігайте все оформлення профілю офлайн за допомогою серверного плагіна Discord Decor.",
     "How to Install": "Як установити",
-    "Dismiss": "Закрити"
+    "Dismiss": "Закрити",
+    "Match Character": "Підібрати до персонажа",
+    "Pick what suits them, from their name and description": "Вибирає відповідне за іменем та описом"
 }

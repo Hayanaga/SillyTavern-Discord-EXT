@@ -63,6 +63,16 @@ body.discord-theme #dsc-user:has(> .dsc-plate) .dsc-user-tool {
     filter: drop-shadow(0 0 2px var(--dsc-panel));
 }
 
+/* the cards in the lists, large enough to see the art */
+body.discord-theme :is(.dsc-dm, .dsc-member):has(> .dsc-plate) {
+    height: 56px;
+}
+
+body.discord-theme :is(.dsc-dm, .dsc-member):has(> .dsc-plate) > .dsc-avatar {
+    width: 40px;
+    height: 40px;
+}
+
 /* the palette's wash, as Discord draws it, with the art over it on the right */
 body.discord-theme .dsc-plate {
     position: absolute;
@@ -497,6 +507,22 @@ body.discord-theme .dsc-look[data-kind="effect"] .dsc-look-thumb {
 }
 
 /* frames: a small card in its frame */
+body.discord-theme .dsc-look[data-kind="background"] .dsc-look-tile {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+}
+
+body.discord-theme .dsc-look[data-kind="picture"] .dsc-look-tile {
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+}
+
+body.discord-theme .dsc-look:is([data-kind="background"], [data-kind="picture"]) .dsc-look-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 body.discord-theme .dsc-look[data-kind="frame"] .dsc-look-tile {
     aspect-ratio: 3 / 4;
     padding: 22% 18% 16%;

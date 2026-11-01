@@ -435,5 +435,7 @@
     "{0} saved files are unticked.": "有 {0} 个已保存的文件未勾选。",
     "Keep all profile art offline with the Discord Decor server plugin.": "使用 Discord Decor 服务器插件离线保存所有个人资料图案。",
     "How to Install": "安装方法",
-    "Dismiss": "关闭"
+    "Dismiss": "关闭",
+    "Match Character": "匹配角色",
+    "Pick what suits them, from their name and description": "根据名称和描述挑选合适的装饰"
 }
