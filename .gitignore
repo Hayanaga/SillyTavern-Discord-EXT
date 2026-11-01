@@ -1,4 +1,4 @@
 .DS_Store
 node_modules/
 qa/
-docs/screenshots/raw/
+.github/screenshots/raw/

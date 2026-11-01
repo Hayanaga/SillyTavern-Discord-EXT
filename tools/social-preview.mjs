@@ -1,7 +1,7 @@
-// Renders the repository's social preview (1280×640) to docs/social-preview.png. It first takes its
+// Renders the repository's social preview (1280×640) to .github/social-preview.png. It first takes its
 // own shots on the clean test profile (sample characters only): the same chat in each base theme and
 // two Nitro themes on desktop, and the chat with the typing dots on a phone. They go to
-// docs/screenshots/raw/preview/ (not committed), and tools/social-preview.html lays them out.
+// .github/screenshots/raw/preview/ (not committed), and tools/social-preview.html lays them out.
 // node tools/social-preview.mjs starts the test server itself and stops it when done.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -10,7 +10,7 @@ import { chromium, BROWSER } from '../test/e2e/env.mjs';
 import { SERVER_URL as URL, startTestServer } from './test-server.mjs';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const OUT = path.join(ROOT, 'docs/screenshots/raw/preview');
+const OUT = path.join(ROOT, '.github/screenshots/raw/preview');
 fs.mkdirSync(OUT, { recursive: true });
 
 const THEMES = [['light', ''], ['ash', ''], ['dark', ''], ['onyx', ''], ['dark', 'aurora'], ['dark', 'chroma-glow']];
@@ -86,6 +86,6 @@ stopServer();
 const card = await browser.newPage({ viewport: { width: 1280, height: 640 } });
 await card.goto(pathToFileURL(path.join(ROOT, 'tools/social-preview.html')).href);
 await card.waitForTimeout(800);
-await card.screenshot({ path: path.join(ROOT, 'docs/social-preview.png') });
+await card.screenshot({ path: path.join(ROOT, '.github/social-preview.png') });
 await browser.close();
-console.log('wrote docs/social-preview.png');
+console.log('wrote .github/social-preview.png');

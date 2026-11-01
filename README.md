@@ -2,7 +2,17 @@
 
 A SillyTavern extension that makes SillyTavern look and work like Discord after its 2025 redesign, on desktop and on phones, in Discord's four themes: Dark (the default), Ash, Onyx and Light.
 
-![A direct message](.github/dm.png)
+![theme dark](.github/screenshots/theme-dark.webp)
+
+![tour](.github/screenshots/clip-tour.webp)
+
+<p>
+  <img src=".github/screenshots/phone-home.webp" width="240" alt="phone home">
+  <img src=".github/screenshots/phone-chat.webp" width="240" alt="phone chat">
+  <img src=".github/screenshots/phone-profile-sheet.webp" width="240" alt="phone profile sheet">
+</p>
+
+Every feature, with pictures: **[UI_SCREENSHOTS.md](UI_SCREENSHOTS.md)**.
 
 ## What you get
 
@@ -28,32 +38,6 @@ A SillyTavern extension that makes SillyTavern look and work like Discord after 
 - **Keyboard shortcuts** follow Discord's set and show the right keys for your OS: Ctrl/⌘+K, Ctrl/⌘+/ for the keybinds list, Ctrl/⌘+, for settings, Alt+↑/↓ for conversations, Ctrl/⌘+Alt+↑/↓ for servers, Ctrl/⌘+' for a new chat, Ctrl/⌘+P to pin, Ctrl/⌘+U for the member list, Ctrl/⌘+I for chat history and Ctrl/⌘+E for extensions.
 - **Phones** follow Discord mobile. You see the server rail with your conversations and the Home / Notifications / You tabs; Notifications lists recent messages. A conversation slides in full screen with a pill message box and a send button. Tapping a message shows its actions, and You opens the settings as a list.
 - **Disguise.** The tab reads "Discord | @name" and shows Discord's icon. The loading screen is Discord's, with a tip, and SillyTavern's name doesn't appear in the themed UI. Turning the theme off puts everything back exactly.
-
-## Gallery
-
-### Desktop
-
-| | |
-|---|---|
-| ![A reply split into short messages, with the typing dots](docs/screenshots/chat-dark.webp) | ![A Nitro color theme (Chroma Glow)](docs/screenshots/nitro.webp) |
-| Short messages and typing dots (Dark) | Nitro color theme (Chroma Glow) |
-| ![A server with its member list and a folder in the rail](docs/screenshots/server-members.webp) | ![A profile popout](docs/screenshots/profile-popout.webp) |
-| A server, its member list and a server folder | Profile popout |
-| ![Search results](docs/screenshots/search.webp) | ![Pinned messages](docs/screenshots/pins.webp) |
-| Search | Pinned messages |
-| ![User Settings, Appearance, in Light](docs/screenshots/settings-light.webp) | ![The Customize page](docs/screenshots/customize.webp) |
-| User Settings (Light) | Customize |
-| ![Creating a server](docs/screenshots/add-server.webp) | |
-| Add a Server | |
-
-### Phone
-
-| | | |
-|---|---|---|
-| ![The phone home screen](docs/screenshots/phone-home.webp) | ![A conversation on a phone](docs/screenshots/phone-chat.webp) | ![User Settings on a phone, in Light](docs/screenshots/phone-settings-light.webp) |
-| Home | A conversation | User Settings (Light) |
-
-`node tools/gallery.mjs` retakes these on the clean test profile. `node tools/social-preview.mjs` takes its own shots the same way and renders the repository's social preview ([docs/social-preview.png](docs/social-preview.png)).
 
 ## Install
 
