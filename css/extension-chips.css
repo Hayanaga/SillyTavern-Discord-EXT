@@ -1,7 +1,7 @@
 /* Quick Replies stay one scrolling row, so they never make the message box grow, and Chat Top Bar
-   keeps its height. Shared by the Discord, iMessage and Yodayo themes; each copies this unchanged. */
+   keeps its height. Shared by the Discord, iMessage, Yahoo Messenger and Yodayo themes; each copies this unchanged. */
 
-body:is(.discord-theme, .imessage, .yodayo-tavern) #qr--bar {
+body:is(.discord-theme, .imessage, .yahoo-messenger, .yodayo-tavern) #qr--bar {
     flex-wrap: nowrap;
     /* centered while they fit, and every chip can still be scrolled to when they don't */
     justify-content: safe center;
@@ -10,35 +10,35 @@ body:is(.discord-theme, .imessage, .yodayo-tavern) #qr--bar {
     scrollbar-width: none;
 }
 
-body:is(.discord-theme, .imessage, .yodayo-tavern) #qr--bar::-webkit-scrollbar {
+body:is(.discord-theme, .imessage, .yahoo-messenger, .yodayo-tavern) #qr--bar::-webkit-scrollbar {
     display: none;
 }
 
-body:is(.discord-theme, .imessage, .yodayo-tavern) #qr--bar .qr--buttons {
+body:is(.discord-theme, .imessage, .yahoo-messenger, .yodayo-tavern) #qr--bar .qr--buttons {
     flex: none;
     flex-wrap: nowrap;
     width: auto;
     max-width: none;
 }
 
-body:is(.discord-theme, .imessage, .yodayo-tavern) #qr--bar .qr--button {
+body:is(.discord-theme, .imessage, .yahoo-messenger, .yodayo-tavern) #qr--bar .qr--button {
     flex: none;
     white-space: nowrap;
 }
 
-body:is(.discord-theme, .imessage, .yodayo-tavern) #extensionTopBar {
+body:is(.discord-theme, .imessage, .yahoo-messenger, .yodayo-tavern) #extensionTopBar {
     flex: none;
     flex-wrap: nowrap;
     align-items: center;
     width: auto;
 }
 
-body:is(.discord-theme, .imessage, .yodayo-tavern) #extensionTopBar #extensionTopBarChatName {
+body:is(.discord-theme, .imessage, .yahoo-messenger, .yodayo-tavern) #extensionTopBar #extensionTopBarChatName {
     flex: 1 1 0;
     min-width: 0;
 }
 
-body:is(.discord-theme, .imessage, .yodayo-tavern) #extensionTopBar #extensionTopBarSearchInput {
+body:is(.discord-theme, .imessage, .yahoo-messenger, .yodayo-tavern) #extensionTopBar #extensionTopBarSearchInput {
     flex: 0 1 180px;
     min-width: 60px;
 }
@@ -49,7 +49,7 @@ body.yodayo-tavern #extensionTopBar {
 }
 
 /* Quick Replies' popout button stays reachable at the row's end instead of lying over the chips */
-body:is(.discord-theme, .imessage, .yodayo-tavern) #qr--bar > #qr--popoutTrigger {
+body:is(.discord-theme, .imessage, .yahoo-messenger, .yodayo-tavern) #qr--bar > #qr--popoutTrigger {
     position: sticky;
     right: 0;
     top: auto;
