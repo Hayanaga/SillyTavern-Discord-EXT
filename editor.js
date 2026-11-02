@@ -21,24 +21,53 @@ function press(id) {
     document.getElementById(id)?.click();
 }
 
-function scrollTo(id) {
-    const target = document.getElementById(id);
-    const panel = document.getElementById('right-nav-panel');
-    if (target && panel) {
-        panel.scrollTo({ top: Math.max(0, target.offsetTop - 16), behavior: 'smooth' });
-    } else {
-        panel?.scrollTo({ top: 0, behavior: 'smooth' });
+/** Brings a part of a page to the top of its scroller and lights it up for a moment. */
+function showPart(element, lit = [element]) {
+    element?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    for (const part of lit) {
+        part?.classList.remove('dsc-flash');
+        // restarts the animation when it's pressed again
+        void part?.getBoundingClientRect();
+        part?.classList.add('dsc-flash');
+        setTimeout(() => part?.classList.remove('dsc-flash'), 1300);
     }
 }
 
-/** The character's Scenario: SillyTavern keeps it with the Definitions; go straight to it. */
+function scrollTo(id) {
+    showDefinitions(false);
+    const target = document.getElementById(id);
+    if (target) {
+        showPart(target);
+    } else {
+        document.getElementById('right-nav-panel')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function definitionsOpen() {
+    return visible('character_popup');
+}
+
+/** The Definitions form takes the Profile form's place in the page, rather than popping up over it. */
+function showDefinitions(show) {
+    document.body.classList.toggle('dsc-editor-defs', show);
+    if (show !== definitionsOpen()) {
+        press(show ? 'advanced_div' : 'character_cross');
+    }
+    const title = document.querySelector(`#${ID} .dsc-set-title`);
+    if (title && mode === 'char') {
+        title.textContent = t(show ? 'Definitions' : 'Profile');
+    }
+    if (show) {
+        document.getElementById('character_popup')?.scrollTo({ top: 0 });
+    }
+}
+
+/** The character's Scenario: SillyTavern keeps it with the Definitions. */
 function openScenario() {
-    press('advanced_div');
-    setTimeout(() => {
-        const field = /** @type {HTMLTextAreaElement|null} */ (document.getElementById('scenario_pole'));
-        field?.scrollIntoView({ block: 'center', behavior: 'smooth' });
-        field?.focus({ preventScroll: true });
-    }, 400);
+    showDefinitions(true);
+    const field = document.getElementById('scenario_pole');
+    showPart(field?.previousElementSibling, [field?.previousElementSibling, field]);
+    field?.focus({ preventScroll: true });
 }
 
 function currentName() {
@@ -74,7 +103,7 @@ function sections() {
     return [
         { heading: currentName() || t('New Character') },
         { label: 'Profile', run: () => scrollTo('') },
-        { label: 'Definitions', run: () => press('advanced_div') },
+        { label: 'Definitions', run: () => showDefinitions(true) },
         { label: 'Scenario', run: openScenario },
         ...(editing ? [
             { label: 'Lorebook', run: () => press('world_button') },
@@ -152,7 +181,7 @@ function render() {
         first = false;
         item.textContent = t(section.label);
         item.addEventListener('click', () => {
-            if (!section.danger && !section.muted && !['Definitions', 'Lorebook', 'Export', 'Duplicate', 'Scenario'].includes(section.label)) {
+            if (!section.danger && !section.muted && !['Lorebook', 'Export', 'Duplicate'].includes(section.label)) {
                 nav.querySelectorAll('.dsc-set-item').forEach(x => x.classList.toggle('dsc-selected', x === item));
             }
             section.run();
@@ -224,6 +253,10 @@ function update() {
     const open = document.body.classList.contains('dsc-chars-open');
     const next = !open ? '' : visible('rm_group_chats_block') ? 'group' : visible('rm_ch_create_block') ? 'char' : '';
     const body = document.body.classList;
+    // leaving the page, or going to another of its kind, starts on its first form again
+    if (next !== 'char' && body.contains('dsc-editor-defs')) {
+        showDefinitions(false);
+    }
     body.toggle('dsc-editor-open', !!next);
     body.toggle('dsc-editor-group', next === 'group');
     if (next && (next !== mode || !document.getElementById(ID))) {
@@ -251,6 +284,7 @@ export function initEditor() {
             create();
         }
     }, true);
+    shieldFromOutsideClose(document.getElementById('character_popup'));
     const observer = new GatedObserver(() => requestAnimationFrame(update));
     for (const id of ['rm_ch_create_block', 'rm_group_chats_block', 'rm_characters_block']) {
         const element = document.getElementById(id);

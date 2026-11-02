@@ -420,6 +420,61 @@ body.discord-theme .dsc-editor-foot {
     }
 }
 
+/* a part just pressed in the sidebar lights up for a moment */
+body.discord-theme .dsc-flash {
+    border-radius: 4px;
+    animation: dsc-flash 1.2s ease-out;
+}
+
+@keyframes dsc-flash {
+    0%, 35% { background-color: color-mix(in srgb, var(--dsc-blurple) 35%, transparent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--dsc-blurple) 35%, transparent); }
+    100% { background-color: transparent; box-shadow: 0 0 0 4px transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.discord-theme .dsc-flash {
+        animation: none;
+        outline: 2px solid var(--dsc-blurple);
+    }
+}
+
+@media screen and (min-width: 1001px) {
+    /* Definitions in the page's own place, where the Profile form was */
+    body.discord-theme.dsc-editor-defs #character_popup {
+        position: fixed !important;
+        inset: var(--dsc-set-top) auto auto calc(var(--dsc-set-side) + 40px) !important;
+        z-index: 3100;
+        width: min(740px, calc(100vw - var(--dsc-set-side) - 120px)) !important;
+        max-width: none !important;
+        height: calc(100dvh - var(--dsc-set-top) - 64px) !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        margin: 0;
+        padding: 0 0 24px !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        overflow-y: auto;
+    }
+
+    body.discord-theme.dsc-editor-defs #character_popup :is(h4, textarea) {
+        scroll-margin-top: 8px;
+    }
+
+    body.discord-theme.dsc-editor-defs #character_popup > :is(#character_popup_text, hr, #character_cross) {
+        display: none;
+    }
+
+    /* out of sight, not closed: SillyTavern's own fields inside it stay in use */
+    body.discord-theme.dsc-editor-defs #right-nav-panel {
+        opacity: 0 !important;
+        pointer-events: none;
+    }
+}
+
 @media screen and (max-width: 1000px) {
     /* room under the editor's content for the bar */
     body.discord-theme.dsc-editor-open #right-nav-panel.openDrawer {
