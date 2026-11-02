@@ -174,7 +174,12 @@ export function renderAppearance() {
     const iconRow = root.querySelector('.dsc-swatches-icon');
     themeRow.replaceChildren(...BASES.map(base => swatch('', t(base.name), base.swatch, !nitroTheme && appearance === base.id, () => actions.setBase(base.id))));
     colorRow.replaceChildren(...NITRO_THEMES.map(theme => swatch('dsc-swatch-gradient', t(theme.name), circleGradientOf(theme), nitroTheme === theme.id, () => actions.setNitro(theme.id))));
-    const pickIcon = id => pickAppIcon(id).finally(renderAppearance);
+    const pickIcon = (id) => {
+        // the choice is made at once; keeping a copy of the picture can take a while
+        const saving = pickAppIcon(id);
+        renderAppearance();
+        saving.finally(renderAppearance);
+    };
     iconRow.replaceChildren(
         defaultIcon(swatch('dsc-swatch-icon', t('Default'), 'var(--dsc-blurple)', !currentAppIcon(), () => pickIcon(''))),
         ...APP_ICONS.map(item => iconSwatch(swatch('dsc-swatch-icon', item.name, 'var(--dsc-floating)', currentAppIcon() === item.id, () => pickIcon(item.id)), item)),
