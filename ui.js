@@ -105,6 +105,12 @@ export function iconButton(className, label, iconName, size = 24) {
 
 /** Clicks a SillyTavern drawer's toggle, the way its own top bar does. */
 function toggleDrawer(drawerId) {
+    // straight to SillyTavern's handler for Characters: an extension can catch clicks on that hidden
+    // button and open a menu of its own under it, off screen (Character Library's launcher)
+    if (drawerId === 'rightNavHolder') {
+        $(`#${drawerId} > .drawer-toggle`).triggerHandler('click');
+        return;
+    }
     document.querySelector(`#${drawerId} > .drawer-toggle`)?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 }
 

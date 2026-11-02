@@ -176,6 +176,10 @@ function build() {
             document.getElementById('external_import_button')?.click();
         }),
         action('New Server', 'plus', () => openCharacterPanel('rm_button_group_chats')),
+        // its own launcher hangs off SillyTavern's hidden Characters button
+        ...(document.querySelector('#charlib-launcher-dropdown')
+            ? [action('Character Library', 'friends', () => /** @type {HTMLElement|null} */ (document.querySelector('#charlib-launcher-dropdown [data-action="library"]'))?.click())]
+            : []),
     );
     hero.append(title, subtitle, search, actions);
 
