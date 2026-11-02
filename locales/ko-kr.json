@@ -437,5 +437,8 @@
     "How to Install": "설치 방법",
     "Dismiss": "닫기",
     "Match Character": "캐릭터에 맞추기",
-    "Pick what suits them, from their name and description": "이름과 설명을 보고 어울리는 것을 고릅니다"
+    "Pick what suits them, from their name and description": "이름과 설명을 보고 어울리는 것을 고릅니다",
+    "Nicknames": "별명",
+    "Only in this chat. The AI still uses their real names.": "이 채팅에서만 적용됩니다. AI는 실제 이름을 계속 사용합니다.",
+    "Cancel": "취소"
 }

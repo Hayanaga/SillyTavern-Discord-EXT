@@ -2,6 +2,7 @@
 // tab with Discord's icon, and the message box says "Message @name" or
 // "Message #channel". Turning the theme off puts the originals back.
 
+import { nameFor } from './lib/chat-nicknames.js';
 import { channelLabel, getGroup } from './data.js';
 import { t, toChannelName } from './ui.js';
 
@@ -72,7 +73,8 @@ function describe() {
         return { title: [`#${toChannelName(channelLabel(group, chatId))}`, group.name], box: `#${toChannelName(channelLabel(group, chatId))}` };
     }
     if (character && chatId) {
-        return { title: [`@${character.name}`], box: `@${character.name}` };
+        const shown = nameFor(character.avatar, character.name);
+        return { title: [`@${shown}`], box: `@${shown}` };
     }
     return { title: [t('Friends')], box: '' };
 }

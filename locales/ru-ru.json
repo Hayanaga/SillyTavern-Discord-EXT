@@ -437,5 +437,8 @@
     "How to Install": "Как установить",
     "Dismiss": "Закрыть",
     "Match Character": "Подобрать к персонажу",
-    "Pick what suits them, from their name and description": "Выбирает подходящее по имени и описанию"
+    "Pick what suits them, from their name and description": "Выбирает подходящее по имени и описанию",
+    "Nicknames": "Прозвища",
+    "Only in this chat. The AI still uses their real names.": "Только в этом чате. ИИ по-прежнему использует настоящие имена.",
+    "Cancel": "Отмена"
 }

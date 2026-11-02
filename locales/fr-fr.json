@@ -437,5 +437,8 @@
     "How to Install": "Comment installer",
     "Dismiss": "Ignorer",
     "Match Character": "Assortir au personnage",
-    "Pick what suits them, from their name and description": "Choisit ce qui lui convient selon son nom et sa description"
+    "Pick what suits them, from their name and description": "Choisit ce qui lui convient selon son nom et sa description",
+    "Nicknames": "Surnoms",
+    "Only in this chat. The AI still uses their real names.": "Dans ce chat uniquement. L'IA utilise toujours les vrais noms.",
+    "Cancel": "Annuler"
 }

@@ -9,6 +9,7 @@
 // GROUP_MEMBER_DRAFTED per member in groups), so generation itself is untouched; swipes,
 // regenerations and continues never wait.
 
+import { nameFor } from './lib/chat-nicknames.js';
 import { getDirectMessages, onDataChange } from './data.js';
 import { play } from './sounds.js';
 import { t } from './ui.js';
@@ -239,7 +240,7 @@ export function initPresence(opts) {
             const character = context.characters[context.characterId];
             if (character) {
                 touch(character.avatar);
-                showTyping(character.name);
+                showTyping(nameFor(character.avatar, character.name));
             }
         }
     });
@@ -268,7 +269,7 @@ export function initPresence(opts) {
         }
         if (['swipe', 'regenerate', 'continue', 'impersonate', 'quiet'].includes(groupType)) {
             touch(character.avatar);
-            showTyping(character.name);
+            showTyping(nameFor(character.avatar, character.name));
             return;
         }
         await wake(character.avatar, character.name);

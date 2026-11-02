@@ -437,5 +437,8 @@
     "How to Install": "Hvernig á að setja upp",
     "Dismiss": "Loka",
     "Match Character": "Para við persónu",
-    "Pick what suits them, from their name and description": "Velur það sem hentar út frá nafni og lýsingu"
+    "Pick what suits them, from their name and description": "Velur það sem hentar út frá nafni og lýsingu",
+    "Nicknames": "Gælunöfn",
+    "Only in this chat. The AI still uses their real names.": "Aðeins í þessu spjalli. Gervigreindin notar áfram réttu nöfnin.",
+    "Cancel": "Hætta við"
 }

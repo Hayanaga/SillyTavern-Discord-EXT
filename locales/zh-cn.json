@@ -437,5 +437,8 @@
     "How to Install": "安装方法",
     "Dismiss": "关闭",
     "Match Character": "匹配角色",
-    "Pick what suits them, from their name and description": "根据名称和描述挑选合适的装饰"
+    "Pick what suits them, from their name and description": "根据名称和描述挑选合适的装饰",
+    "Nicknames": "昵称",
+    "Only in this chat. The AI still uses their real names.": "仅限此聊天。AI 仍使用真实姓名。",
+    "Cancel": "取消"
 }

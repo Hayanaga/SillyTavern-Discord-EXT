@@ -437,5 +437,8 @@
     "How to Install": "Come installarlo",
     "Dismiss": "Chiudi",
     "Match Character": "Abbina al personaggio",
-    "Pick what suits them, from their name and description": "Sceglie ciò che gli si addice da nome e descrizione"
+    "Pick what suits them, from their name and description": "Sceglie ciò che gli si addice da nome e descrizione",
+    "Nicknames": "Soprannomi",
+    "Only in this chat. The AI still uses their real names.": "Solo in questa chat. L'IA usa comunque i nomi veri.",
+    "Cancel": "Annulla"
 }

@@ -437,5 +437,8 @@
     "How to Install": "インストール方法",
     "Dismiss": "閉じる",
     "Match Character": "キャラクターに合わせる",
-    "Pick what suits them, from their name and description": "名前と説明から合うものを選びます"
+    "Pick what suits them, from their name and description": "名前と説明から合うものを選びます",
+    "Nicknames": "ニックネーム",
+    "Only in this chat. The AI still uses their real names.": "このチャットのみ。AI には本来の名前が使われます。",
+    "Cancel": "キャンセル"
 }

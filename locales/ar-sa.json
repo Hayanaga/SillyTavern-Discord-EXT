@@ -437,5 +437,8 @@
     "How to Install": "طريقة التثبيت",
     "Dismiss": "إغلاق",
     "Match Character": "مطابقة الشخصية",
-    "Pick what suits them, from their name and description": "اختر ما يناسبهم بناءً على الاسم والوصف"
+    "Pick what suits them, from their name and description": "اختر ما يناسبهم بناءً على الاسم والوصف",
+    "Nicknames": "الألقاب",
+    "Only in this chat. The AI still uses their real names.": "في هذه الدردشة فقط. يستخدم الذكاء الاصطناعي الأسماء الحقيقية.",
+    "Cancel": "إلغاء"
 }

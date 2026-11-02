@@ -2,6 +2,7 @@
 // Add a Server and Discover) and the list beside it (direct messages at home, a server's
 // channels when one is picked), with your own panel at the bottom.
 
+import { USER, nameFor } from './lib/chat-nicknames.js';
 import { getChannels, getCurrentPlace, getDirectMessages, getGroup, getServers, isCurrent, isPinned, latestChannel, onDataChange, openPlace, togglePin } from './data.js';
 import { isPlaceholder, monogramizeAll } from './monograms.js';
 import { repaintUnread } from './notify.js';
@@ -507,7 +508,7 @@ function buildDm(dm) {
     text.className = 'dsc-dm-text';
     const name = document.createElement('span');
     name.className = 'dsc-row-name';
-    name.textContent = dm.character.name;
+    name.textContent = nameFor(dm.avatar ?? dm.character.avatar, dm.character.name, dm.fileId);
     const preview = document.createElement('span');
     preview.className = 'dsc-dm-preview';
     preview.textContent = document.body.classList.contains('dsc-chat-names') ? dm.fileId : dm.preview;
@@ -780,7 +781,7 @@ export function refreshPersona(avatarId) {
         return;
     }
     const { name1, getThumbnailUrl } = SillyTavern.getContext();
-    panel.querySelector('.dsc-user-name').textContent = name1 || t('You');
+    panel.querySelector('.dsc-user-name').textContent = nameFor(USER, name1) || t('You');
     const mono = /** @type {HTMLElement} */ (panel.querySelector('.dsc-me-mono'));
     mono.textContent = getInitials(name1);
     mono.dataset.dscColor = String(getColorIndex(name1));

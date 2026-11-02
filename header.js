@@ -1,17 +1,19 @@
 // The chat side: the header above the messages (@name or #channel and its tools), the profile
 // panel or member list on the right, and the Friends page that stands in when no chat is open.
 
-import { channelLabel, getCurrentPlace, getDirectMessages, getGroup, isPinned, onDataChange, openCharacter, togglePin } from './data.js';
+import { refreshTitle } from './disguise.js';
+import { channelLabel, getCurrentPlace, getDirectMessages, getGroup, isPinned, onDataChange, openCharacter, scheduleRefresh, togglePin } from './data.js';
 import { formatListTime } from './messages.js';
 import { monogramizeAll } from './monograms.js';
 import { chatLook } from './chatlook.js';
+import { nameFor, registerNicknames } from './lib/chat-nicknames.js';
 import { keyOfPicture, onChatLookChanged, openLook } from './collectibles.js';
 import { fillFigure } from './figure.js';
 import { paintPresence, statusOf } from './presence.js';
 import { initPins, togglePins } from './pins.js';
 import { initSearch } from './search.js';
 import { SHORTCUTS, showShortcuts, withShortcut } from './shortcuts.js';
-import { openCharacterPanel, selectServer } from './sidebar.js';
+import { openCharacterPanel, refreshPersona, selectServer } from './sidebar.js';
 import { clickOption, fullPictureUrl, getColorIndex, icon, iconButton, openDrawer, openMenu, shieldFromOutsideClose, t, toChannelName, toUsername } from './ui.js';
 import { listen, onEvent } from './life.js';
 
@@ -241,7 +243,7 @@ export function refreshHeader() {
         topic.textContent = group.name;
     } else if (character) {
         glyph.append(icon('at'));
-        name.textContent = character.name;
+        name.textContent = nameFor(character.avatar, character.name);
     }
     const headStatus = /** @type {HTMLElement} */ (head.querySelector('.dsc-head-status'));
     if (character && !group) {
@@ -392,7 +394,7 @@ function memberRow(character, online) {
     avatar.append(img, status);
     const name = document.createElement('span');
     name.className = 'dsc-row-name';
-    name.textContent = character.name;
+    name.textContent = nameFor(character.avatar, character.name);
     row.append(avatar, name);
     return row;
 }
@@ -483,7 +485,7 @@ function memberDeck(members) {
         card.title = member.name;
         const name = document.createElement('span');
         name.className = 'dsc-deck-name';
-        name.textContent = member.name;
+        name.textContent = nameFor(member.avatar, member.name);
         card.append(name);
         card.addEventListener('click', () => showProfile(member.avatar));
         deck.append(card);
@@ -545,7 +547,7 @@ function renderProfile(aside, character) {
     card.className = 'dsc-prof-card';
     const name = document.createElement('h2');
     name.className = 'dsc-prof-name';
-    name.textContent = character.name;
+    name.textContent = nameFor(character.avatar, character.name);
     const user = document.createElement('div');
     user.className = 'dsc-prof-user';
     user.textContent = toUsername(character.name);
@@ -643,7 +645,7 @@ function refreshAside() {
     const override = profileOverride ? SillyTavern.getContext().characters.find(x => x.avatar === profileOverride) : null;
     aside.classList.toggle('dsc-members', !!group && !override);
     const key = override ? `o:${override.avatar}:${override.name}:${group ? 'g' : 'c'}`
-        : group ? `g:${group.id}:${(group.members ?? []).join(',')}:${(group.disabled_members ?? []).join(',')}` : character ? `c:${character.avatar}:${character.name}` : '';
+        : group ? `g:${group.id}:${SillyTavern.getContext().getCurrentChatId()}:${(group.members ?? []).join(',')}:${(group.disabled_members ?? []).join(',')}` : character ? `c:${character.avatar}:${character.name}:${SillyTavern.getContext().getCurrentChatId()}` : '';
     if (aside.dataset.key === key) {
         return;
     }
@@ -869,7 +871,7 @@ function messageBox(character) {
     const box = document.createElement('input');
     box.type = 'text';
     box.className = 'dsc-popout-message';
-    box.placeholder = `${t('Message')} @${toUsername(character.name)}`;
+    box.placeholder = `${t('Message')} @${toUsername(nameFor(character.avatar, character.name))}`;
     box.setAttribute('aria-label', box.placeholder);
     box.addEventListener('keydown', async (event) => {
         if (event.key !== 'Enter' || event.isComposing || !box.value.trim()) {
@@ -1062,7 +1064,7 @@ function friendRow(character) {
     text.className = 'dsc-friend-text';
     const name = document.createElement('span');
     name.className = 'dsc-friend-name';
-    name.textContent = character.name;
+    name.textContent = nameFor(character.avatar, character.name);
     const user = document.createElement('span');
     user.className = 'dsc-friend-user';
     user.textContent = toUsername(character.name);
@@ -1196,10 +1198,23 @@ function renderActivity(list, heading) {
  * @param {() => void} options.back
  */
 export function initHeader(options) {
-    onChatLookChanged(() => {
+    const redrawAside = () => {
         // the side panel only redraws for a new key, and this is the same person
         delete document.getElementById(ASIDE_ID)?.dataset.key;
         refreshAside();
+    };
+    onChatLookChanged(redrawAside);
+    const nicknameWords = { Nicknames: t('Nicknames'), 'Only in this chat. The AI still uses their real names.': t('Only in this chat. The AI still uses their real names.'), You: t('You'), Save: t('Save'), Cancel: t('Cancel') };
+    registerNicknames({
+        isOn: () => document.body.classList.contains('discord-theme'),
+        t: text => nicknameWords[text] ?? text,
+        changed: () => {
+            redrawAside();
+            refreshHeader();
+            refreshPersona();
+            refreshTitle();
+            scheduleRefresh(0);
+        },
     });
     actions = { ...actions, ...options };
     createTitlebar();

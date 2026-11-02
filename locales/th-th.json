@@ -437,5 +437,8 @@
     "How to Install": "วิธีติดตั้ง",
     "Dismiss": "ปิด",
     "Match Character": "จับคู่กับตัวละคร",
-    "Pick what suits them, from their name and description": "เลือกสิ่งที่เหมาะจากชื่อและคำอธิบาย"
+    "Pick what suits them, from their name and description": "เลือกสิ่งที่เหมาะจากชื่อและคำอธิบาย",
+    "Nicknames": "ชื่อเล่น",
+    "Only in this chat. The AI still uses their real names.": "เฉพาะในแชตนี้ AI ยังใช้ชื่อจริงอยู่",
+    "Cancel": "ยกเลิก"
 }
