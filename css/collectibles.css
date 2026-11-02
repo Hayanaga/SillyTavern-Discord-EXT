@@ -63,12 +63,12 @@ body.discord-theme #dsc-user:has(> .dsc-plate) .dsc-user-tool {
     filter: drop-shadow(0 0 2px var(--dsc-panel));
 }
 
-/* the cards in the lists, large enough to see the art */
-body.discord-theme :is(.dsc-dm, .dsc-member):has(> .dsc-plate) {
+/* the cards in the lists, large enough to see the art, the same size with or without a nameplate */
+body.discord-theme :is(.dsc-dm, .dsc-member) {
     height: 56px;
 }
 
-body.discord-theme :is(.dsc-dm, .dsc-member):has(> .dsc-plate) > .dsc-avatar {
+body.discord-theme :is(.dsc-dm, .dsc-member) > .dsc-avatar {
     width: 40px;
     height: 40px;
 }
