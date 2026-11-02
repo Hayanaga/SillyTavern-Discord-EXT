@@ -1196,7 +1196,11 @@ function renderActivity(list, heading) {
  * @param {() => void} options.back
  */
 export function initHeader(options) {
-    onChatLookChanged(refreshHeader);
+    onChatLookChanged(() => {
+        // the side panel only redraws for a new key, and this is the same person
+        delete document.getElementById(ASIDE_ID)?.dataset.key;
+        refreshAside();
+    });
     actions = { ...actions, ...options };
     createTitlebar();
     createHeader();
