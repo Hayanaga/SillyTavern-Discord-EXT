@@ -138,9 +138,19 @@ The + menu, the Apps menu for extensions and the / command picker.
 
 ## Your panel
 
-Status, Change Look, Edit Profile and persona switching.
+Status, Change Look, Nicknames, Edit Profile and persona switching. Your nameplate shows behind your name.
 
 ![status menu](.github/screenshots/status-menu.webp)
+
+![user panel nameplate](.github/screenshots/user-panel-nameplate.webp)
+
+## Nicknames
+
+Set one for this chat, this group or everywhere, for any character or for you; the closest wins. It shows everywhere but the character editor, and the AI gets it too. Chats keep real names, so clearing one puts them back. The Nicknames button sits under Change Look.
+
+![nickname chat](.github/screenshots/nickname-chat.webp)
+
+![nickname editor](.github/screenshots/nickname-editor.webp)
 
 ## Profiles
 
@@ -168,6 +178,16 @@ Change Look on a profile swaps what someone wears, with search. Lists show still
 
 ![look search](.github/screenshots/look-search.webp)
 
+## Collectibles: Background and picture per chat
+
+Background and Picture in Change Look apply to the open chat only: your backgrounds, the character's gallery or your own files.
+
+![look background](.github/screenshots/look-background.webp)
+
+![look picture](.github/screenshots/look-picture.webp)
+
+![look chat background](.github/screenshots/look-chat-background.webp)
+
 ## Collectibles: Worn everywhere
 
 The avatar decoration sits around the picture, the nameplate behind the name in the DM and member lists, and the effect and frame on the profile.
@@ -179,6 +199,8 @@ The avatar decoration sits around the picture, the nameplate behind the name in 
 ## Collectibles: Offline Copies
 
 Keep the art on your own SillyTavern server: every kind, the ones in use, or item by item, with a size breakdown first. Use only saved copies stops loading from Discord.
+
+![plugin banner](.github/screenshots/plugin-banner.webp)
 
 ![offline copies](.github/screenshots/offline-copies.webp)
 
@@ -262,11 +284,13 @@ Every token, layout switch and message option, live, with Export and Import.
 
 ## Editors
 
-A character opens as a Profile page and a group as Server Settings.
+A character opens as a Profile page and a group as Server Settings. Definitions opens in the page, and items that point at a heading scroll it to the top and light it up.
 
 ![editor character profile](.github/screenshots/editor-character-profile.webp)
 
-![editor character definitions](.github/screenshots/editor-character-definitions.webp)
+![editor definitions](.github/screenshots/editor-definitions.webp)
+
+![editor scenario highlight](.github/screenshots/editor-scenario-highlight.webp)
 
 ![editor server settings](.github/screenshots/editor-server-settings.webp)
 
@@ -280,9 +304,11 @@ Drag the inner edge. The width is remembered.
 
 ## Notices
 
-A red bar with Connect when no AI is connected.
+A red bar with Connect when no AI is connected, and a blue one with install help when the Discord Decor plugin is missing.
 
 ![overlay not connected](.github/screenshots/overlay-not-connected.webp)
+
+![plugin banner](.github/screenshots/plugin-banner.webp)
 
 ## Loading screen and languages
 
