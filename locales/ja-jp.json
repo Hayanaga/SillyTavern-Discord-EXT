@@ -440,8 +440,8 @@
     "Pick what suits them, from their name and description": "名前と説明から合うものを選びます",
     "Nicknames": "ニックネーム",
     "Cancel": "キャンセル",
-    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "最も近いものが優先されます。ニックネームは AI にも使われ、返信にも書き込まれます。",
     "This chat": "このチャット",
     "This group": "このグループ",
-    "Everywhere": "すべて"
+    "Everywhere": "すべて",
+    "The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.": "最も近いものが優先されます。ニックネームは AI にも使われます。消すとすべて本来の名前に戻ります。"
 }

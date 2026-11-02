@@ -440,8 +440,8 @@
     "Pick what suits them, from their name and description": "Elige lo que le encaja según su nombre y descripción",
     "Nicknames": "Apodos",
     "Cancel": "Cancelar",
-    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "Gana el más cercano. Los apodos también se usan con la IA y se escriben en sus respuestas.",
     "This chat": "Este chat",
     "This group": "Este grupo",
-    "Everywhere": "En todas partes"
+    "Everywhere": "En todas partes",
+    "The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.": "Gana el más cercano. Los apodos también se usan con la IA. Al borrar uno, vuelve el nombre real en todas partes."
 }

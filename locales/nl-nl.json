@@ -440,8 +440,8 @@
     "Pick what suits them, from their name and description": "Kiest wat past op basis van naam en beschrijving",
     "Nicknames": "Bijnamen",
     "Cancel": "Annuleren",
-    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "De dichtstbijzijnde telt. Bijnamen gelden ook voor de AI en komen in haar antwoorden.",
     "This chat": "Deze chat",
     "This group": "Deze groep",
-    "Everywhere": "Overal"
+    "Everywhere": "Overal",
+    "The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.": "De dichtstbijzijnde telt. Bijnamen gelden ook voor de AI. Wis je er een, dan staat overal weer de echte naam."
 }

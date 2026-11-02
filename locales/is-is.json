@@ -440,8 +440,8 @@
     "Pick what suits them, from their name and description": "Velur það sem hentar út frá nafni og lýsingu",
     "Nicknames": "Gælunöfn",
     "Cancel": "Hætta við",
-    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "Það næsta gildir. Gælunöfn eru einnig notuð með gervigreindinni og skrifuð í svör hennar.",
     "This chat": "Þetta spjall",
     "This group": "Þessi hópur",
-    "Everywhere": "Alls staðar"
+    "Everywhere": "Alls staðar",
+    "The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.": "Það næsta gildir. Gælunöfn eru einnig notuð með gervigreindinni. Ef gælunafn er hreinsað kemur rétta nafnið aftur alls staðar."
 }

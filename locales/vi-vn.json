@@ -440,8 +440,8 @@
     "Pick what suits them, from their name and description": "Chọn thứ phù hợp theo tên và mô tả",
     "Nicknames": "Biệt danh",
     "Cancel": "Hủy",
-    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "Mức gần nhất được dùng. Biệt danh cũng dùng với AI và được ghi vào câu trả lời.",
     "This chat": "Cuộc trò chuyện này",
     "This group": "Nhóm này",
-    "Everywhere": "Mọi nơi"
+    "Everywhere": "Mọi nơi",
+    "The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.": "Mức gần nhất được dùng. Biệt danh cũng dùng với AI. Xóa biệt danh sẽ khôi phục tên thật ở mọi nơi."
 }

@@ -382,7 +382,7 @@
     "That file could not be saved.": "That file could not be saved.",
     "That isn't a theme file.": "That isn't a theme file.",
     "The Discord theme is on.": "The Discord theme is on.",
-    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "The closest one wins. Nicknames are also used with the AI, and written into its replies.",
+    "The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.": "The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.",
     "Theme": "Theme",
     "Theme colour": "Theme colour",
     "Theme default": "Theme default",

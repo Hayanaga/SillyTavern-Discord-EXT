@@ -440,8 +440,8 @@
     "Pick what suits them, from their name and description": "اختر ما يناسبهم بناءً على الاسم والوصف",
     "Nicknames": "الألقاب",
     "Cancel": "إلغاء",
-    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "الأقرب هو المعتمد. تُستخدم الألقاب أيضًا مع الذكاء الاصطناعي وتُكتب في ردوده.",
     "This chat": "هذه الدردشة",
     "This group": "هذه المجموعة",
-    "Everywhere": "في كل مكان"
+    "Everywhere": "في كل مكان",
+    "The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.": "الأقرب هو المعتمد. تُستخدم الألقاب أيضًا مع الذكاء الاصطناعي. مسح اللقب يعيد الاسم الحقيقي في كل مكان."
 }

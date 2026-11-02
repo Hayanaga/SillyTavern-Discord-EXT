@@ -440,8 +440,8 @@
     "Pick what suits them, from their name and description": "เลือกสิ่งที่เหมาะจากชื่อและคำอธิบาย",
     "Nicknames": "ชื่อเล่น",
     "Cancel": "ยกเลิก",
-    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "ระดับที่ใกล้ที่สุดจะถูกใช้ ชื่อเล่นจะใช้กับ AI และเขียนลงในคำตอบด้วย",
     "This chat": "แชตนี้",
     "This group": "กลุ่มนี้",
-    "Everywhere": "ทุกที่"
+    "Everywhere": "ทุกที่",
+    "The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.": "ระดับที่ใกล้ที่สุดจะถูกใช้ ชื่อเล่นใช้กับ AI ด้วย ล้างแล้วชื่อจริงจะกลับมาทุกที่"
 }

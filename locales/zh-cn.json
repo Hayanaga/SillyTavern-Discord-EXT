@@ -440,8 +440,8 @@
     "Pick what suits them, from their name and description": "根据名称和描述挑选合适的装饰",
     "Nicknames": "昵称",
     "Cancel": "取消",
-    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "以最近的为准。昵称也用于 AI，并写入其回复。",
     "This chat": "此聊天",
     "This group": "此群组",
-    "Everywhere": "所有位置"
+    "Everywhere": "所有位置",
+    "The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.": "以最近的为准。昵称也用于 AI。清除后所有位置都会恢复真实姓名。"
 }

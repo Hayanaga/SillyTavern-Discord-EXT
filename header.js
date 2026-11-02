@@ -1220,7 +1220,7 @@ export function initHeader(options) {
         refreshAside();
     };
     onChatLookChanged(redrawAside);
-    const nicknameWords = { Nicknames: t('Nicknames'), 'The closest one wins. Nicknames are also used with the AI, and written into its replies.': t('The closest one wins. Nicknames are also used with the AI, and written into its replies.'), 'This chat': t('This chat'), 'This group': t('This group'), Everywhere: t('Everywhere'), You: t('You'), Save: t('Save'), Cancel: t('Cancel') };
+    const nicknameWords = { Nicknames: t('Nicknames'), 'The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.': t('The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.'), 'This chat': t('This chat'), 'This group': t('This group'), Everywhere: t('Everywhere'), You: t('You'), Save: t('Save'), Cancel: t('Cancel') };
     registerNicknames({
         isOn: () => document.body.classList.contains('discord-theme'),
         t: text => nicknameWords[text] ?? text,

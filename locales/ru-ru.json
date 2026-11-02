@@ -440,8 +440,8 @@
     "Pick what suits them, from their name and description": "Выбирает подходящее по имени и описанию",
     "Nicknames": "Прозвища",
     "Cancel": "Отмена",
-    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "Действует ближайшее. Прозвища используются и с ИИ и записываются в его ответы.",
     "This chat": "Этот чат",
     "This group": "Эта группа",
-    "Everywhere": "Везде"
+    "Everywhere": "Везде",
+    "The closest one wins. Nicknames are also used with the AI. Clearing one puts the real name back everywhere.": "Действует ближайшее. Прозвища используются и с ИИ. Если очистить прозвище, везде вернётся настоящее имя."
 }
