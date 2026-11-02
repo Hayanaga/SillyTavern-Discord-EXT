@@ -33,8 +33,8 @@ test('names read naturally', () => {
     assert.equal(listNames(['Moonlit Echoes', 'Moonlit Echoes']), 'Moonlit Echoes');
 });
 
-test('our four themes are known, each with a unique id, folder, key and class', () => {
-    assert.equal(KNOWN_THEMES.length, 4);
+test('our themes are known, each with a unique id, folder, key and class', () => {
+    assert.equal(KNOWN_THEMES.length, 5);
     for (const field of ['id', 'folder', 'settingsKey', 'bodyClass']) {
         assert.equal(new Set(KNOWN_THEMES.map(x => x[field])).size, 4, field);
     }
