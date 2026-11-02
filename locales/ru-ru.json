@@ -439,6 +439,9 @@
     "Match Character": "Подобрать к персонажу",
     "Pick what suits them, from their name and description": "Выбирает подходящее по имени и описанию",
     "Nicknames": "Прозвища",
-    "Only in this chat. The AI still uses their real names.": "Только в этом чате. ИИ по-прежнему использует настоящие имена.",
-    "Cancel": "Отмена"
+    "Cancel": "Отмена",
+    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "Действует ближайшее. Прозвища используются и с ИИ и записываются в его ответы.",
+    "This chat": "Этот чат",
+    "This group": "Эта группа",
+    "Everywhere": "Везде"
 }

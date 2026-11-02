@@ -439,6 +439,9 @@
     "Match Character": "Khớp với nhân vật",
     "Pick what suits them, from their name and description": "Chọn thứ phù hợp theo tên và mô tả",
     "Nicknames": "Biệt danh",
-    "Only in this chat. The AI still uses their real names.": "Chỉ trong cuộc trò chuyện này. AI vẫn dùng tên thật.",
-    "Cancel": "Hủy"
+    "Cancel": "Hủy",
+    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "Mức gần nhất được dùng. Biệt danh cũng dùng với AI và được ghi vào câu trả lời.",
+    "This chat": "Cuộc trò chuyện này",
+    "This group": "Nhóm này",
+    "Everywhere": "Mọi nơi"
 }

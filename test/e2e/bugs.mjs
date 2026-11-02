@@ -43,7 +43,7 @@ await page.keyboard.press('Escape');
 // phone
 const m = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
 await ready(m);
-await m.tap('#dsc-side .dsc-dm >> nth=4'); await m.waitForTimeout(1500);
+await m.tap('#dsc-side .dsc-dm >> nth=-1'); await m.waitForTimeout(1500);
 await m.locator('#chat .mes:not([is_user="true"]) .avatar').first().tap(); await m.waitForTimeout(600);
 console.log('phone sheet', await m.evaluate(() => { const a = document.getElementById('dsc-aside'); const r = a.getBoundingClientRect(); return [document.body.classList.contains('dsc-profile-sheet'), getComputedStyle(a).display, Math.round(r.y), Math.round(r.height), document.querySelector('#dsc-aside .dsc-prof-name')?.textContent]; }));
 await m.locator('#dsc-aside .dsc-prof-close').tap(); await m.waitForTimeout(300);

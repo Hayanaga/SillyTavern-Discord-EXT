@@ -439,6 +439,9 @@
     "Match Character": "Ajustar al personaje",
     "Pick what suits them, from their name and description": "Elige lo que le encaja según su nombre y descripción",
     "Nicknames": "Apodos",
-    "Only in this chat. The AI still uses their real names.": "Solo en este chat. La IA sigue usando los nombres reales.",
-    "Cancel": "Cancelar"
+    "Cancel": "Cancelar",
+    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "Gana el más cercano. Los apodos también se usan con la IA y se escriben en sus respuestas.",
+    "This chat": "Este chat",
+    "This group": "Este grupo",
+    "Everywhere": "En todas partes"
 }

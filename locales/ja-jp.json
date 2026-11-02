@@ -439,6 +439,9 @@
     "Match Character": "キャラクターに合わせる",
     "Pick what suits them, from their name and description": "名前と説明から合うものを選びます",
     "Nicknames": "ニックネーム",
-    "Only in this chat. The AI still uses their real names.": "このチャットのみ。AI には本来の名前が使われます。",
-    "Cancel": "キャンセル"
+    "Cancel": "キャンセル",
+    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "最も近いものが優先されます。ニックネームは AI にも使われ、返信にも書き込まれます。",
+    "This chat": "このチャット",
+    "This group": "このグループ",
+    "Everywhere": "すべて"
 }

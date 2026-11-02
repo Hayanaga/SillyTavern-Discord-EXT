@@ -439,6 +439,9 @@
     "Match Character": "จับคู่กับตัวละคร",
     "Pick what suits them, from their name and description": "เลือกสิ่งที่เหมาะจากชื่อและคำอธิบาย",
     "Nicknames": "ชื่อเล่น",
-    "Only in this chat. The AI still uses their real names.": "เฉพาะในแชตนี้ AI ยังใช้ชื่อจริงอยู่",
-    "Cancel": "ยกเลิก"
+    "Cancel": "ยกเลิก",
+    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "ระดับที่ใกล้ที่สุดจะถูกใช้ ชื่อเล่นจะใช้กับ AI และเขียนลงในคำตอบด้วย",
+    "This chat": "แชตนี้",
+    "This group": "กลุ่มนี้",
+    "Everywhere": "ทุกที่"
 }

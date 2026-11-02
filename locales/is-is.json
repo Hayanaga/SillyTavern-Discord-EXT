@@ -439,6 +439,9 @@
     "Match Character": "Para við persónu",
     "Pick what suits them, from their name and description": "Velur það sem hentar út frá nafni og lýsingu",
     "Nicknames": "Gælunöfn",
-    "Only in this chat. The AI still uses their real names.": "Aðeins í þessu spjalli. Gervigreindin notar áfram réttu nöfnin.",
-    "Cancel": "Hætta við"
+    "Cancel": "Hætta við",
+    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "Það næsta gildir. Gælunöfn eru einnig notuð með gervigreindinni og skrifuð í svör hennar.",
+    "This chat": "Þetta spjall",
+    "This group": "Þessi hópur",
+    "Everywhere": "Alls staðar"
 }

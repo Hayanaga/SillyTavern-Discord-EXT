@@ -439,6 +439,9 @@
     "Match Character": "Підібрати до персонажа",
     "Pick what suits them, from their name and description": "Вибирає відповідне за іменем та описом",
     "Nicknames": "Прізвиська",
-    "Only in this chat. The AI still uses their real names.": "Лише в цьому чаті. ШІ й надалі використовує справжні імена.",
-    "Cancel": "Скасувати"
+    "Cancel": "Скасувати",
+    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "Діє найближче. Прізвиська використовуються і з ШІ та записуються в його відповіді.",
+    "This chat": "Цей чат",
+    "This group": "Ця група",
+    "Everywhere": "Усюди"
 }

@@ -439,6 +439,9 @@
     "Match Character": "配合角色",
     "Pick what suits them, from their name and description": "根據名稱和描述挑選合適的裝飾",
     "Nicknames": "暱稱",
-    "Only in this chat. The AI still uses their real names.": "僅限此聊天。AI 仍使用真實姓名。",
-    "Cancel": "取消"
+    "Cancel": "取消",
+    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "以最近的為準。暱稱也用於 AI，並寫入其回覆。",
+    "This chat": "此聊天",
+    "This group": "此群組",
+    "Everywhere": "所有位置"
 }

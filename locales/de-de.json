@@ -439,6 +439,9 @@
     "Match Character": "Zum Charakter passend",
     "Pick what suits them, from their name and description": "Wählt Passendes anhand von Name und Beschreibung",
     "Nicknames": "Spitznamen",
-    "Only in this chat. The AI still uses their real names.": "Nur in diesem Chat. Die KI nutzt weiter die echten Namen.",
-    "Cancel": "Abbrechen"
+    "Cancel": "Abbrechen",
+    "The closest one wins. Nicknames are also used with the AI, and written into its replies.": "Der nächstgelegene gilt. Spitznamen gelten auch für die KI und erscheinen in ihren Antworten.",
+    "This chat": "Dieser Chat",
+    "This group": "Diese Gruppe",
+    "Everywhere": "Überall"
 }
