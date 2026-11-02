@@ -8,7 +8,6 @@
 
 import { chatLook, hasOpenChat, setChatLook } from './chatlook.js';
 import { openOffline, saveStarterSet } from './collectibles-offline.js';
-import { canUseNicknames, openNicknames } from './lib/chat-nicknames.js';
 import { GatedObserver, listen, onEvent } from './life.js';
 import { t } from './ui.js';
 
@@ -762,13 +761,7 @@ export function openLook(key, name, picture) {
         closeLook();
         openOffline();
     });
-    const nick = document.createElement('button');
-    nick.type = 'button';
-    nick.className = 'menu_button';
-    nick.textContent = t('Nicknames');
-    nick.hidden = !canUseNicknames();
-    nick.addEventListener('click', () => openNicknames());
-    foot.append(offline, nick, match, upload, input, done);
+    foot.append(offline, match, upload, input, done);
     upload.addEventListener('click', () => input.click());
     input.addEventListener('change', async () => {
         const file = input.files?.[0];

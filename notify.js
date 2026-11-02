@@ -6,6 +6,7 @@
 //   notification. Do Not Disturb keeps notifications and sounds quiet. Unread clears when you
 //   come back.
 
+import { canUseNicknames, openNicknames } from './lib/chat-nicknames.js';
 import { setUnreadBadge } from './disguise.js';
 import { imagesLabel } from './lib/image-links.js';
 import { fullPictureUrl, openMenu, t } from './ui.js';
@@ -72,6 +73,9 @@ function openStatusMenu(anchor) {
     const key = keyOfPicture(anchor.querySelector('.dsc-avatar img')?.getAttribute('src') ?? '');
     if (key.startsWith('p:')) {
         items.push({ label: 'Change Look', icon: 'edit', run: () => openLook(key, name1, fullPictureUrl('persona', key.slice(2))) });
+        if (canUseNicknames()) {
+            items.push({ label: 'Nicknames', icon: 'edit', run: () => openNicknames() });
+        }
     }
     if (personas.length) {
         items.push('separator', ...personas.slice(0, 8).map(name => ({ label: `${t('Switch to')} ${name}`, icon: 'user', run: () => switchAccount(name) })));

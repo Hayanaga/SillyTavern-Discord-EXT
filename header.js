@@ -6,7 +6,7 @@ import { channelLabel, getCurrentPlace, getDirectMessages, getGroup, isPinned, o
 import { formatListTime } from './messages.js';
 import { monogramizeAll } from './monograms.js';
 import { chatLook } from './chatlook.js';
-import { nameFor, registerNicknames } from './lib/chat-nicknames.js';
+import { canUseNicknames, nameFor, openNicknames, registerNicknames } from './lib/chat-nicknames.js';
 import { keyOfPicture, onChatLookChanged, openLook } from './collectibles.js';
 import { fillFigure } from './figure.js';
 import { paintPresence, statusOf } from './presence.js';
@@ -606,7 +606,7 @@ function renderProfile(aside, character) {
     const body = document.createElement('div');
     body.className = 'dsc-prof-body';
     const picture = pictureCard(character, 'dsc-prof-picture');
-    body.append(card, extra, picture, look, full);
+    body.append(card, extra, picture, look, ...nicknamesButton(), full);
     // the side panel starts folded to the name, picture and buttons; the name card unfolds the rest
     if (aside.id === ASIDE_ID) {
         const more = iconButton('dsc-prof-more', t(profileOpen ? 'Show Less' : 'Show More'), 'chevron', 16);
@@ -849,7 +849,7 @@ function renderPersona(popout, picture = '') {
         openDrawer('persona-management-button');
     });
     const look = avatarId ? lookButton(`p:${avatarId}`, name1, fullPictureUrl('persona', avatarId)) : null;
-    popout.replaceChildren(banner, avatar, card, ...(look ? [look] : []), edit);
+    popout.replaceChildren(banner, avatar, card, ...(look ? [look, ...nicknamesButton()] : []), edit);
     monogramizeAll(popout, '.dsc-prof-avatar img', () => name1);
 }
 
@@ -864,6 +864,22 @@ function lookButton(key, name, picture) {
         openLook(key, name, picture);
     });
     return button;
+}
+
+/** The Nicknames button under Change Look, while there's a chat to keep them in. */
+function nicknamesButton() {
+    if (!canUseNicknames()) {
+        return [];
+    }
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'dsc-prof-look';
+    button.append(icon('edit', 16), document.createTextNode(t('Nicknames')));
+    button.addEventListener('click', () => {
+        closePopout();
+        openNicknames();
+    });
+    return [button];
 }
 
 /** The "Message @name" box at the bottom of a character's card: sends in their DM. */

@@ -246,6 +246,10 @@ body.discord-theme .dsc-prof-look:hover {
     background: var(--dsc-secondary-button-hover);
 }
 
+body.discord-theme .dsc-prof-look + .dsc-prof-look {
+    margin-top: 8px;
+}
+
 body.discord-theme .dsc-prof-look + .dsc-prof-full {
     margin-top: auto;
 }
