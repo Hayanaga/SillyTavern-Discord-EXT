@@ -701,6 +701,7 @@ function endBoot() {
         body.classList.add('dsc-boot-done');
         setTimeout(() => {
             body.classList.remove('dsc-booting', 'dsc-boot-done');
+            document.getElementById('dsc-boot-logo')?.remove();
             body.style.removeProperty('--dsc-boot-tip');
         }, 250);
     }));
@@ -713,6 +714,9 @@ function bootLook() {
         return;
     }
     document.body.classList.add('dsc-booting');
+    const logo = document.createElement('div');
+    logo.id = 'dsc-boot-logo';
+    document.body.append(logo);
     bootAppIcon();
     // never leave the cover up if something fails on the way
     setTimeout(endBoot, 20000);
